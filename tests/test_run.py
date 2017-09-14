@@ -63,6 +63,7 @@ class TestParser:
         assert not parsed_args.nocheck_init
         assert not parsed_args.no_submit
         assert parsed_args.waitjob == 0
+        assert parsed_args.queue_job_cmd == 'qsub'
         assert not parsed_args.quiet
 
     @pytest.mark.parametrize(
@@ -78,6 +79,22 @@ class TestParser:
         parser = run_cmd.get_parser('nemo run')
         parsed_args = parser.parse_args(['foo', 'baz', flag])
         assert getattr(parsed_args, attr)
+
+    @pytest.mark.parametrize('cmd', [
+        'qsub',
+        'sbatch',
+    ])
+    def test_parsed_args_queue_job_cmd(self, cmd, run_cmd):
+        parser = run_cmd.get_parser('nemo run')
+        parsed_args = parser.parse_args(['foo', 'baz', '--queue-job-cmd', cmd])
+        assert parsed_args.queue_job_cmd == cmd
+
+    def test_bad_queue_job_cmd(self, run_cmd):
+        parser = run_cmd.get_parser('nemo run')
+        with pytest.raises(SystemExit):
+            parsed_args = parser.parse_args(
+                ['foo', 'baz', '--queue-job-cmd', 'fling']
+            )
 
 
 @patch('nemo_cmd.run.logger')
@@ -95,11 +112,20 @@ class TestTakeAction:
             nocheck_init=False,
             no_submit=False,
             waitjob=0,
+            queue_job_cmd='qsub',
             quiet=False
         )
         run_cmd.run(parsed_args)
         m_run.assert_called_once_with(
-            'desc file', 'results dir', 4, False, False, False, 0, False
+            'desc file',
+            'results dir',
+            4,
+            False,
+            False,
+            False,
+            0,
+            'qsub',
+            quiet=False
         )
         m_logger.info.assert_called_once_with('qsub message')
 
@@ -113,6 +139,7 @@ class TestTakeAction:
             nocheck_init=False,
             no_submit=False,
             waitjob=0,
+            queue_job_cmd='qsub',
             quiet=True
         )
         run_cmd.run(parsed_args)
@@ -128,6 +155,7 @@ class TestTakeAction:
             nocheck_init=False,
             no_submit=True,
             waitjob=0,
+            queue_job_cmd='qsub',
             quiet=True
         )
         run_cmd.run(parsed_args)
@@ -214,6 +242,41 @@ class TestRun:
         )
         assert not m_sco.called
         assert qsb_msg is None
+
+        @pytest.mark.parametrize(
+            'nemo34, sep_xios_server, xios_servers, queue_job_cmd', [
+                (True, None, 0, 'qsub'),
+                (False, False, 0, 'qsub'),
+                (False, True, 4, 'sbatch'),
+            ]
+        )
+        def test_queue_job_cmd(
+            self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, nemo34,
+            sep_xios_server, xios_servers, queue_job_cmd, tmpdir
+        ):
+            p_run_dir = tmpdir.ensure_dir('run_dir')
+            m_prepare.return_value = Path(str(p_run_dir))
+            p_results_dir = tmpdir.ensure_dir('results_dir')
+            if not nemo34:
+                m_lrd.return_value = {
+                    'output': {
+                        'separate XIOS server': sep_xios_server,
+                        'XIOS servers': xios_servers,
+                    }
+                }
+            qsb_msg = nemo_cmd.run.run(
+                Path('nemo.yaml'), str(p_results_dir), nemo34=nemo34
+            )
+            m_prepare.assert_called_once_with(Path('nemo.yaml'), nemo34, False)
+            m_lrd.assert_called_once_with(Path('nemo.yaml'))
+            m_gnp.assert_called_once_with(m_lrd())
+            m_bbs.assert_called_once_with(
+                m_lrd(), 'nemo.yaml', 144, xios_servers, 4,
+                Path(str(p_results_dir)), Path(str(p_run_dir))
+            )
+            m_sco.assert_called_once_with([queue_job_cmd, 'NEMO.sh'],
+                                          universal_newlines=True)
+            assert qsb_msg == 'msg'
 
 
 class TestPBS_Resources:
