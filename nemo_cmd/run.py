@@ -18,8 +18,10 @@ Prepare for, execute, and gather the results of a run of the NEMO model.
 """
 from __future__ import division
 
+import datetime
 import logging
 import math
+import time
 import os
 try:
     from pathlib import Path
@@ -194,7 +196,8 @@ def run(
     :param int waitjob: Use -W waitjob in call to qsub, to make current job
                         wait for on waitjob.  Waitjob is the queue job number
 
-    :param str queue_job_cmd: Command to use to submit the bash script to execute the NEMO run.
+    :param str queue_job_cmd: Command to use to submit the bash script to
+                              execute the NEMO run.
 
     :param boolean quiet: Don't show the run directory path message;
                           the default is to show the temporary run directory
@@ -222,7 +225,7 @@ def run(
     batch_script = _build_batch_script(
         run_desc,
         fspath(desc_file), nemo_processors, xios_processors, max_deflate_jobs,
-        results_dir, run_dir
+        results_dir, run_dir, queue_job_cmd
     )
     batch_file = run_dir / 'NEMO.sh'
     with batch_file.open('wt') as f:
@@ -239,14 +242,35 @@ def run(
         )
     else:
         cmd = '{submit_job} NEMO.sh'.format(submit_job=queue_job_cmd)
-    qsub_msg = subprocess.check_output(cmd.split(), universal_newlines=True)
+    results_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        submit_job_msg = subprocess.check_output(
+            cmd.split(), universal_newlines=True
+        )
+    except OSError:
+        logger.error(
+            '{submit_job} not found. Please confirm the correct job submission '
+            'command (qsub or sbatch) for this platform and use the '
+            '--job-queue-cmd command-line option.'.format(
+                submit_job=queue_job_cmd
+            )
+        )
+        # Remove the temporary run directory
+        time.sleep(0.1)
+        try:
+            for p in run_dir.iterdir():
+                p.unlink()
+            run_dir.rmdir()
+        except OSError:
+            pass
+        submit_job_msg = None
     os.chdir(fspath(starting_dir))
-    return qsub_msg
+    return submit_job_msg
 
 
 def _build_batch_script(
     run_desc, desc_file, nemo_processors, xios_processors, max_deflate_jobs,
-    results_dir, run_dir
+    results_dir, run_dir, queue_job_cmd
 ):
     """Build the Bash script that will execute the run.
 
@@ -271,34 +295,27 @@ def _build_batch_script(
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
 
+    :param str queue_job_cmd: Command to use to submit the bash script to
+                              execute the NEMO run.
+
     :returns: Bash script to execute the run.
     :rtype: str
     """
     script = u'#!/bin/bash\n'
-    email = get_run_desc_value(run_desc, ('email',))
+    scheduler_directives = {
+        'qsub': _pbs_directives,
+        'sbatch': _sbatch_directives,
+    }
     script = u'\n'.join((
-        script, u'{pbs_common}\n'.format(
-            pbs_common=api.pbs_common(
-                run_desc, nemo_processors + xios_processors, email, results_dir
-            )
+        script, scheduler_directives[queue_job_cmd](
+            run_desc, nemo_processors + xios_processors, results_dir
         )
     ))
-    if 'PBS resources' in run_desc:
-        script = u''.join((
-            script[:-1],
-            '# resource(s) requested in run description YAML file\n'
-        ))
-        script = u''.join((
-            script, u'{pbs_resources}\n'.format(
-                pbs_resources=_pbs_resources(
-                    run_desc['PBS resources'],
-                    nemo_processors + xios_processors
-                )
-            )
-        ))
     script = u'\n'.join((
         script, u'{defns}\n'.format(
-            defns=_definitions(run_desc, desc_file, run_dir, results_dir),
+            defns=_definitions(
+                run_desc, desc_file, run_dir, results_dir, queue_job_cmd
+            ),
         )
     ))
     if 'modules to load' in run_desc:
@@ -321,6 +338,30 @@ def _build_batch_script(
     return script
 
 
+def _pbs_directives(run_desc, n_processors, results_dir):
+    email = get_run_desc_value(run_desc, ('email',))
+    pbs_directives = u'\n'.join((
+        u'{pbs_common}\n'.format(
+            pbs_common=api.pbs_common(
+                run_desc, n_processors, email, results_dir
+            )
+        )
+    ))
+    if 'PBS resources' in run_desc:
+        pbs_directives = u''.join((
+            pbs_directives[:-1],
+            '# resource(s) requested in run description YAML file\n'
+        ))
+        pbs_directives = u''.join((
+            pbs_directives, u'{pbs_resources}\n'.format(
+                pbs_resources=_pbs_resources(
+                    run_desc['PBS resources'], n_processors
+                )
+            )
+        ))
+    return pbs_directives
+
+
 def _pbs_resources(resources, n_processors):
     pbs_directives = u''
     for resource in resources:
@@ -336,7 +377,122 @@ def _pbs_resources(resources, n_processors):
     return pbs_directives
 
 
-def _definitions(run_desc, run_desc_file, run_dir, results_dir):
+def _sbatch_directives(
+    run_desc,
+    n_processors,
+    results_dir,
+    max_tasks_per_node=32,
+    memory_per_node='127G'
+):
+    """Return the SBATCH directives used to run NEMO on a cluster that uses the
+    Slurm Workload Manager for job scheduling.
+
+    The strategy for requesting compute resources is to request full nodes
+    (all processors and all memory) so that XIOS-2 can run along-side NEMO
+    with plenty of buffer space.
+
+    The string that is returned is intended for inclusion in a bash script
+    that will submitted be to the cluster queue manager via the
+    :command:`sbatch` command.
+
+    :param dict run_desc: Run description dictionary.
+
+    :param int n_processors: Number of processors that the run will be
+                             executed on.
+                             For NEMO-3.6 runs this is the sum of NEMO and
+                             XIOS processors.
+
+    :param results_dir: Directory to store results into.
+    :type results_dir: :py:class:`pathlib.Path`
+
+    :param int max_tasks_per_node: Maximum number of compute tasks allowed
+                                   per node. This should typically be the
+                                   same as the number of processors per node;
+                                   e.g. 32 on cedar/graham.computecanada.ca.
+
+    :param str memory_per_node: Memory to request on each compute node. This
+                                should typically be slightly less than the
+                                total memory per node available to allow room
+                                for the operating system;
+                                e.g. 127G of the 128G available per node on
+                                cedar/graham.computecanada.ca.
+
+    :returns: SBATCH directives for run script.
+    :rtype: Unicode str
+    """
+    run_id = get_run_desc_value(run_desc, ('run_id',))
+    nodes = math.ceil(n_processors / max_tasks_per_node)
+    try:
+        td = datetime.timedelta(
+            seconds=get_run_desc_value(run_desc, ('walltime',))
+        )
+    except TypeError:
+        t = datetime.datetime.strptime(
+            get_run_desc_value(run_desc, ('walltime',)), '%H:%M:%S'
+        ).time()
+        td = datetime.timedelta(
+            hours=t.hour, minutes=t.minute, seconds=t.second
+        )
+    walltime = _td2hms(td)
+    email = get_run_desc_value(run_desc, ('email',))
+    sbatch_directives = (
+        u'#SBATCH --job-name={run_id}\n'
+        u'#SBATCH --nodes={nodes}\n'
+        u'#SBATCH --ntasks-per-node={processors_per_node}\n'
+        u'#SBATCH --mem={memory_per_node}\n'
+        u'#SBATCH --time={walltime}\n'
+        u'#SBATCH --mail-user={email}\n'
+        u'#SBATCH --mail-type=ALL\n'
+    ).format(
+        run_id=run_id,
+        nodes=int(nodes),
+        processors_per_node=max_tasks_per_node,
+        memory_per_node=memory_per_node,
+        walltime=walltime,
+        email=email,
+    )
+    try:
+        account = get_run_desc_value(run_desc, ('account',), fatal=False)
+        sbatch_directives += (
+            u'#SBATCH --account={account}\n'.format(account=account)
+        )
+    except KeyError:
+        logger.warning(
+            'No account found in run description YAML file. '
+            'If sbatch complains you can add one like account: def-allen'
+        )
+    sbatch_directives += (
+        u'# stdout and stderr file paths/names\n'
+        u'#SBATCH --output={stdout}\n'
+        u'#SBATCH --error={stderr}\n'
+    ).format(
+        stdout=results_dir / 'stdout',
+        stderr=results_dir / 'stderr',
+    )
+    return sbatch_directives
+
+
+def _td2hms(timedelta):
+    """Return a string that is the timedelta value formated as H:M:S
+    with leading zeros on the minutes and seconds values.
+
+    :param :py:obj:datetime.timedelta timedelta: Time interval to format.
+
+    :returns: H:M:S string with leading zeros on the minutes and seconds
+              values.
+    :rtype: unicode
+    """
+    seconds = int(timedelta.total_seconds())
+    periods = (('hour', 60 * 60), ('minute', 60), ('second', 1),)
+    hms = []
+    for period_name, period_seconds in periods:
+        period_value, seconds = divmod(seconds, period_seconds)
+        hms.append(period_value)
+    return u'{0[0]}:{0[1]:02d}:{0[2]:02d}'.format(hms)
+
+
+def _definitions(run_desc, run_desc_file, run_dir, results_dir, queue_job_cmd):
+    home = u'${PBS_O_HOME}' if queue_job_cmd == 'qsub' else u'${HOME}'
     defns = (
         u'RUN_ID="{run_id}"\n'
         u'RUN_DESC="{run_desc_file}"\n'
@@ -350,7 +506,7 @@ def _definitions(run_desc, run_desc_file, run_dir, results_dir):
         run_desc_file=run_desc_file,
         run_dir=run_dir,
         results_dir=results_dir,
-        nemo_cmd=Path('${PBS_O_HOME}/.local/bin/nemo'),
+        nemo_cmd=Path('{home}/.local/bin/nemo'.format(home=home)),
     )
     return defns
 
