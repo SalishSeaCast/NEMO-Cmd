@@ -270,6 +270,7 @@ An example :kbd:`vcs revisions` section:
         - $HOME/Canyons/NEMO-3.6-code/
         - $HOME/Canyons/XIOS/
         - $HOME/Canyons/mackenzie_canyon/
+        - $HOME/CANYONS/NEMO-Cmd/
 
 The sub-section keys
 (:kbd:`hg` above)
