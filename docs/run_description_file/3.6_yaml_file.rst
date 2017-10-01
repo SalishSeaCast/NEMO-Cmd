@@ -94,7 +94,7 @@ The :kbd:`paths` section of the run description file is a collection of director
   and :envvar:`$USER` as an alternative spelling of the user's userid.
 
 :kbd:`forcing`
-  Optional.
+  *Optional*.
   The path to the directory tree where the netCDF files for the grid coordinates,
   bathymetry,
   initial conditions,
@@ -239,7 +239,7 @@ or by setting the value associated with the :kbd:`type` key to :py:obj:`None`.
 :kbd:`restart` Section
 ======================
 
-The optional :kbd:`restart` section of the run description file contains key-value pairs that provide paths and file names of restart files to be used to initialize the run.
+The *optional* :kbd:`restart` section of the run description file contains key-value pairs that provide paths and file names of restart files to be used to initialize the run.
 
 The paths may be relative or absolute,
 and may contain :kbd:`~` or :envvar:`$HOME` as alternative spellings of the user's home directory,
@@ -270,7 +270,7 @@ and exit with an error message if not.
 :kbd:`namelists` Section
 ========================
 
-The :kbd:`namelists` section of the run description file contains a dict of lists of NEMO namelist section files that will be concatenated to construct :file:`namelist*_cfg` files
+The :kbd:`namelists` section of the run description file contains one or more dicts of lists of NEMO namelist section files that will be concatenated to construct :file:`namelist*_cfg` files
 (the file names required by NEMO)
 file for the run.
 
@@ -396,7 +396,7 @@ they are appended to the directory containing the run description file.
 
   This key may also be spelled :kbd:`fields` for backward compatibility.
 
-:kbd:`filedefs` (optional)
+:kbd:`filedefs` (*optional*)
   The path and name of the :file:`file_def.xml` output domains definitions file to use for the run.
   This item is optional because it is only used by XIOS-2
   (but it is required by XIOS-2).
@@ -428,7 +428,7 @@ the number of XIOS servers to run.
 :kbd:`vcs revisions` Section
 ============================
 
-The optional :kbd:`vcs revisions` section of the run description file contains lists of version control system repositories of which the revision and status will be recorded in the temporary run and run results directories.
+The *optional* :kbd:`vcs revisions` section of the run description file contains lists of version control system repositories of which the revision and status will be recorded in the temporary run and run results directories.
 
 An example :kbd:`vcs revisions` section:
 
@@ -438,7 +438,9 @@ An example :kbd:`vcs revisions` section:
       hg:
         - $HOME/CANYONS/NEMO-3.6-code/
         - $HOME/CANYONS/XIOS/
+        - $HOME/CANYONS/XIOS-ARCH/
         - $HOME/CANYONS/mackenzie_canyon/
+        - $HOME/CANYONS/NEMO-Cmd/
 
 The sub-section keys
 (:kbd:`hg` above)
@@ -487,12 +489,12 @@ the output of the :command:`hg status -mardC` command,
 will be appended to the :file:`_rev.txt` file.
 
 
-.. _NEMO-3.6-PBS-resources:
+.. _NEMO-3.6-PBS-Resources:
 
 :kbd:`PBS resources` Section
 ============================
 
-The optional :kbd:`PBS resources` section of the run description file contains a list of HPC resource key-value pairs for which :kbd:`#PBS -l` directives will be added to the :file:`NEMO.sh` script in the temporary run directory.
+The *optional* :kbd:`PBS resources` section of the run description file contains a list of HPC resource key-value pairs for which :kbd:`#PBS -l` directives will be added to the :file:`NEMO.sh` script in the temporary run directory.
 You will need to use this section if you are running on an HPC system and need to request special resources;
 otherwise,
 you can omit the :kbd:`PBS resources` section.
@@ -555,7 +557,7 @@ will result in a :kbd:`#PBS -l nodes=2:ppn=12` directive being included in the :
 :kbd:`modules to load` Section
 ==============================
 
-The optional :kbd:`modules to load` section of the run description file contains a list of HPC `environment modules`_ for which :command:`module load` commands will be added to the :file:`NEMO.sh` script in the temporary run directory.
+The *optional* :kbd:`modules to load` section of the run description file contains a list of HPC `environment modules`_ for which :command:`module load` commands will be added to the :file:`NEMO.sh` script in the temporary run directory.
 You will need to use this section if you are running on an HPC system that uses environment modules;
 otherwise,
 you can omit the :kbd:`modules to load` section.
