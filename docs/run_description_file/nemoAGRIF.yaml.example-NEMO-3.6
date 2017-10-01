@@ -1,0 +1,126 @@
+# nemo command processor run description example for NEMO-3.6
+
+# Name of the NEMO-3.6 configuration to use for the run;
+# i.e. your NEMO-3.6-code/NEMOGCM/CONFIG/ configuration directory
+config name: mackenzie03
+
+# How is the domain to be distributed over the processors in the
+# i and j grid directions?
+# These values are used to set the nammpp namelist jpni & jpnj values
+# and to set the number of processors and nodes in the PBS script
+MPI decomposition: 6x6
+
+# For runs on systems that use qsub/PBS/TORQUE
+#
+# The run_id value appears in the list of jobs display by the showq command
+run_id: example
+# Maximum run time requested/allowed for job
+# Too low and you job will be terminated before it finishes
+# Too high and you will have to wait longer on the queue for your job to start
+# You have to experiment to find the "just right" value
+walltime: 10:00:00
+# Email address to send job begin, end, and abort notifications to
+email: you@example.com
+
+
+# Only required if your run uses AGRIF
+AGRIF:
+  # Absolute path to AGRIF_FixedGrids.in file
+  fixed grids: $HOME/CANYONS/mackenzie_canyon/real/AGRIF_FixedGrids.in
+
+
+paths:
+  # Absolute path to CONFIG/ directory in NEMO-3.6 code tree.
+  # You can use ~ or $HOME or $USER if you wish.
+  NEMO code config: $HOME/CANYONS/NEMO-3.6/CONFIG/
+  # If relative, paths below are taken from current directory
+  # You can use ~, $USER, $HOME if you wish.
+  XIOS: $HOME/CANYONS/XIOS/
+  # Directory in which to create temporary run directories
+  # Typically NOT inside a version control repository
+  runs directory: $HOME/CANYONS/runs/
+
+
+grid:
+  coordinates: $HOME/CANYONS/mackenzie_canyon/grid/coords_02.nc
+  bathymetry: $HOME/CANYONS/mackenzie_canyon/grid/ideal_bathy_05.nc
+  AGRIF_1:
+    coordinates: $HOME/CANYONS/mackenzie_canyon/grid/coords_for_agrif.nc
+    bathymetry: $HOME/CANYONS/mackenzie_canyon/grid/ideal_bathy_for_agrif.nc
+
+
+forcing:
+  # The keys below are the names of symlinks that will be created.
+  # The targets of those symlinks will be the paths named by the associated
+  # "link to:" keys;
+  # e.g. a symlink named NEMO_files will be created to
+  # $HOME/CANYONS/mackenzie_canyon/conditions/NEMO_files/
+  #
+  # The keys are directory names that you use as "cn_dir" values in your
+  # namelists.
+  #
+  # You only need to include keys that are used in the namelist(s) for
+  # your run.
+  #
+  # If relative, paths are taken from forcing path above
+  NEMO_files:
+      link to: $HOME/CANYONS/mackenzie_canyon/conditions/NEMO_files/
+
+
+restart:
+  # The keys below are the names of symlinks that will be created.
+  # The targets of those symlinks will be the paths/filenames associated
+  # with the keys;
+  # e.g. a symlink named restart.nc will be created to
+  # $HOME/CANYONS/results_mackenzie/idealized/sbcana_forcings/forcing01/GYRE_00000030_restart.nc
+  #
+  # You only need to include keys for the types of restart files
+  # that are used in your run.
+  #
+  # If relative, paths are taken from current directory
+  restart.nc: $HOME/CANYONS/results_mackenzie/idealized/sbcana_forcings/forcing01/GYRE_00000030_restart.nc
+
+
+namelists:
+  # The namelist section files in the lists below will be concatenated
+  # to create a namelist file whose name is the key under which the files
+  # are listed. The keys are the names of the namelist files that NEMO-3.6
+  # expects.
+  #
+  # The only required key is namelist_cfg.
+  #
+  # If relative, paths are taken from current directory
+  namelist_cfg:
+    - namelist.time
+    - namelist_cfg
+
+  # Sub-grid domain namelists
+  AGRIF_1:
+    namelist_cfg:
+      - namelist.time.agrif
+      - namelist_cfg.agrif
+
+
+output:
+  separate XIOS server: True
+  XIOS servers: 1
+  # If relative, paths are taken from current directory
+  iodefs: iodef.xml
+  filedefs: file_def.xml
+  domaindefs: ../domain_def.xml
+  fielddefs: $HOME/CANYONS/mackenzie_canyon/output/field_def.xml
+  AGRIF_1:
+    filedefs: agrif_file_def.xml
+    domaindefs: agrif_domain_def.xml
+
+
+vcs revisions:
+  hg:
+    # Absolute paths to Mercurial repos that you want revision records of
+    # in your run results
+    # You can use ~ or $HOME or $USER if you wish.
+    - $HOME/CANYONS/NEMO-3.6-code/
+    - $HOME/CANYONS/XIOS/
+    - $HOME/CANYONS/XIOS-ARCH/
+    - $HOME/CANYONS/mackenzie_canyon/
+    - $HOME/CANYONS/NEMO-Cmd/
