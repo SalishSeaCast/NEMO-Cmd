@@ -2,8 +2,16 @@
 Change Log
 **********
 
-Next Release
-============
+1.1
+===
+
+* Change from ``ncks`` to ``nccopy`` as tool underlying the ``deflate`` plug-in
+  to reduce memory footprint.
+
+* Add support for the use of `AGRIF`_ (Adaptive Grid Refinement in Fortran)
+  in NEMO-3.6 runs.
+
+.. _AGRIF: https://www-ljk.imag.fr/MOISE/AGRIF/index.html
 
 * Expand shell and user variables in namelist file paths.
 
