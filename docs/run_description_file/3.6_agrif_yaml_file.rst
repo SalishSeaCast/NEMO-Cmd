@@ -37,7 +37,7 @@ Example Run Description YAML File for NEMO-3.6
 
 Example:
 
-.. literalinclude:: nemo.yaml.example-NEMO-3.6
+.. literalinclude:: nemoAGRIF.yaml.example-NEMO-3.6
    :language: yaml
 
 
