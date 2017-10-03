@@ -23,13 +23,33 @@ NEMO-3.6 Run Description File
 
 .. _NEMO-3.6-ExampleRunDescriptionYAML-File:
 
-Example Run Description YAML File for NEMO-3.6
-==============================================
+Example Run Description YAML Files for NEMO-3.6
+===============================================
 
-Example:
+Basic Example
+-------------
 
 .. literalinclude:: nemo.yaml.example-NEMO-3.6
    :language: yaml
+
+Please see the explanations in the sections below,
+starting with :ref:`NEMO-3.6-BasicRunConfiguration`,
+for details about each section of the file,
+and about optional sections that you may need.
+
+
+Example for Runs on :kbd:`computecanada.ca` Systems
+---------------------------------------------------
+
+This is an example run description file for use on :kbd:`cedar` and :kbd:`graham`.
+
+.. literalinclude:: nemo.yaml.sbatch-example-NEMO-3.6
+   :language: yaml
+
+Please see the explanations in the sections below,
+starting with :ref:`NEMO-3.6-BasicRunConfiguration`,
+for details about each section of the file,
+and about optional sections that you may need.
 
 
 .. _NEMO-3.6-BasicRunConfiguration:
@@ -63,6 +83,13 @@ The following key-value pairs provide the basic configuration for the run:
 :kbd:`email`
   The email address at which you want to receive notification of the beginning and end of execution of the run,
   as well as notification of abnormal abort messages.
+
+:kbd:`account`
+  *Optional.*
+  The account name to include in the :kbd:`#SBATCH` directives section of the :file:`SalishSeaNEMO.sh` job script.
+  This key-value pair is required on systems like :kbd:`cedar.computecanada.ca` and :kbd:`graham.computecanada.ca` that use the `Slurm Workload Manager`_ and that you submit runs to with the :command:`sbatch` command.
+
+  .. _Slurm Workload Manager: https://slurm.schedmd.com/
 
 
 .. _NEMO-3.6-Paths:

@@ -41,6 +41,7 @@ The command :kbd:`nemo --help` produces a list of the available :program:`nemo` 
     gather         Gather results from a NEMO run.
     help           print detailed help for another command
     prepare        Prepare a NEMO run
+    run            Prepare, execute, and gather results from a NEMO model run.
 
 For details of the arguments and options for a sub-command use
 :command:`nemo help <sub-command>`.
@@ -54,15 +55,15 @@ For example:
 
     usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS] [--nemo3.4]
                     [--nocheck-initial-conditions] [--no-submit]
-                    [--waitjob WAITJOB] [-q]
+                    [--waitjob WAITJOB] [--queue-job-cmd {qsub,sbatch}] [-q]
                     DESC_FILE RESULTS_DIR
 
     Prepare, execute, and gather the results from a NEMO run described in
-    DESC_FILE. The results files from the run are gathered in
-    RESULTS_DIR. If RESULTS_DIR does not exist it will be created.
+    DESC_FILE. The results files from the run are gathered in RESULTS_DIR. If
+    RESULTS_DIR does not exist it will be created.
 
     positional arguments:
-      DESC_FILE             File path/name of run description YAML file
+      DESC_FILE             run description YAML file
       RESULTS_DIR           directory to store results into
 
     optional arguments:
@@ -82,6 +83,9 @@ For example:
                             use the same temporary run directory more than once.
       --waitjob WAITJOB     use -W waitjob in call to qsub, to make current job
                             wait for on waitjob. Waitjob is the queue job number
+      --queue-job-cmd {qsub,sbatch}
+                            Command to use to submit the bash script to execute
+                            the NEMO run; defaults to qsub.
       -q, --quiet           don't show the run directory path or job submission
                             message
 
@@ -106,15 +110,15 @@ The results are gathered in the specified results directory.
 
     usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS] [--nemo3.4]
                     [--nocheck-initial-conditions] [--no-submit]
-                    [--waitjob WAITJOB] [-q]
+                    [--waitjob WAITJOB] [--queue-job-cmd {qsub,sbatch}] [-q]
                     DESC_FILE RESULTS_DIR
 
     Prepare, execute, and gather the results from a NEMO run described in
-    DESC_FILE. The results files from the run are gathered in
-    RESULTS_DIR. If RESULTS_DIR does not exist it will be created.
+    DESC_FILE. The results files from the run are gathered in RESULTS_DIR. If
+    RESULTS_DIR does not exist it will be created.
 
     positional arguments:
-      DESC_FILE             File path/name of run description YAML file
+      DESC_FILE             run description YAML file
       RESULTS_DIR           directory to store results into
 
     optional arguments:
@@ -134,6 +138,9 @@ The results are gathered in the specified results directory.
                             use the same temporary run directory more than once.
       --waitjob WAITJOB     use -W waitjob in call to qsub, to make current job
                             wait for on waitjob. Waitjob is the queue job number
+      --queue-job-cmd {qsub,sbatch}
+                            Command to use to submit the bash script to execute
+                            the NEMO run; defaults to qsub.
       -q, --quiet           don't show the run directory path or job submission
                             message
 
@@ -153,7 +160,8 @@ The :command:`run` sub-command does the following:
    * executes the :ref:`nemo-deflate` to deflate the variables in the large netCDF results files using the Lempel-Ziv compression algorithm to reduce the size of the file on disk
    * executes the :ref:`nemo-gather` to collect the run description and results files into the results directory
 
-#. Submit the job script to the queue manager via the :command:`qsub` command.
+#. Submit the job script to the queue manager via the command given by the :kbd:`--queue-job-cmd`
+   (which defaults to :command:`qsub`).
 
 See the :ref:`RunDescriptionFileStructure` section for details of the run description YAML file.
 
