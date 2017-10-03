@@ -1,76 +1,70 @@
 # nemo command processor run description example for NEMO-3.6
+# running on a computecanada.ca system like cedar or graham
 
 # Name of the NEMO-3.6 configuration to use for the run;
 # i.e. your NEMO-3.6-code/NEMOGCM/CONFIG/ configuration directory
-config name: mackenzie03
+config name: GYRE_OFF
 
 # How is the domain to be distributed over the processors in the
 # i and j grid directions?
 # These values are used to set the nammpp namelist jpni & jpnj values
 # and to set the number of processors and nodes in the PBS script
-MPI decomposition: 6x6
+MPI decomposition: 2x3
 
-# For runs on systems that use qsub/PBS/TORQUE
-#
-# The run_id value appears in the list of jobs display by the showq command
-run_id: example
+# The run_id value appears in the list of jobs display by the squeue command
+run_id: gyre_TRC
+
 # Maximum run time requested/allowed for job
 # Too low and you job will be terminated before it finishes
 # Too high and you will have to wait longer on the queue for your job to start
 # You have to experiment to find the "just right" value
-walltime: 10:00:00
+walltime: 0:10:00
+
 # Email address to send job begin, end, and abort notifications to
 email: you@example.com
 
+# Account name to charge resources used by the job to
+account: def-allen
+
+
 paths:
   # Absolute path to CONFIG/ directory in NEMO-3.6 code tree.
-  # You can use ~ or $HOME or $USER if you wish.
-  NEMO code config: $HOME/CANYONS/NEMO-3.6/CONFIG/
+  # You can use ~, $HOME, $USER, or other system-defined environment variables
+  # if you wish.
+  NEMO code config: $PROJECT/$USER/GEOTRACES/NEMO-3.6-code/NEMOGCM/CONFIG/
   # If relative, paths below are taken from current directory
   # You can use ~, $USER, $HOME if you wish.
-  XIOS: $HOME/CANYONS/XIOS/
-  # Optional directory to use as base for relative paths in grid:
-  # and forcing: sections below
-  forcing: ../../../NEMO-forcing/
+  #
+  # Directory tree in which to find XIOS
+  XIOS: $PROJECT/$USER/GEOTRACES/XIOS-2/
   # Directory in which to create temporary run directories
   # Typically NOT inside a version control repository
-  runs directory: $HOME/CANYONS/runs/
+  runs directory: $SCRATCH/
+
 
 grid:
-  # If relative, paths are taken from the grid/ directory in the forcing
-  # path above
-  coordinates: coords_02.nc
-  bathymetry: ideal_bathy_05.nc
+  # Path to the coordinates file
+  coordinates: $PROJECT/$USER/GEOTRACES/runs/GYRE_OFF/dummy-coord.nc
+  # Path to the bathymetry file
+  bathymetry: $PROJECT/$USER/GEOTRACES/runs/GYRE_OFF/dummy-bathy.nc
 
 forcing:
   # The keys below are the names of symlinks that will be created.
   # The targets of those symlinks will be the paths named by the associated
   # "link to:" keys;
-  # e.g. a symlink named NEMO_files will be created to
-  # $HOME/CANYONS/mackenzie_canyon/conditions/NEMO_files/
+  # e.g. a symlink named dynamics_fields will be created to
+  # $PROJECT/$USER/GEOTRACES/NEMO-3.6-code/NEMOGCM/CONFIG/GYRE_OFF/EXP00/data/
   #
   # The keys are directory names that you use as "cn_dir" values in your
   # namelists.
   #
   # You only need to include keys that are used in the namelist(s) for
   # your run.
-  #
-  # If relative, paths are taken from forcing path above
-  NEMO_files:
-      link to: $HOME/CANYONS/mackenzie_canyon/conditions/NEMO_files/
+  dynamics_fields:
+      link to: $PROJECT/$USER/GEOTRACES/NEMO-3.6-code/NEMOGCM/CONFIG/GYRE_OFF/EXP00/data/
+  mesh_mask.nc:
+      link to: $PROJECT/$USER/GEOTRACES/NEMO-3.6-code/NEMOGCM/CONFIG/GYRE_OFF/EXP00/mesh_mask.nc
 
-restart:
-  # The keys below are the names of symlinks that will be created.
-  # The targets of those symlinks will be the paths/filenames associated
-  # with the keys;
-  # e.g. a symlink named restart.nc will be created to
-  # $HOME/CANYONS/results_mackenzie/idealized/sbcana_forcings/forcing01/GYRE_00000030_restart.nc
-  #
-  # You only need to include keys for the types of restart files
-  # that are used in your run.
-  #
-  # If relative, paths are taken from current directory
-  restart.nc: $HOME/CANYONS/results_mackenzie/idealized/sbcana_forcings/forcing01/GYRE_00000030_restart.nc
 
 namelists:
   # The namelist section files in the lists below will be concatenated
@@ -78,43 +72,47 @@ namelists:
   # are listed. The keys are the names of the namelist files that NEMO-3.6
   # expects.
   #
-  # The only required key is namelist_cfg.
-  #
   # If relative, paths are taken from current directory
   namelist_cfg:
-    - namelist.time
-    - namelist.domain
-    - namelist.surface
-    - namelist.lateral
-    - namelist.bottom
-    - namelist.tracer
-    - namelist.dynamics
-    - namelist.vertical
-    - namelist.compute
+    - $PROJECT/$USER/GEOTRACES/NEMO-3.6-code/NEMOGCM/CONFIG/GYRE_OFF/EXP00/namelist_cfg
   namelist_top_cfg:
-    - namelist_top_cfg
-  namelist_pisces_cfg:
-    - namelist_pisces_cfg
+    - $PROJECT/$USER/GEOTRACES/NEMO-3.6-code/NEMOGCM/CONFIG/GYRE_OFF/EXP00/namelist_top_cfg
+  namelist_my_trc:
+    - $PROJECT/$USER/GEOTRACES/NEMO-3.6-code/NEMOGCM/CONFIG/GYRE_OFF/EXP00/namelist_my_trc
+  namelist_ref:
+    - $PROJECT/$USER/GEOTRACES/NEMO-3.6-code/NEMOGCM/CONFIG/GYRE_OFF/EXP00/namelist_ref
+
 
 output:
   # Whether or not to run the XIOS server(s) in separate process(es)
   separate XIOS server: True
   # How many XIOS servers to use
   XIOS servers: 1
+
   # If relative, paths are taken from current directory
   #
   # The path and name of the output definitions file to use for the run
-  iodefs: iodef.xml
+  iodefs: $PROJECT/$USER/GEOTRACES/runs/GYRE_OFF/iodef.xml
   # The path and name of the output domains definitions file to use for the run
-  domaindefs: ../domain_def.xml
+  domaindefs: $PROJECT/$USER/GEOTRACES/runs/GYRE_OFF/domain_def.xml
   # The path and name of the output field definitions file to use for the run
-  fielddefs: $HOME/CANYONS/mackenzie_canyon/output/field_def.xml
+  fielddefs: $PROJECT/$USER/GEOTRACES/runs/GYRE_OFF/field_def.xml
+
 
 vcs revisions:
   hg:
     # Absolute paths to Mercurial repos that you want revision records of
     # in your run results
-    # You can use ~ or $HOME or $USER if you wish.
-    - $HOME/CANYONS/NEMO-3.6-code/
-    - $HOME/CANYONS/XIOS/
-    - $HOME/CANYONS/mackenzie_canyon/
+    # You can use ~, $HOME, $USER, or other system-defined environment variables
+    # if you wish.
+    - $PROJECT/$USER/GEOTRACES/NEMO-3.6-code/
+    - $PROJECT/$USER/GEOTRACES/XIOS-2/
+    - $PROJECT/$USER/GEOTRACES/XIOS-ARCH/
+    - $PROJECT/$USER/GEOTRACES/NEMO-Cmd/
+
+
+modules to load:
+  # Modules to load for the run
+  - netcdf-mpi/4.4.1.1
+  - netcdf-fortran-mpi/4.4.4
+  - python27-scipy-stack/2017a
