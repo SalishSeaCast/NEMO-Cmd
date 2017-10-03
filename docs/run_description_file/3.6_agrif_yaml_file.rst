@@ -32,12 +32,12 @@ This section describes the additional sections that can be included in a NEMO-3.
 
 .. _NEMO-3.6-AGRIF-ExampleRunDescriptionYAML-File:
 
-Example Run Description YAML File for NEMO-3.6
-==============================================
+Example AGRIF Run Description YAML File
+=======================================
 
 Example:
 
-.. literalinclude:: nemo.yaml.example-NEMO-3.6
+.. literalinclude:: nemoAGRIF.yaml.example-NEMO-3.6
    :language: yaml
 
 
