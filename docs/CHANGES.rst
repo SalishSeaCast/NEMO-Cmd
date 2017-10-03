@@ -2,6 +2,15 @@
 Change Log
 **********
 
+1.2
+===
+
+* Add support for running on HPC systems that use the `slurm workload manager`_;
+  e.g. ``cedar.computecanada.ca`` and ``graham.computecanada.ca``.
+
+.. _slurm workload manager: https://slurm.schedmd.com/
+
+
 1.1
 ===
 
