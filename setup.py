@@ -45,7 +45,7 @@ install_requires = [
     # see requirements.txt for package versions used during recent development
     'arrow',
     'attrs',
-    'cliff',
+    'cliff!=2.9.0',
     'python-hglib',
     'PyYAML',
 ]

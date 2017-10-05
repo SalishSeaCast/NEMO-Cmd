@@ -2,6 +2,14 @@
 Change Log
 **********
 
+1.3 (unreleased)
+================
+
+* Exclude ``cliff-2.9.0`` as a dependency due to `OpenStack bug #1719465`_.
+
+  .. _OpenStack bug #1719465: https://bugs.launchpad.net/python-cliff/+bug/1719465
+
+
 1.2
 ===
 
