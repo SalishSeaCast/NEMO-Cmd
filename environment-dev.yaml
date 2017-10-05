@@ -37,7 +37,7 @@ dependencies:
   - sphinx_rtd_theme
 
   - pip:
-    - cliff
+    - cliff!=2.9.0
     - python-hglib
 
     # For code style maintenance
