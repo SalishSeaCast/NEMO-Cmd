@@ -420,7 +420,7 @@ class TestSbatchDirectives:
             u'#SBATCH --job-name=test\n'
             u'#SBATCH --nodes={n_nodes}\n'
             u'#SBATCH --ntasks-per-node=32\n'
-            u'#SBATCH --mem=127G\n'
+            u'#SBATCH --mem=125G\n'
             u'#SBATCH --time=1:24:42\n'
             u'#SBATCH --mail-user=somebody@example.com\n'
             u'#SBATCH --mail-type=ALL\n'
