@@ -382,7 +382,7 @@ def _sbatch_directives(
     n_processors,
     results_dir,
     max_tasks_per_node=32,
-    memory_per_node='127G'
+    memory_per_node='125G'
 ):
     """Return the SBATCH directives used to run NEMO on a cluster that uses the
     Slurm Workload Manager for job scheduling.
