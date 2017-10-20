@@ -351,12 +351,23 @@ class TestMakeRunDir:
     """Unit test for `nemo prepare` _make_run_dir() function.
     """
 
-    @patch('nemo_cmd.prepare.uuid.uuid1', return_value='uuid')
-    def test_make_run_dir(self, m_uuid1, tmpdir):
+    @patch(
+        'nemo_cmd.prepare.arrow.now',
+        return_value='2017-10-20T102043.555919-0700'
+    )
+    def test_make_run_dir(self, m_isoformat, tmpdir):
         p_runs_dir = tmpdir.ensure_dir('SalishSea')
-        run_desc = {'paths': {'runs directory': str(p_runs_dir)}}
+        run_desc = {
+            'run_id': 'foo',
+            'paths': {
+                'runs directory': str(p_runs_dir)
+            }
+        }
         run_dir = nemo_cmd.prepare._make_run_dir(run_desc)
-        assert run_dir == Path(str(p_runs_dir)) / m_uuid1()
+        expected = (
+            Path(str(p_runs_dir)) / 'foo_2017-10-20T102043.555919-0700'
+        )
+        assert run_dir == expected
 
 
 class TestRemoveRunDir:
