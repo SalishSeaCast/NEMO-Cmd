@@ -20,7 +20,7 @@
 :command:`nemo` Sub-Commands
 ****************************
 
-The command :kbd:`nemo --help` produces a list of the available :program:`nemo` options and sub-commands::
+The command :kbd:`nemo help` produces a list of the available :program:`nemo` options and sub-commands::
 
   usage: nemo [--version] [-v | -q] [--log-file LOG_FILE] [-h] [--debug]
 
@@ -54,8 +54,8 @@ For example:
 ::
 
     usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS] [--nemo3.4]
-                    [--nocheck-initial-conditions] [--no-submit]
-                    [--waitjob WAITJOB] [--queue-job-cmd {qsub,sbatch}] [-q]
+                    [--nocheck-initial-conditions] [--no-deflate] [--no-submit]
+                    [--waitjob WAITJOB] [--queue-job-cmd {sbatch,qsub}] [-q]
                     DESC_FILE RESULTS_DIR
 
     Prepare, execute, and gather the results from a NEMO run described in
@@ -76,6 +76,12 @@ For example:
                             Suppress checking of the initial conditions link.
                             Useful if you are submitting a job to wait on a
                             previous job
+      --no-deflate          Do not include "nemo deflate" command in the bash
+                            script. Use this option if you are using on-the-fly
+                            deflation in XIOS-2; i.e. you are using 1 XIOS-2
+                            process and have the compression_level="4" attribute
+                            set in all of the file_group definitions in your
+                            file_def.xml file.
       --no-submit           Prepare the temporary run directory, and the bash
                             script to execute the NEMO run, but don't submit the
                             run to the queue. This is useful during development
@@ -83,7 +89,7 @@ For example:
                             use the same temporary run directory more than once.
       --waitjob WAITJOB     use -W waitjob in call to qsub, to make current job
                             wait for on waitjob. Waitjob is the queue job number
-      --queue-job-cmd {qsub,sbatch}
+      --queue-job-cmd {sbatch,qsub}
                             Command to use to submit the bash script to execute
                             the NEMO run; defaults to qsub.
       -q, --quiet           don't show the run directory path or job submission
@@ -109,8 +115,8 @@ The results are gathered in the specified results directory.
 ::
 
     usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS] [--nemo3.4]
-                    [--nocheck-initial-conditions] [--no-submit]
-                    [--waitjob WAITJOB] [--queue-job-cmd {qsub,sbatch}] [-q]
+                    [--nocheck-initial-conditions] [--no-deflate] [--no-submit]
+                    [--waitjob WAITJOB] [--queue-job-cmd {sbatch,qsub}] [-q]
                     DESC_FILE RESULTS_DIR
 
     Prepare, execute, and gather the results from a NEMO run described in
@@ -131,6 +137,12 @@ The results are gathered in the specified results directory.
                             Suppress checking of the initial conditions link.
                             Useful if you are submitting a job to wait on a
                             previous job
+      --no-deflate          Do not include "nemo deflate" command in the bash
+                            script. Use this option if you are using on-the-fly
+                            deflation in XIOS-2; i.e. you are using 1 XIOS-2
+                            process and have the compression_level="4" attribute
+                            set in all of the file_group definitions in your
+                            file_def.xml file.
       --no-submit           Prepare the temporary run directory, and the bash
                             script to execute the NEMO run, but don't submit the
                             run to the queue. This is useful during development
@@ -138,7 +150,7 @@ The results are gathered in the specified results directory.
                             use the same temporary run directory more than once.
       --waitjob WAITJOB     use -W waitjob in call to qsub, to make current job
                             wait for on waitjob. Waitjob is the queue job number
-      --queue-job-cmd {qsub,sbatch}
+      --queue-job-cmd {sbatch,qsub}
                             Command to use to submit the bash script to execute
                             the NEMO run; defaults to qsub.
       -q, --quiet           don't show the run directory path or job submission
@@ -160,7 +172,7 @@ The :command:`run` sub-command does the following:
    * executes the :ref:`nemo-deflate` to deflate the variables in the large netCDF results files using the Lempel-Ziv compression algorithm to reduce the size of the file on disk
    * executes the :ref:`nemo-gather` to collect the run description and results files into the results directory
 
-#. Submit the job script to the queue manager via the command given by the :kbd:`--queue-job-cmd`
+#. Submit the job script to the queue manager via the command given by the :kbd:`--queue-job-cmd` option
    (which defaults to :command:`qsub`).
 
 See the :ref:`RunDescriptionFileStructure` section for details of the run description YAML file.
@@ -177,6 +189,10 @@ Example:
 
 If the :command:`run` sub-command prints an error message,
 you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
+
+If you are using on-the-fly deflation in :program:`XIOS-2`;
+i.e. you are using 1 :program:`XIOS-2` process and have the :kbd:`compression_level="4"` attribute set in all of the :kbd:`file_group` definitions in your :file:`file_def.xml` file;
+you should use the :kbd:`--no-deflate` option to exclude :ref:`nemo-deflate` from the :file:`NEMO.sh` job script.
 
 
 .. _nemo-prepare:

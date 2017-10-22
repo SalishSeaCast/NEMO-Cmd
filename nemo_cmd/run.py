@@ -90,6 +90,18 @@ class Run(cliff.command.Command):
             previous job'''
         )
         parser.add_argument(
+            '--no-deflate',
+            dest='no_deflate',
+            action='store_true',
+            help='''
+            Do not include "nemo deflate" command in the bash script.
+            Use this option if you are using on-the-fly deflation in XIOS-2;
+            i.e. you are using 1 XIOS-2 process and have the 
+            compression_level="4" attribute set in all of the file_group
+            definitions in your file_def.xml file.            
+            '''
+        )
+        parser.add_argument(
             '--no-submit',
             dest='no_submit',
             action='store_true',
@@ -144,6 +156,7 @@ class Run(cliff.command.Command):
             parsed_args.max_deflate_jobs,
             parsed_args.nemo34,
             parsed_args.nocheck_init,
+            parsed_args.no_deflate,
             parsed_args.no_submit,
             parsed_args.waitjob,
             parsed_args.queue_job_cmd,
@@ -159,6 +172,7 @@ def run(
     max_deflate_jobs=4,
     nemo34=False,
     nocheck_init=False,
+    no_deflate=False,
     no_submit=False,
     waitjob=0,
     queue_job_cmd='qsub',
@@ -188,6 +202,9 @@ def run(
 
     :param boolean nocheck_init: Suppress initial condition link check
                                  the default is to check
+
+    :param boolean no_deflate: Do not include "nemo deflate" command in
+                               the bash script.
 
     :param boolean no_submit: Prepare the temporary run directory,
                               and the bash script to execute the NEMO run,
@@ -224,8 +241,8 @@ def run(
     results_dir = Path(results_dir)
     batch_script = _build_batch_script(
         run_desc,
-        fspath(desc_file), nemo_processors, xios_processors, max_deflate_jobs,
-        results_dir, run_dir, queue_job_cmd
+        fspath(desc_file), nemo_processors, xios_processors, no_deflate,
+        max_deflate_jobs, results_dir, run_dir, queue_job_cmd
     )
     batch_file = run_dir / 'NEMO.sh'
     with batch_file.open('wt') as f:
@@ -269,11 +286,12 @@ def run(
 
 
 def _build_batch_script(
-    run_desc, desc_file, nemo_processors, xios_processors, max_deflate_jobs,
-    results_dir, run_dir, queue_job_cmd
+    run_desc, desc_file, nemo_processors, xios_processors, no_deflate,
+    max_deflate_jobs, results_dir, run_dir, queue_job_cmd
 ):
     """Build the Bash script that will execute the run.
 
+    :param no_deflate:
     :param dict run_desc: Run description dictionary.
 
     :param str desc_file: File path/name of the YAML run description file.
@@ -283,6 +301,9 @@ def _build_batch_script(
 
     :param int xios_processors: Number of processors that XIOS will be executed
                                 on.
+
+    :param boolean no_deflate: Do not include "nemo deflate" command in
+                               the bash script.
 
     :param int max_deflate_jobs: Maximum number of concurrent sub-processes to
                                  use for netCDF deflating.
@@ -314,7 +335,8 @@ def _build_batch_script(
     script = u'\n'.join((
         script, u'{defns}\n'.format(
             defns=_definitions(
-                run_desc, desc_file, run_dir, results_dir, queue_job_cmd
+                run_desc, desc_file, run_dir, results_dir, queue_job_cmd,
+                no_deflate
             ),
         )
     ))
@@ -329,7 +351,7 @@ def _build_batch_script(
         u'{fix_permissions}\n'
         u'{cleanup}'.format(
             execute=_execute(
-                nemo_processors, xios_processors, max_deflate_jobs
+                nemo_processors, xios_processors, no_deflate, max_deflate_jobs
             ),
             fix_permissions=_fix_permissions(),
             cleanup=_cleanup(),
@@ -490,23 +512,27 @@ def _td2hms(timedelta):
     return u'{0[0]}:{0[1]:02d}:{0[2]:02d}'.format(hms)
 
 
-def _definitions(run_desc, run_desc_file, run_dir, results_dir, queue_job_cmd):
-    home = u'${PBS_O_HOME}' if queue_job_cmd == 'qsub' else u'${HOME}'
+def _definitions(
+    run_desc, run_desc_file, run_dir, results_dir, queue_job_cmd, no_deflate
+):
+    home = '${PBS_O_HOME}' if queue_job_cmd == 'qsub' else '${HOME}'
+    nemo_cmd = Path(home) / '.local/bin/nemo'
     defns = (
         u'RUN_ID="{run_id}"\n'
         u'RUN_DESC="{run_desc_file}"\n'
         u'WORK_DIR="{run_dir}"\n'
         u'RESULTS_DIR="{results_dir}"\n'
         u'COMBINE="{nemo_cmd} combine"\n'
-        u'DEFLATE="{nemo_cmd} deflate"\n'
-        u'GATHER="{nemo_cmd} gather"\n'
     ).format(
         run_id=get_run_desc_value(run_desc, ('run_id',)),
         run_desc_file=run_desc_file,
         run_dir=run_dir,
         results_dir=results_dir,
-        nemo_cmd=Path('{home}/.local/bin/nemo'.format(home=home)),
+        nemo_cmd=nemo_cmd,
     )
+    if not no_deflate:
+        defns += u'DEFLATE="{nemo_cmd} deflate"\n'.format(nemo_cmd=nemo_cmd)
+    defns += u'GATHER="{nemo_cmd} gather"\n'.format(nemo_cmd=nemo_cmd)
     return defns
 
 
@@ -519,7 +545,7 @@ def _modules(modules_to_load):
     return modules
 
 
-def _execute(nemo_processors, xios_processors, max_deflate_jobs):
+def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
     mpirun = u'mpirun -np {procs} ./nemo.exe'.format(procs=nemo_processors)
     if xios_processors:
         mpirun = u' '.join(
@@ -540,11 +566,16 @@ def _execute(nemo_processors, xios_processors, max_deflate_jobs):
         u'echo "Results combining started at $(date)"\n'
         u'${{COMBINE}} ${{RUN_DESC}} --debug\n'
         u'echo "Results combining ended at $(date)"\n'
-        u'\n'
-        u'echo "Results deflation started at $(date)"\n'
-        u'${{DEFLATE}} *_grid_[TUVW]*.nc *_ptrc_T*.nc '
-        u'--jobs {max_deflate_jobs} --debug\n'
-        u'echo "Results deflation ended at $(date)"\n'
+    )
+    if not no_deflate:
+        script += (
+            u'\n'
+            u'echo "Results deflation started at $(date)"\n'
+            u'${{DEFLATE}} *_grid_[TUVW]*.nc *_ptrc_T*.nc '
+            u'--jobs {max_deflate_jobs} --debug\n'
+            u'echo "Results deflation ended at $(date)"\n'
+        )
+    script += (
         u'\n'
         u'echo "Results gathering started at $(date)"\n'
         u'${{GATHER}} ${{RESULTS_DIR}} --debug\n'
