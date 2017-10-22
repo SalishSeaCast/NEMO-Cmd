@@ -73,10 +73,12 @@ class TestNameList(unittest.TestCase):
         group = "&group\n" '    string1 = ""\n' "    string2 = ''\n" "/"
         namelist_dict = namelist2dict(StringIO(group))
         self.assertEqual(
-            namelist_dict, {"group": [{
-                "string1": "",
-                "string2": ""
-            }]}
+            namelist_dict, {
+                "group": [{
+                    "string1": "",
+                    "string2": ""
+                }]
+            }
         )
 
     def test_group_ends_w_amp_end(self):
@@ -102,9 +104,11 @@ class TestNameList(unittest.TestCase):
         group = "&group\n" "    foo = 0.75, 700, 'test', .TRUE.\n" "/"
         namelist_dict = namelist2dict(StringIO(group))
         self.assertEqual(
-            namelist_dict, {"group": [{
-                "foo": [0.75, 700, "test", True]
-            }]}
+            namelist_dict, {
+                "group": [{
+                    "foo": [0.75, 700, "test", True]
+                }]
+            }
         )
 
     def test_array_element_assignment(self):
@@ -127,11 +131,13 @@ class TestNameList(unittest.TestCase):
         group = "&list a=1, b=1,2 c='12 / !' / "
         namelist_dict = namelist2dict(StringIO(group))
         self.assertEqual(
-            namelist_dict, {"list": [{
-                "a": 1,
-                "b": [1, 2],
-                "c": "12 / !"
-            }]}
+            namelist_dict, {
+                "list": [{
+                    "a": 1,
+                    "b": [1, 2],
+                    "c": "12 / !"
+                }]
+            }
         )
 
     def test_complex_multiple_group(self):
@@ -141,11 +147,13 @@ class TestNameList(unittest.TestCase):
         group = "&list a=1\n" "b=1,2, c='12 / !' /"
         namelist_dict = namelist2dict(StringIO(group))
         self.assertEqual(
-            namelist_dict, {"list": [{
-                "a": 1,
-                "b": [1, 2],
-                "c": "12 / !"
-            }]}
+            namelist_dict, {
+                "list": [{
+                    "a": 1,
+                    "b": [1, 2],
+                    "c": "12 / !"
+                }]
+            }
         )
 
     def test_complex_numbers(self):

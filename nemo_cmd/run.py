@@ -342,9 +342,8 @@ def _pbs_directives(run_desc, n_processors, results_dir):
     email = get_run_desc_value(run_desc, ('email',))
     pbs_directives = u'\n'.join((
         u'{pbs_common}\n'.format(
-            pbs_common=api.pbs_common(
-                run_desc, n_processors, email, results_dir
-            )
+            pbs_common=api.
+            pbs_common(run_desc, n_processors, email, results_dir)
         )
     ))
     if 'PBS resources' in run_desc:
@@ -483,7 +482,7 @@ def _td2hms(timedelta):
     :rtype: unicode
     """
     seconds = int(timedelta.total_seconds())
-    periods = (('hour', 60 * 60), ('minute', 60), ('second', 1),)
+    periods = (('hour', 60 * 60), ('minute', 60), ('second', 1))
     hms = []
     for period_name, period_seconds in periods:
         period_value, seconds = divmod(seconds, period_seconds)

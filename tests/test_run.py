@@ -92,9 +92,9 @@ class TestParser:
     def test_bad_queue_job_cmd(self, run_cmd):
         parser = run_cmd.get_parser('nemo run')
         with pytest.raises(SystemExit):
-            parsed_args = parser.parse_args(
-                ['foo', 'baz', '--queue-job-cmd', 'fling']
-            )
+            parsed_args = parser.parse_args([
+                'foo', 'baz', '--queue-job-cmd', 'fling'
+            ])
 
 
 @patch('nemo_cmd.run.logger')

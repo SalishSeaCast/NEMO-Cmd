@@ -78,7 +78,8 @@ class TestTakeAction:
 class TestGetResultsFiles:
     def test_get_results_files(self, m_logger, m_path):
         m_path.cwd().glob.return_value = [
-            Path('baz/foo_0000.nc'), Path('baz/bar_0000.nc')
+            Path('baz/foo_0000.nc'),
+            Path('baz/bar_0000.nc')
         ]
         name_roots = nemo_cmd.combine._get_results_files()
         assert name_roots == ['foo', 'bar']
