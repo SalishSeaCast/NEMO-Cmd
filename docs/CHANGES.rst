@@ -5,6 +5,12 @@ Change Log
 1.3 (unreleased)
 ================
 
+* Add `--no-deflate` command-line option to exclude `nemo-deflate` from the
+  `NEMO.sh` job script if you are using on-the-fly deflation in `XIOS-2`;
+  i.e. you are using 1 `XIOS-2` process and have the `compression_level="4"`
+  attribute set in all of the `file_group` definitions in your `file_def.xml`
+  file.
+
 * Change temporary run directory names from UUID to run id concatenated to
   microsecond resolution timestamp.
 
