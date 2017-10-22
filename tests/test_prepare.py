@@ -664,15 +664,16 @@ class TestMakeNamelistNEMO36:
                     [str(p_run_set_dir.join('1_namelist.time'))],
                     'namelist_top_cfg':
                     [str(p_run_set_dir.join('1_namelist_top'))],
-                    'namelist_pisces_cfg': [
-                        str(p_run_set_dir.join('1_namelist_pisces')),
+                    'namelist_pisces_cfg':
+                    [str(p_run_set_dir.join('1_namelist_pisces'))],
+                    'namelist_ref': [
+                        str(p_run_set_dir.join('1_namelist_ref'))
                     ],
-                    'namelist_ref':
-                    [str(p_run_set_dir.join('1_namelist_ref'))],
-                    'namelist_top_ref':
-                    [str(p_run_set_dir.join('1_namelist_top_ref'))],
+                    'namelist_top_ref': [
+                        str(p_run_set_dir.join('1_namelist_top_ref'))
+                    ],
                     'namelist_pisces_ref': [
-                        str(p_run_set_dir.join('1_namelist_pisces_ref')),
+                        str(p_run_set_dir.join('1_namelist_pisces_ref'))
                     ],
                 }
             }
@@ -990,11 +991,9 @@ class TestCopyRunSetFiles:
         }
         desc_file = Path('foo.yaml')
         pwd = Path.cwd()
-        m_get_run_desc_value.side_effect = (
-            (pwd / '../iodef.xml').resolve(),
-            (pwd / '../domain_def.xml').resolve(),
-            (pwd / '../field_def.xml').resolve(), KeyError
-        )
+        m_get_run_desc_value.side_effect = ((pwd / '../iodef.xml').resolve(), (
+            pwd / '../domain_def.xml'
+        ).resolve(), (pwd / '../field_def.xml').resolve(), KeyError)
         nemo_cmd.prepare._copy_run_set_files(
             run_desc, desc_file, pwd, Path('run_dir'), nemo34=False
         )
@@ -1041,11 +1040,9 @@ class TestCopyRunSetFiles:
         }
         desc_file = Path('foo.yaml')
         pwd = Path.cwd()
-        m_get_run_desc_value.side_effect = (
-            (pwd / '../iodef.xml').resolve(),
-            (pwd / '../1_domain_def.xml').resolve(),
-            (pwd / '../field_def.xml').resolve(), KeyError
-        )
+        m_get_run_desc_value.side_effect = ((pwd / '../iodef.xml').resolve(), (
+            pwd / '../1_domain_def.xml'
+        ).resolve(), (pwd / '../field_def.xml').resolve(), KeyError)
         nemo_cmd.prepare._copy_run_set_files(
             run_desc,
             desc_file,
@@ -1304,8 +1301,9 @@ class TestMakeGridLinks:
         }
         nemo_cmd.prepare._make_grid_links(run_desc, Path(str(run_dir)))
         assert Path(str(run_dir), 'coordinates.nc').is_symlink()
-        assert Path(str(run_dir), 'coordinates.nc'
-                    ).samefile(str(grid_dir.join('coords.nc')))
+        assert Path(str(run_dir), 'coordinates.nc').samefile(
+            str(grid_dir.join('coords.nc'))
+        )
         assert Path(str(run_dir), 'bathy_meter.nc').is_symlink()
         assert Path(str(run_dir),
                     'bathy_meter.nc').samefile(str(grid_dir.join('bathy.nc')))
@@ -1333,11 +1331,13 @@ class TestMakeGridLinks:
             run_desc, Path(str(run_dir)), agrif_n=1
         )
         assert Path(str(run_dir), '1_coordinates.nc').is_symlink()
-        assert Path(str(run_dir), '1_coordinates.nc'
-                    ).samefile(str(grid_dir.join('coords.nc')))
+        assert Path(str(run_dir), '1_coordinates.nc').samefile(
+            str(grid_dir.join('coords.nc'))
+        )
         assert Path(str(run_dir), '1_bathy_meter.nc').is_symlink()
-        assert Path(str(run_dir), '1_bathy_meter.nc'
-                    ).samefile(str(grid_dir.join('bathy.nc')))
+        assert Path(str(run_dir), '1_bathy_meter.nc').samefile(
+            str(grid_dir.join('bathy.nc'))
+        )
 
 
 class TestMakeForcingLinks:
@@ -1890,8 +1890,7 @@ class TestAddAgrifFiles:
         p_open = patch('nemo_cmd.prepare.Path.open')
         with p_open as m_open:
             m_open().__enter__.return_value = (
-                '1\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.
-                splitlines()
+                '1\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.splitlines()
             )
             with pytest.raises(SystemExit):
                 nemo_cmd.prepare._add_agrif_files(
@@ -1934,8 +1933,7 @@ class TestAddAgrifFiles:
         p_open = patch('nemo_cmd.prepare.Path.open')
         with p_open as m_open:
             m_open().__enter__.return_value = (
-                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.
-                splitlines()
+                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.splitlines()
             )
             nemo_cmd.prepare._add_agrif_files(
                 run_desc,
@@ -1979,8 +1977,7 @@ class TestAddAgrifFiles:
         p_open = patch('nemo_cmd.prepare.Path.open')
         with p_open as m_open:
             m_open().__enter__.return_value = (
-                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.
-                splitlines()
+                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.splitlines()
             )
             with pytest.raises(SystemExit):
                 nemo_cmd.prepare._add_agrif_files(
@@ -2023,8 +2020,7 @@ class TestAddAgrifFiles:
         p_open = patch('nemo_cmd.prepare.Path.open')
         with p_open as m_open:
             m_open().__enter__.return_value = (
-                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.
-                splitlines()
+                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.splitlines()
             )
             nemo_cmd.prepare._add_agrif_files(
                 run_desc,
@@ -2069,8 +2065,7 @@ class TestAddAgrifFiles:
         p_open = patch('nemo_cmd.prepare.Path.open')
         with p_open as m_open:
             m_open().__enter__.return_value = (
-                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.
-                splitlines()
+                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.splitlines()
             )
             with pytest.raises(SystemExit):
                 nemo_cmd.prepare._add_agrif_files(
@@ -2113,8 +2108,7 @@ class TestAddAgrifFiles:
         p_open = patch('nemo_cmd.prepare.Path.open')
         with p_open as m_open:
             m_open().__enter__.return_value = (
-                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.
-                splitlines()
+                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.splitlines()
             )
             nemo_cmd.prepare._add_agrif_files(
                 run_desc,
@@ -2172,8 +2166,7 @@ class TestAddAgrifFiles:
         p_open = patch('nemo_cmd.prepare.Path.open')
         with p_open as m_open:
             m_open().__enter__.return_value = (
-                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.
-                splitlines()
+                '2\n40 70 2 30 3 3 3 43 \n110 130 50 80 3 3 3 42\n'.splitlines()
             )
             with pytest.raises(SystemExit):
                 nemo_cmd.prepare._add_agrif_files(

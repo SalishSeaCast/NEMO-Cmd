@@ -121,8 +121,9 @@ class DeflateJob(object):
         self.returncode = self.process.poll()
         if self.returncode is not None:
             if self.returncode == 0:
-                Path('{0.filepath}.nccopy.tmp'.format(self)
-                     ).rename(self.filepath)
+                Path('{0.filepath}.nccopy.tmp'.format(self)).rename(
+                    self.filepath
+                )
             finished = True
             logger.debug(
                 'deflating {0.filepath} finished '
@@ -144,8 +145,9 @@ def deflate(filepaths, max_concurrent_jobs):
     processes allowed.
     """
     logger.info(
-        'Deflating in up to {} concurrent sub-processes'.
-        format(int(max_concurrent_jobs))
+        'Deflating in up to {} concurrent sub-processes'.format(
+            int(max_concurrent_jobs)
+        )
     )
     jobs = [DeflateJob(fp) for fp in filepaths if fp.exists()]
     jobs_in_progress = _launch_initial_jobs(jobs, max_concurrent_jobs)
