@@ -489,7 +489,7 @@ def _set_mpi_decomposition(namelist_filename, run_desc, run_dir):
     """Update the &nammpp namelist jpni & jpnj values with the MPI
     decomposition values from the run description.
 
-    A SystemExit exeception is raise if there is no MPI decomposition
+    A SystemExit exception is raise if there is no MPI decomposition
     specified in the run description.
 
     :param str namelist_filename: The name of the namelist file.
@@ -544,7 +544,7 @@ def _copy_run_set_files(
     Those file paths/names of those file are taken from the :kbd:`output`
     stanza of the YAML run description file.
     They are copied to :file:`domain_def.xml` and :file:`field_def.xml`,
-    repectively, because those are the file names that XIOS expects.
+    respectively, because those are the file names that XIOS expects.
     Optionally, the file defs file used by XIOS-2 is also copied.
     Its file path/name is also taken from the :kbd:`output` stanza.
     It is copied to :file:`file_def.xml` because that is the file name that
@@ -963,8 +963,6 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
     the necessary files, and the date ranges required for the run.
     
     This is the atmospheric forcing link check function used for NEMO-3.6 runs.
-
-    :param dict run_desc: Run description dictionary.
 
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
