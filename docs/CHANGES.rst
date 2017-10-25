@@ -5,6 +5,9 @@ Change Log
 1.3 (unreleased)
 ================
 
+* Fix a bug that caused ``prepare`` plug-in to fail for AGRIF runs that are
+  not initialized from restart files.
+
 * Add ``--no-deflate`` command-line option to exclude ``nemo-deflate`` from the
   ``NEMO.sh`` job script if you are using on-the-fly deflation in ``XIOS-2``;
   i.e. you are using 1 ``XIOS-2`` process and have the
