@@ -59,7 +59,6 @@ class TestParser:
         assert parsed_args.desc_file == Path('foo')
         assert parsed_args.results_dir == 'baz'
         assert parsed_args.max_deflate_jobs == 4
-        assert not parsed_args.nemo34
         assert not parsed_args.nocheck_init
         assert not parsed_args.no_submit
         assert parsed_args.waitjob == 0
@@ -68,7 +67,6 @@ class TestParser:
 
     @pytest.mark.parametrize(
         'flag, attr', [
-            ('--nemo3.4', 'nemo34'),
             ('--nocheck-initial-conditions', 'nocheck_init'),
             ('--no-submit', 'no_submit'),
             ('-q', 'quiet'),
@@ -108,7 +106,6 @@ class TestTakeAction:
             desc_file='desc file',
             results_dir='results dir',
             max_deflate_jobs=4,
-            nemo34=False,
             nocheck_init=False,
             no_deflate=False,
             no_submit=False,
@@ -124,7 +121,6 @@ class TestTakeAction:
             False,
             False,
             False,
-            False,
             0,
             'qsub',
             quiet=False
@@ -137,7 +133,6 @@ class TestTakeAction:
             desc_file='desc file',
             results_dir='results dir',
             max_deflate_jobs=4,
-            nemo34=False,
             nocheck_init=False,
             no_deflate=False,
             no_submit=False,
@@ -154,7 +149,6 @@ class TestTakeAction:
             desc_file='desc file',
             results_dir='results dir',
             max_deflate_jobs=4,
-            nemo34=False,
             nocheck_init=False,
             no_deflate=False,
             no_submit=True,
@@ -176,33 +170,29 @@ class TestRun:
     """
 
     @pytest.mark.parametrize(
-        'nemo34, sep_xios_server, xios_servers, queue_job_cmd', [
-            (True, None, 0, 'qsub'),
-            (False, False, 0, 'qsub'),
-            (False, True, 4, 'sbatch'),
+        'sep_xios_server, xios_servers, queue_job_cmd', [
+            (None, 0, 'qsub'),
+            (False, 0, 'qsub'),
+            (True, 4, 'sbatch'),
         ]
     )
     def test_run_submit(
-        self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, nemo34, sep_xios_server,
+        self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, sep_xios_server,
         xios_servers, queue_job_cmd, tmpdir
     ):
         p_run_dir = tmpdir.ensure_dir('run_dir')
         m_prepare.return_value = Path(str(p_run_dir))
         p_results_dir = tmpdir.ensure_dir('results_dir')
-        if not nemo34:
-            m_lrd.return_value = {
-                'output': {
-                    'separate XIOS server': sep_xios_server,
-                    'XIOS servers': xios_servers,
-                }
+        m_lrd.return_value = {
+            'output': {
+                'separate XIOS server': sep_xios_server,
+                'XIOS servers': xios_servers,
             }
+        }
         submit_job_msg = nemo_cmd.run.run(
-            Path('nemo.yaml'),
-            str(p_results_dir),
-            nemo34=nemo34,
-            queue_job_cmd=queue_job_cmd
+            Path('nemo.yaml'), str(p_results_dir), queue_job_cmd=queue_job_cmd
         )
-        m_prepare.assert_called_once_with(Path('nemo.yaml'), nemo34, False)
+        m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
         m_lrd.assert_called_once_with(Path('nemo.yaml'))
         m_gnp.assert_called_once_with(m_lrd())
         m_bbs.assert_called_once_with(
@@ -214,34 +204,32 @@ class TestRun:
         assert submit_job_msg == 'msg'
 
     @pytest.mark.parametrize(
-        'nemo34, sep_xios_server, xios_servers, queue_job_cmd', [
-            (True, None, 0, 'qsub'),
-            (False, False, 0, 'qsub'),
-            (False, True, 4, 'sbatch'),
+        'sep_xios_server, xios_servers, queue_job_cmd', [
+            (None, 0, 'qsub'),
+            (False, 0, 'qsub'),
+            (True, 4, 'sbatch'),
         ]
     )
     def test_run_no_submit(
-        self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, nemo34, sep_xios_server,
+        self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, sep_xios_server,
         xios_servers, queue_job_cmd, tmpdir
     ):
         p_run_dir = tmpdir.ensure_dir('run_dir')
         m_prepare.return_value = Path(str(p_run_dir))
         p_results_dir = tmpdir.ensure_dir('results_dir')
-        if not nemo34:
-            m_lrd.return_value = {
-                'output': {
-                    'separate XIOS server': sep_xios_server,
-                    'XIOS servers': xios_servers,
-                }
+        m_lrd.return_value = {
+            'output': {
+                'separate XIOS server': sep_xios_server,
+                'XIOS servers': xios_servers,
             }
+        }
         submit_job_msg = nemo_cmd.run.run(
             Path('nemo.yaml'),
             str(p_results_dir),
-            nemo34=nemo34,
             no_submit=True,
             queue_job_cmd=queue_job_cmd
         )
-        m_prepare.assert_called_once_with(Path('nemo.yaml'), nemo34, False)
+        m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
         m_lrd.assert_called_once_with(Path('nemo.yaml'))
         m_gnp.assert_called_once_with(m_lrd())
         m_bbs.assert_called_once_with(
@@ -252,35 +240,33 @@ class TestRun:
         assert submit_job_msg is None
 
     @pytest.mark.parametrize(
-        'nemo34, xios_servers, queue_job_cmd', [
-            (True, 0, 'qsub'),
-            (False, 4, 'qsub'),
-            (False, 1, 'sbatch'),
+        'xios_servers, queue_job_cmd', [
+            (0, 'qsub'),
+            (4, 'qsub'),
+            (1, 'sbatch'),
         ]
     )
     def test_run_no_deflate(
-        self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, nemo34, xios_servers,
+        self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, xios_servers,
         queue_job_cmd, tmpdir
     ):
         p_run_dir = tmpdir.ensure_dir('run_dir')
         m_prepare.return_value = Path(str(p_run_dir))
         p_results_dir = tmpdir.ensure_dir('results_dir')
-        if not nemo34:
-            m_lrd.return_value = {
-                'output': {
-                    'separate XIOS server': True,
-                    'XIOS servers': xios_servers,
-                }
+        m_lrd.return_value = {
+            'output': {
+                'separate XIOS server': True,
+                'XIOS servers': xios_servers,
             }
+        }
         submit_job_msg = nemo_cmd.run.run(
             Path('nemo.yaml'),
             str(p_results_dir),
-            nemo34=nemo34,
             no_deflate=True,
             no_submit=False,
             queue_job_cmd=queue_job_cmd
         )
-        m_prepare.assert_called_once_with(Path('nemo.yaml'), nemo34, False)
+        m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
         m_lrd.assert_called_once_with(Path('nemo.yaml'))
         m_gnp.assert_called_once_with(m_lrd())
         m_bbs.assert_called_once_with(
@@ -291,91 +277,83 @@ class TestRun:
                                       universal_newlines=True)
         assert submit_job_msg == 'msg'
 
-        @pytest.mark.parametrize(
-            'nemo34, sep_xios_server, xios_servers, queue_job_cmd', [
-                (True, None, 0, 'qsub'),
-                (False, False, 0, 'qsub'),
-                (False, True, 4, 'sbatch'),
-            ]
+    @pytest.mark.parametrize(
+        'sep_xios_server, xios_servers, queue_job_cmd', [
+            (None, 0, 'qsub'),
+            (False, 0, 'qsub'),
+            (True, 4, 'sbatch'),
+        ]
+    )
+    def test_queue_job_cmd(
+        self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, sep_xios_server,
+        xios_servers, queue_job_cmd, tmpdir
+    ):
+        p_run_dir = tmpdir.ensure_dir('run_dir')
+        m_prepare.return_value = Path(str(p_run_dir))
+        p_results_dir = tmpdir.ensure_dir('results_dir')
+        m_lrd.return_value = {
+            'output': {
+                'separate XIOS server': sep_xios_server,
+                'XIOS servers': xios_servers,
+            }
+        }
+        submit_job_msg = nemo_cmd.run.run(
+            Path('nemo.yaml'), str(p_results_dir), queue_job_cmd=queue_job_cmd
         )
-        def test_queue_job_cmd(
-            self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, nemo34,
-            sep_xios_server, xios_servers, queue_job_cmd, tmpdir
-        ):
-            p_run_dir = tmpdir.ensure_dir('run_dir')
-            m_prepare.return_value = Path(str(p_run_dir))
-            p_results_dir = tmpdir.ensure_dir('results_dir')
-            if not nemo34:
-                m_lrd.return_value = {
-                    'output': {
-                        'separate XIOS server': sep_xios_server,
-                        'XIOS servers': xios_servers,
-                    }
-                }
-            submit_job_msg = nemo_cmd.run.run(
-                Path('nemo.yaml'),
-                str(p_results_dir),
-                nemo34=nemo34,
-                queue_job_cmd=queue_job_cmd
-            )
-            m_prepare.assert_called_once_with(Path('nemo.yaml'), nemo34, False)
-            m_lrd.assert_called_once_with(Path('nemo.yaml'))
-            m_gnp.assert_called_once_with(m_lrd())
-            m_bbs.assert_called_once_with(
-                m_lrd(),
-                'nemo.yaml',
-                144,
-                xios_servers,
-                False,
-                4,
-                Path(str(p_results_dir)),
-                Path(str(p_run_dir)),
-                queue_job_cmd,
-            )
-            m_sco.assert_called_once_with([queue_job_cmd, 'NEMO.sh'],
-                                          universal_newlines=True)
-            assert submit_job_msg == 'msg'
+        m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
+        m_lrd.assert_called_once_with(Path('nemo.yaml'))
+        m_gnp.assert_called_once_with(m_lrd())
+        m_bbs.assert_called_once_with(
+            m_lrd(),
+            'nemo.yaml',
+            144,
+            xios_servers,
+            False,
+            4,
+            Path(str(p_results_dir)),
+            Path(str(p_run_dir)),
+            queue_job_cmd,
+        )
+        m_sco.assert_called_once_with([queue_job_cmd, 'NEMO.sh'],
+                                      universal_newlines=True)
+        assert submit_job_msg == 'msg'
 
-            @patch('nemo_cmd.run.logger')
-            def test_unknown_queue_job_cmd(
-                self, m_logger, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, tmpdir
-            ):
-                p_run_dir = tmpdir.ensure_dir('run_dir')
-                m_prepare.return_value = Path(str(p_run_dir))
-                p_results_dir = tmpdir.ensure_dir('results_dir')
-                m_lrd.return_value = {
-                    'output': {
-                        'separate XIOS server': True,
-                        'XIOS servers': 1,
-                    }
-                }
-                queue_job_cmd = 'fling'
-                submit_job_msg = nemo_cmd.run.run(
-                    Path('nemo.yaml'),
-                    str(p_results_dir),
-                    nemo34=False,
-                    queue_job_cmd=queue_job_cmd,
-                )
-                m_prepare.assert_called_once_with(
-                    Path('nemo.yaml'), False, False
-                )
-                m_lrd.assert_called_once_with(Path('nemo.yaml'))
-                m_gnp.assert_called_once_with(m_lrd())
-                m_bbs.assert_called_once_with(
-                    m_lrd(),
-                    'nemo.yaml',
-                    144,
-                    1,
-                    False,
-                    4,
-                    Path(str(p_results_dir)),
-                    Path(str(p_run_dir)),
-                    queue_job_cmd,
-                )
-                m_sco.assert_called_once_with([queue_job_cmd, 'NEMO.sh'],
-                                              universal_newlines=True)
-                assert m_logger.error.called
-                assert submit_job_msg is None
+    @patch('nemo_cmd.run.logger')
+    def test_unknown_queue_job_cmd(
+        self, m_logger, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, tmpdir
+    ):
+        p_run_dir = tmpdir.ensure_dir('run_dir')
+        m_prepare.return_value = Path(str(p_run_dir))
+        p_results_dir = tmpdir.ensure_dir('results_dir')
+        m_lrd.return_value = {
+            'output': {
+                'separate XIOS server': True,
+                'XIOS servers': 1,
+            }
+        }
+        queue_job_cmd = 'fling'
+        m_sco.side_effect = OSError
+        submit_job_msg = nemo_cmd.run.run(
+            Path('nemo.yaml'), str(p_results_dir), queue_job_cmd=queue_job_cmd
+        )
+        m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
+        m_lrd.assert_called_once_with(Path('nemo.yaml'))
+        m_gnp.assert_called_once_with(m_lrd())
+        m_bbs.assert_called_once_with(
+            m_lrd(),
+            'nemo.yaml',
+            144,
+            1,
+            False,
+            4,
+            Path(str(p_results_dir)),
+            Path(str(p_run_dir)),
+            queue_job_cmd,
+        )
+        m_sco.assert_called_once_with([queue_job_cmd, 'NEMO.sh'],
+                                      universal_newlines=True)
+        assert m_logger.error.called
+        assert submit_job_msg is None
 
 
 @patch('nemo_cmd.run._cleanup', autospec=True)
