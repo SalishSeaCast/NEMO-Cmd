@@ -36,4 +36,3 @@ etc.
 
    3.6_yaml_file
    3.6_agrif_yaml_file
-   3.4_yaml_file

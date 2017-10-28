@@ -20,10 +20,6 @@
 NEMO-3.6 Run Description File for AGRIF Runs
 ********************************************
 
-.. warning::
-    The :kbd:`NEMO-Cmd` package provides support for running NEMO-3.6 with `AGRIF`_ sub-grids as of version 3.2.
-    AGRIF is not supported for NEMO-3.4.
-
 This section describes the additional sections that can be included in a NEMO-3.6 YAML run description file to enable :kbd:`NEMO-Cmd` to handle runs that use `AGRIF`_
 (Adaptive Grid Refinement in Fortran).
 

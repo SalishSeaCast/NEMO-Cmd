@@ -30,9 +30,8 @@ import nemo_cmd.api
 
 
 class TestRunDescription(object):
-    @pytest.mark.parametrize('nemo34', [True, False])
-    def test_no_arguments(self, nemo34):
-        run_desc = nemo_cmd.api.run_description(nemo34=nemo34)
+    def test_no_arguments(self):
+        run_desc = nemo_cmd.api.run_description()
         expected = {
             'config_name': 'SalishSea',
             'run_id': None,
@@ -40,6 +39,7 @@ class TestRunDescription(object):
             'MPI decomposition': '8x18',
             'paths': {
                 'NEMO-code': None,
+                'XIOS': None,
                 'forcing': None,
                 'runs directory': None,
             },
@@ -47,39 +47,8 @@ class TestRunDescription(object):
                 'coordinates': 'coordinates_seagrid_SalishSea.nc',
                 'bathymetry': 'bathy_meter_SalishSea2.nc',
             },
-            'forcing': {
-                'atmospheric':
-                '/results/forcing/atmospheric/GEM2.5/operational/',
-                'initial conditions': None,
-                'open boundaries': 'open_boundaries/',
-                'rivers': 'rivers/',
-            },
-            'output': {
-                'files': 'iodef.xml',
-            },
-        }
-        if nemo34:
-            expected['forcing'] = {
-                'atmospheric':
-                '/results/forcing/atmospheric/GEM2.5/operational/',
-                'initial conditions': None,
-                'open boundaries': 'open_boundaries/',
-                'rivers': 'rivers/',
-            }
-            expected['namelists'] = [
-                'namelist.time',
-                'namelist.domain',
-                'namelist.surface',
-                'namelist.lateral',
-                'namelist.bottom',
-                'namelist.tracers',
-                'namelist.dynamics',
-                'namelist.compute',
-            ]
-        else:
-            expected['paths']['XIOS'] = None
-            expected['forcing'] = None
-            expected['namelists'] = {
+            'forcing': None,
+            'namelists': {
                 'namelist_cfg': [
                     'namelist.time',
                     'namelist.domain',
@@ -91,34 +60,30 @@ class TestRunDescription(object):
                     'namelist.vertical',
                     'namelist.compute',
                 ]
-            }
-            expected['output'] = {
+            },
+            'output': {
+                'files': 'iodef.xml',
                 'domain': 'domain_def.xml',
                 'fields': None,
                 'separate XIOS server': True,
                 'XIOS servers': 1,
-            }
+            },
+        }
         assert run_desc == expected
 
-    @pytest.mark.parametrize('nemo34, namelists', [
-        (True, []),
-        (False, {}),
-    ])
-    def test_all_arguments(self, nemo34, namelists):
-        XIOS_code = None if nemo34 else '../../XIOS/'
+    def test_all_arguments(self):
         run_desc = nemo_cmd.api.run_description(
             config_name='SOG',
             run_id='foo',
             walltime='1:00:00',
             mpi_decomposition='6x14',
             NEMO_code='../../NEMO-code/',
-            XIOS_code=XIOS_code,
+            XIOS_code='../../XIOS/',
             forcing_path='../../NEMO-forcing/',
             runs_dir='../../SalishSea/',
-            init_conditions='../../22-25Sep/SalishSea_00019008_restart.nc',
             forcing={},
-            namelists=namelists,
-            nemo34=nemo34,
+            init_conditions='../../22-25Sep/SalishSea_00019008_restart.nc',
+            namelists={}
         )
         expected = {
             'config_name': 'SOG',
@@ -127,6 +92,7 @@ class TestRunDescription(object):
             'MPI decomposition': '6x14',
             'paths': {
                 'NEMO-code': '../../NEMO-code/',
+                'XIOS': '../../XIOS/',
                 'forcing': '../../NEMO-forcing/',
                 'runs directory': '../../SalishSea/',
             },
@@ -135,21 +101,16 @@ class TestRunDescription(object):
                 'bathymetry': 'bathy_meter_SalishSea2.nc',
             },
             'forcing': {},
-            'namelists': namelists,
+            'namelists': {},
             'output': {
                 'files': 'iodef.xml',
-            }
-        }
-        if not nemo34:
-            expected['paths']['XIOS'] = '../../XIOS/'
-            expected['namelists'] = {}
-            expected['output'] = {
                 'domain': 'domain_def.xml',
                 'fields':
                 '../../NEMO-code/NEMOGCM/CONFIG/SHARED/field_def.xml',
                 'separate XIOS server': True,
                 'XIOS servers': 1,
             }
+        }
         assert run_desc == expected
 
 

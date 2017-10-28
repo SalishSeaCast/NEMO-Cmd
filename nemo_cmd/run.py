@@ -73,14 +73,6 @@ class Run(cliff.command.Command):
             use for netCDF deflating. Defaults to 4.'''
         )
         parser.add_argument(
-            '--nemo3.4',
-            dest='nemo34',
-            action='store_true',
-            help='''
-            Do a NEMO-3.4 run;
-            the default is to do a NEMO-3.6 run'''
-        )
-        parser.add_argument(
             '--nocheck-initial-conditions',
             dest='nocheck_init',
             action='store_true',
@@ -154,7 +146,6 @@ class Run(cliff.command.Command):
             parsed_args.desc_file,
             parsed_args.results_dir,
             parsed_args.max_deflate_jobs,
-            parsed_args.nemo34,
             parsed_args.nocheck_init,
             parsed_args.no_deflate,
             parsed_args.no_submit,
@@ -170,7 +161,6 @@ def run(
     desc_file,
     results_dir,
     max_deflate_jobs=4,
-    nemo34=False,
     nocheck_init=False,
     no_deflate=False,
     no_submit=False,
@@ -197,9 +187,6 @@ def run(
     :param int max_deflate_jobs: Maximum number of concurrent sub-processes to
                                  use for netCDF deflating.
 
-    :param boolean nemo34: Prepare a NEMO-3.4 run;
-                           the default is to prepare a NEMO-3.6 run
-
     :param boolean nocheck_init: Suppress initial condition link check
                                  the default is to check
 
@@ -224,7 +211,7 @@ def run(
               run script.
     :rtype: str
     """
-    run_dir = api.prepare(desc_file, nemo34, nocheck_init)
+    run_dir = api.prepare(desc_file, nocheck_init)
     if not quiet:
         logger.info('Created run directory {}'.format(run_dir))
     run_desc = lib.load_run_desc(desc_file)
@@ -232,12 +219,8 @@ def run(
     separate_xios_server = get_run_desc_value(
         run_desc, ('output', 'separate XIOS server')
     )
-    if not nemo34 and separate_xios_server:
-        xios_processors = get_run_desc_value(
-            run_desc, ('output', 'XIOS servers')
-        )
-    else:
-        xios_processors = 0
+    xios_processors = get_run_desc_value(run_desc, ('output', 'XIOS servers')
+                                         ) if separate_xios_server else 0
     results_dir = Path(results_dir)
     batch_script = _build_batch_script(
         run_desc,

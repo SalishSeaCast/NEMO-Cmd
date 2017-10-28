@@ -53,9 +53,9 @@ For example:
 
 ::
 
-    usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS] [--nemo3.4]
+    usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS]
                     [--nocheck-initial-conditions] [--no-deflate] [--no-submit]
-                    [--waitjob WAITJOB] [--queue-job-cmd {sbatch,qsub}] [-q]
+                    [--waitjob WAITJOB] [--queue-job-cmd {qsub,sbatch}] [-q]
                     DESC_FILE RESULTS_DIR
 
     Prepare, execute, and gather the results from a NEMO run described in
@@ -71,7 +71,6 @@ For example:
       --max-deflate-jobs MAX_DEFLATE_JOBS
                             Maximum number of concurrent sub-processes to use for
                             netCDF deflating. Defaults to 4.
-      --nemo3.4             Do a NEMO-3.4 run; the default is to do a NEMO-3.6 run
       --nocheck-initial-conditions
                             Suppress checking of the initial conditions link.
                             Useful if you are submitting a job to wait on a
@@ -89,7 +88,7 @@ For example:
                             use the same temporary run directory more than once.
       --waitjob WAITJOB     use -W waitjob in call to qsub, to make current job
                             wait for on waitjob. Waitjob is the queue job number
-      --queue-job-cmd {sbatch,qsub}
+      --queue-job-cmd {qsub,sbatch}
                             Command to use to submit the bash script to execute
                             the NEMO run; defaults to qsub.
       -q, --quiet           don't show the run directory path or job submission
@@ -114,9 +113,9 @@ The results are gathered in the specified results directory.
 
 ::
 
-    usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS] [--nemo3.4]
+    usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS]
                     [--nocheck-initial-conditions] [--no-deflate] [--no-submit]
-                    [--waitjob WAITJOB] [--queue-job-cmd {sbatch,qsub}] [-q]
+                    [--waitjob WAITJOB] [--queue-job-cmd {qsub,sbatch}] [-q]
                     DESC_FILE RESULTS_DIR
 
     Prepare, execute, and gather the results from a NEMO run described in
@@ -132,7 +131,6 @@ The results are gathered in the specified results directory.
       --max-deflate-jobs MAX_DEFLATE_JOBS
                             Maximum number of concurrent sub-processes to use for
                             netCDF deflating. Defaults to 4.
-      --nemo3.4             Do a NEMO-3.4 run; the default is to do a NEMO-3.6 run
       --nocheck-initial-conditions
                             Suppress checking of the initial conditions link.
                             Useful if you are submitting a job to wait on a
@@ -150,7 +148,7 @@ The results are gathered in the specified results directory.
                             use the same temporary run directory more than once.
       --waitjob WAITJOB     use -W waitjob in call to qsub, to make current job
                             wait for on waitjob. Waitjob is the queue job number
-      --queue-job-cmd {sbatch,qsub}
+      --queue-job-cmd {qsub,sbatch}
                             Command to use to submit the bash script to execute
                             the NEMO run; defaults to qsub.
       -q, --quiet           don't show the run directory path or job submission
@@ -203,8 +201,7 @@ you should use the :kbd:`--no-deflate` option to exclude :ref:`nemo-deflate` fro
 The :command:`prepare` sub-command sets up a run directory from which to execute the NEMO run described in the specified run description,
 and output file definitions files::
 
-  usage: nemo prepare [-h] [--nocheck-initial-conditions] [--nemo3.4] [-q]
-                      DESC_FILE
+  usage: nemo prepare [-h] [--nocheck-initial-conditions] [-q] DESC_FILE
 
   Set up the NEMO run described in DESC_FILE and print the path to the run
   directory.
@@ -219,8 +216,6 @@ and output file definitions files::
                           Useful if you are submitting a job to an HPC qsub
                           queue and want the submitted job to wait for
                           completion of a previous job.
-    --nemo3.4             Prepare a NEMO-3.4 run; the default is to prepare a
-                          NEMO-3.6 run.
     -q, --quiet           don't show the run directory path on completion
 
 See the :ref:`RunDescriptionFileStructure` section for details of the run description file.
@@ -244,12 +239,10 @@ If the :command:`nemo prepare` command prints an error message,
 you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
 
 
-Run Directory Contents for NEMO-3.6
------------------------------------
+Run Directory Contents
+----------------------
 
-For NEMO-3.6 runs,
-(initiated by the :command:`nemo prepare ...` command)
-the run directory contains:
+The run directory contains:
 
 * The run description file provided on the command line.
 
@@ -314,46 +307,6 @@ the paths of the files and their status codes,
 the output of the :command:`hg status -mardC` command,
 will be appended to the repository's :file:`_rev.txt` file.
 Please see the :ref:`NEMO-3.6-VCS-Revisions` for more details.
-
-
-Run Directory Contents for NEMO-3.4
------------------------------------
-
-For NEMO-3.4 runs,
-(initiated by the :command:`nemo prepare --nemo3.4 ...` command)
-the run directory contains a :file:`namelist`
-(the file name expected by NEMO)
-file that is constructed by concatenating the namelist segments listed in the run description file
-(see :ref:`RunDescriptionFileStructure`).
-That constructed namelist is concluded with empty instances of all of the namelists that NEMO requires so that default values will be used for any namelist variables not included in the namelist segments listed in the run description file.
-
-The run directory also contains symbolic links to:
-
-* The run description file provided on the command line
-
-* The :file:`namelist` file constructed from the namelists provided in the run description file
-
-* A file called :file:`iodefs.xml`
-  (the file name required by NEMO).
-  that file specifies the output files and variables they contain for the run.
-  The file that is copied to :file:`iodefs.xml` is specified in the :kbd:`output` section of the run description file.
-  It is also sometimes referred to as the NEMO IOM defs file.
-
-* The :file:`xmlio_server.def` file found in the run-set directory where the run description file resides
-
-* The :file:`nemo.exe` and :file:`server.exe` executables found in the :file:`BLD/bin/` directory of the NEMO configuration given by the :kbd:`config_name` and :kbd:`NEMO-code` keys in the run description file.
-  :command:`nemo prepare` aborts with an error message and exit code 2 if the :file:`nemo.exe` file is not found.
-  In that case the run directory is not created.
-  :command:`nemo prepare` also check to confirm that :file:`server.exe` exists but only issues a warning if it is not found becuase that is a valid situation if you are not using :kbd:`key_iomput` in your configuration.
-
-* The coordinates and bathymetry files given in the :kbd:`grid` section of the run description file
-
-* The initial conditions,
-  open boundary conditions,
-  and rivers run-off forcing directories given in the :kbd:`forcing` section of the run description file.
-  The initial conditions may be specified from a restart file instead of a directory of netCDF files,
-  in which case the restart file is symlinked as :file:`restart.nc`,
-  the file name expected by NEMO.
 
 
 .. _nemo-combine:

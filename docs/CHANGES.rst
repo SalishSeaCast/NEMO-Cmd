@@ -5,6 +5,8 @@ Change Log
 1.3 (unreleased)
 ================
 
+* Drop support for NEMO-3.4.
+
 * Fix a bug that caused ``prepare`` plug-in to fail for AGRIF runs that are
   not initialized from restart files.
 
