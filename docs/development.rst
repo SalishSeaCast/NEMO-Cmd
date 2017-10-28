@@ -25,9 +25,9 @@
 Python Versions
 ===============
 
-The :kbd:`NEMO-Cmd` package is developed and tested using `Python`_ 3.5 or later.
+The :kbd:`NEMO-Cmd` package is developed and tested using `Python`_ 3.6.
 However,
-the package must also run under `Python`_ 2.7 for use on the Westgrid HPC platform.
+the package must also run under `Python`_ 2.7 for use on the Westgrid and Compute Canada HPC platforms.
 
 
 .. _NEMO-CmdGettingTheCode:
@@ -77,13 +77,35 @@ and building the documentation with the commands:
     $ source activate nemo-cmd
     (nemo-cmd)$ pip install --editable .
 
-The :kbd:`--editable` option in the :command:`pip install` commands above installs the :kbd:`NEMO-Cmd` package from the respository clone via symlinks so that :program:`nemo` command in the :kbd:`nemo-cmd` environment will be automatically updated as the repo evolves.
+The :kbd:`--editable` option in the :command:`pip install` commands above installs the :kbd:`NEMO-Cmd` package from the repository clone via symlinks so that :program:`nemo` command in the :kbd:`nemo-cmd` environment will be automatically updated as the repo evolves.
 
 To deactivate the environment use:
 
 .. code-block:: bash
 
     (nemo-cmd)$ source deactivate
+
+
+.. _NEMO-CmdCodingStyle:
+
+Coding Style
+============
+
+The :kbd:`NEMO-Cmd` package uses the `yapf`_ code formatting tool to maintain a coding style that is very close to `PEP 8`_.
+The project-specific differences from the :command:`yapf` implementation of PEP 8 are defined in the :file:`.style.yapf` in the repository root directory.
+
+.. _yapf: https://github.com/google/yapf
+.. _PEP 8: https://www.python.org/dev/peps/pep-0008/
+
+:command:`yapf` is installed as part of the :ref:`NEMO-CmdDevelopmentEnvironment` setup.
+
+To run :command:`yapf` on the entire code-base use:
+
+.. code-block:: bash
+
+    $ yapf --parallel --in-place --recursive nemo_cmd/ tests/ __pkg_metadata__.py setup.py
+
+in the repository root directory.
 
 
 .. _NEMO-CmdBuildingTheDocumentation:
@@ -110,22 +132,21 @@ The output looks something like::
 
   rm -rf _build/*
   sphinx-build -b html -d _build/doctrees   . _build/html
-  Running Sphinx v1.4.8
+  Running Sphinx v1.5.1
   making output directory...
   loading pickled environment... not yet created
-  loading intersphinx inventory from https://docs.python.org/objects.inv...
-  intersphinx inventory has moved: https://docs.python.org/objects.inv -> https://docs.python.org/2/objects.inv
+  loading intersphinx inventory from https://docs.python.org/3/objects.inv...
   building [mo]: targets for 0 po files that are out of date
-  building [html]: targets for 6 source files that are out of date
-  updating environment: 6 added, 0 changed, 0 removed
+  building [html]: targets for 9 source files that are out of date
+  updating environment: 9 added, 0 changed, 0 removed
   reading sources... [100%] subcommands
   looking for now-outdated files... none found
   pickling environment... done
   checking consistency... done
   preparing documents... done
   writing output... [100%] subcommands
-  generating indices...
-  highlighting module code... [100%] nemo_cmd.api
+  generating indices... genindex
+  highlighting module code... [100%] nemo_cmd.prepare
   writing additional pages... search
   copying static files... done
   copying extra files... done
@@ -164,18 +185,20 @@ use:
 to run the test suite.
 The output looks something like::
 
-  ============================ test session starts =============================
-  platform linux -- Python 3.5.2, pytest-3.0.3, py-1.4.31, pluggy-0.4.0
+  =========================== test session starts =============================
+  platform linux -- Python 3.6.1, pytest-3.0.5, py-1.4.32, pluggy-0.4.0
   rootdir: /media/doug/warehouse/MEOPAR/NEMO-Cmd, inifile:
-  collected 102 items
+  collected 166 items
 
-  tests/test_api.py ................
-  tests/test_combine.py .............
-  tests/test_gather.py .
-  tests/test_prepare.py ......................................................
-  tests/test_run.py ...................
+  tests/test_api.py ........
+  tests/test_combine.py ............
+  tests/test_deflate.py ...
+  tests/test_gather.py ...
+  tests/test_namelist.py .............
+  tests/test_prepare.py .....................................................................................
+  tests/test_run.py ..........................................
 
-  ========================= 102 passed in 1.37 seconds =========================
+  ======================== 166 passed in 1.68 seconds ========================
 
 You can monitor what lines of code the test suite exercises using the `coverage.py`_ tool with the command:
 
