@@ -29,7 +29,8 @@ It is provided by the `NEMO-Cmd package`_.
 .. _NEMO-Cmd package: https://bitbucket.org/salishsea/nemo-cmd
 
 The :kbd:`NEMO-Cmd` package is a Python 2/3 package.
-It is developed with Python 3.5 and tested under Python 2.7 and 3.5.
+It is developed with Python 3.6 and tested under Python 2.7 and 3.6.
+It should work under Python 2.7, 3.4, 3.5, and 3.6.
 
 
 Contents
