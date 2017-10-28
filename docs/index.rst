@@ -45,12 +45,7 @@ Contents
    development
    CHANGES
 
-
-Indices and Tables
-------------------
-
 * :ref:`genindex`
-* :ref:`modindex`
 
 
 License
