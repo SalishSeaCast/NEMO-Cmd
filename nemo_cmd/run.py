@@ -223,9 +223,8 @@ def run(
                                          ) if separate_xios_server else 0
     results_dir = Path(results_dir)
     batch_script = _build_batch_script(
-        run_desc,
-        fspath(desc_file), nemo_processors, xios_processors, no_deflate,
-        max_deflate_jobs, results_dir, run_dir, queue_job_cmd
+        run_desc, fspath(desc_file), nemo_processors, xios_processors,
+        no_deflate, max_deflate_jobs, results_dir, run_dir, queue_job_cmd
     )
     batch_file = run_dir / 'NEMO.sh'
     with batch_file.open('wt') as f:
