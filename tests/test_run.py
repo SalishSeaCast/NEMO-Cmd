@@ -408,6 +408,46 @@ class TestBuiltBatchScript:
         m_cleanup.assert_called_once_with()
 
 
+class TestPbsDirectives:
+    """Unit tests for _pbs_directives() function.
+    """
+    run_desc = {
+        'run_id': 'test',
+        'walltime': '1:24:42',
+        'email': 'somebody@example.com',
+    }
+
+    @patch('nemo_cmd.run.logger', autospec=True)
+    @pytest.mark.parametrize('n_processors', [
+        1,
+        32,
+        43,
+    ])
+    def test_pbs_directives(self, m_logger, n_processors):
+        results_dir = Path()
+        directives = nemo_cmd.run._pbs_directives(
+            self.run_desc, n_processors, results_dir
+        )
+        expected = (
+            u'#PBS -N test\n'
+            u'#PBS -S /bin/bash\n'
+            u'#PBS -l procs={n_processors}\n'
+            u'# memory per processor\n'
+            u'#PBS -l pmem=2000mb\n'
+            u'#PBS -l walltime=1:24:42\n'
+            u'# email when the job [b]egins and [e]nds, or is [a]borted\n'
+            u'#PBS -m bea\n'
+            u'#PBS -M {email}\n'
+            u'# stdout and stderr file paths/names\n'
+            u'#PBS -o ./stdout\n'
+            u'#PBS -e ./stderr\n'
+            u'\n'
+        ).format(
+            n_processors=n_processors, email=self.run_desc['email']
+        )
+        assert directives == expected
+
+
 class TestPBS_Resources:
     """Unit tests for _pbs_resources() function.
     """
@@ -463,12 +503,14 @@ class TestSbatchDirectives:
             u'#SBATCH --ntasks-per-node=32\n'
             u'#SBATCH --mem=125G\n'
             u'#SBATCH --time=1:24:42\n'
-            u'#SBATCH --mail-user=somebody@example.com\n'
+            u'#SBATCH --mail-user={email}\n'
             u'#SBATCH --mail-type=ALL\n'
             u'# stdout and stderr file paths/names\n'
             u'#SBATCH --output=stdout\n'
             u'#SBATCH --error=stderr\n'
-        ).format(n_nodes=n_nodes)
+        ).format(
+            n_nodes=n_nodes, email=self.run_desc['email']
+        )
         assert directives == expected
         assert m_logger.warning.called
 

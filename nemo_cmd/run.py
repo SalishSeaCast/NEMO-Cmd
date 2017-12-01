@@ -344,7 +344,7 @@ def _build_batch_script(
 
 def _pbs_directives(run_desc, n_processors, results_dir):
     email = get_run_desc_value(run_desc, ('email',))
-    pbs_directives = u'\n'.join((
+    pbs_directives = u''.join((
         u'{pbs_common}\n'.format(
             pbs_common=api.
             pbs_common(run_desc, n_processors, email, results_dir)
