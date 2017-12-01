@@ -496,8 +496,8 @@ class TestDefinitions:
     def test_nemo_cmd(self, queue_job_cmd, nemo_bin, no_deflate):
         run_desc = {'run_id': 'test'}
         defns = nemo_cmd.run._definitions(
-            run_desc, 'NEMO.yaml',
-            Path('run_dir'), Path('results_dir'), queue_job_cmd, no_deflate
+            run_desc, 'NEMO.yaml', Path('run_dir'), Path('results_dir'),
+            queue_job_cmd, no_deflate
         )
         expected = (
             u'RUN_ID="test"\n'

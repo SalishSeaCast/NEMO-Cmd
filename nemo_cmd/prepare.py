@@ -1108,9 +1108,9 @@ def get_hg_revision(repo, run_dir):
         )
     if len(parents) > 1:
         repo_rev_file_lines.extend(
-            'parent:     {rev}:{node}'.format(
-                rev=parent.rev.decode(), node=parent.node.decode()
-            ) for parent in parents
+            'parent:     {rev}:{node}'.
+            format(rev=parent.rev.decode(), node=parent.node.decode())
+            for parent in parents
         )
     date = arrow.get(revision.date).replace(tzinfo=tz.tzlocal())
     repo_rev_file_lines.extend([

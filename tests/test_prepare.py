@@ -98,15 +98,16 @@ class TestPrepare:
             m_resolved_path().parent, m_lrd(), m_mrd()
         )
         m_crsf.assert_called_once_with(
-            m_lrd(), Path('run_desc.yaml'), m_resolved_path().parent, m_mrd()
+            m_lrd(), Path('run_desc.yaml'),
+            m_resolved_path().parent, m_mrd()
         )
         m_mel.assert_called_once_with('nemo_bin_dir', m_mrd(), 'xios_bin_dir')
         m_mgl.assert_called_once_with(m_lrd(), m_mrd())
         m_mfl.assert_called_once_with(m_lrd(), m_mrd())
         m_mrl.assert_called_once_with(m_lrd(), m_mrd(), False)
         m_aaf.assert_called_once_with(
-            m_lrd(),
-            Path('run_desc.yaml'), m_resolved_path().parent, m_mrd(), False
+            m_lrd(), Path('run_desc.yaml'),
+            m_resolved_path().parent, m_mrd(), False
         )
         m_rvr.assert_called_once_with(m_lrd(), m_mrd())
         assert run_dir == m_mrd()
@@ -1389,8 +1390,8 @@ class TestRecordVcsRevision:
         }
         nemo_cmd.prepare._record_vcs_revisions(run_desc, Path('tmp_run_dir'))
         assert m_write.call_args_list[-1] == call(
-            Path(str(nemo_code_repo)),
-            Path('tmp_run_dir'), nemo_cmd.prepare.get_hg_revision
+            Path(str(nemo_code_repo)), Path('tmp_run_dir'),
+            nemo_cmd.prepare.get_hg_revision
         )
 
 
