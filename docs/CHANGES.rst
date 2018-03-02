@@ -5,6 +5,9 @@ Change Log
 1.3 (unreleased)
 ================
 
+* Fix bugs in the ``NEMO.sh`` script generation re: extra ``{}`` in some shell
+  variable expressions.
+
 * Drop support for NEMO-3.4.
 
 * Fix a bug that caused ``prepare`` plug-in to fail for AGRIF runs that are

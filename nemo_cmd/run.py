@@ -534,11 +534,12 @@ def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
             (mpirun, ':', '-np', str(xios_processors), './xios_server.exe')
         )
     script = (
+        u'mkdir -p ${RESULTS_DIR}\n'
+        u'\n'
         u'cd ${WORK_DIR}\n'
         u'echo "working dir: $(pwd)"\n'
         u'\n'
         u'echo "Starting run at $(date)"\n'
-        u'mkdir -p ${RESULTS_DIR}\n'
     )
     script += u'{mpirun}\n'.format(mpirun=mpirun)
     script += (
@@ -546,23 +547,24 @@ def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
         u'echo "Ended run at $(date)"\n'
         u'\n'
         u'echo "Results combining started at $(date)"\n'
-        u'${{COMBINE}} ${{RUN_DESC}} --debug\n'
+        u'${COMBINE} ${RUN_DESC} --debug\n'
         u'echo "Results combining ended at $(date)"\n'
     )
     if not no_deflate:
         script += (
             u'\n'
             u'echo "Results deflation started at $(date)"\n'
+            u'module load nco/4.6.6\n'
             u'${{DEFLATE}} *_grid_[TUVW]*.nc *_ptrc_T*.nc '
             u'--jobs {max_deflate_jobs} --debug\n'
             u'echo "Results deflation ended at $(date)"\n'
-        )
+        ).format(max_deflate_jobs=max_deflate_jobs)
     script += (
         u'\n'
         u'echo "Results gathering started at $(date)"\n'
-        u'${{GATHER}} ${{RESULTS_DIR}} --debug\n'
+        u'${GATHER} ${RESULTS_DIR} --debug\n'
         u'echo "Results gathering ended at $(date)"\n'
-    ).format(max_deflate_jobs=max_deflate_jobs)
+    )
     return script
 
 
