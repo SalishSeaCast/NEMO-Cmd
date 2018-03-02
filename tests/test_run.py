@@ -15,6 +15,11 @@
 """NEMO-Cmd run sub-command plug-in unit tests
 """
 try:
+    from io import StringIO
+except ImportError:
+    # Python 2.7
+    from cStringIO import StringIO
+try:
     from pathlib import Path
 except ImportError:
     # Python 2.7
@@ -35,6 +40,7 @@ except ImportError:
 
 import cliff.app
 import pytest
+import yaml
 
 import nemo_cmd.run
 
@@ -356,15 +362,15 @@ class TestRun:
         assert submit_job_msg is None
 
 
-@patch('nemo_cmd.run._cleanup', autospec=True)
-@patch('nemo_cmd.run._fix_permissions', autospec=True)
-@patch('nemo_cmd.run._execute', autospec=True)
-@patch('nemo_cmd.run._modules', autospec=True)
-@patch('nemo_cmd.run._definitions', autospec=True)
 class TestBuiltBatchScript:
     """Unit tests for _build_batch_script() function.
     """
 
+    @patch('nemo_cmd.run._cleanup', autospec=True)
+    @patch('nemo_cmd.run._fix_permissions', autospec=True)
+    @patch('nemo_cmd.run._execute', autospec=True)
+    @patch('nemo_cmd.run._modules', autospec=True)
+    @patch('nemo_cmd.run._definitions', autospec=True)
     @pytest.mark.parametrize(
         'queue_job_cmd, directives_func, no_deflate', [
             ('qsub', 'nemo_cmd.run._pbs_directives', False),
@@ -406,6 +412,211 @@ class TestBuiltBatchScript:
         )
         m_fixperms.assert_called_once_with()
         m_cleanup.assert_called_once_with()
+
+    @pytest.mark.parametrize('no_deflate', [
+        True,
+        False,
+    ])
+    def test_qsub(self, no_deflate):
+        desc_file = StringIO(
+            u'run_id: foo\n'
+            u'walltime: 01:02:03\n'
+            u'email: me@example.com\n'
+            u'modules to load:\n'
+            u'  - intel\n'
+            u'  - intel/14.0/netcdf-4.3.3.1_mpi\n'
+            u'  - intel/14.0/netcdf-fortran-4.4.0_mpi\n'
+            u'  - intel/14.0/hdf5-1.8.15p1_mpi\n'
+            u'  - intel/14.0/nco-4.5.2\n'
+            u'  - python\n'
+        )
+        run_desc = yaml.load(desc_file)
+        script = nemo_cmd.run._build_batch_script(
+            run_desc,
+            'NEMO.yaml',
+            nemo_processors=42,
+            xios_processors=1,
+            no_deflate=no_deflate,
+            max_deflate_jobs=4,
+            results_dir=Path('results_dir'),
+            run_dir=Path(),
+            queue_job_cmd='qsub'
+        )
+        expected = (
+            u'#!/bin/bash\n'
+            u'\n'
+            u'#PBS -N foo\n'
+            u'#PBS -S /bin/bash\n'
+            u'#PBS -l procs=43\n'
+            u'# memory per processor\n'
+            u'#PBS -l pmem=2000mb\n'
+            u'#PBS -l walltime=1:02:03\n'
+            u'# email when the job [b]egins and [e]nds, or is [a]borted\n'
+            u'#PBS -m bea\n'
+            u'#PBS -M me@example.com\n'
+            u'# stdout and stderr file paths/names\n'
+            u'#PBS -o results_dir/stdout\n'
+            u'#PBS -e results_dir/stderr\n'
+            u'\n'
+            u'\n'
+            u'RUN_ID="foo"\n'
+            u'RUN_DESC="NEMO.yaml"\n'
+            u'WORK_DIR="."\n'
+            u'RESULTS_DIR="results_dir"\n'
+            u'COMBINE="${PBS_O_HOME}/.local/bin/nemo combine"\n'
+        )
+        if not no_deflate:
+            expected += u'DEFLATE="${PBS_O_HOME}/.local/bin/nemo deflate"\n'
+        expected += (
+            u'GATHER="${PBS_O_HOME}/.local/bin/nemo gather"\n'
+            u'\n'
+            u'\n'
+            u'module load intel\n'
+            u'module load intel/14.0/netcdf-4.3.3.1_mpi\n'
+            u'module load intel/14.0/netcdf-fortran-4.4.0_mpi\n'
+            u'module load intel/14.0/hdf5-1.8.15p1_mpi\n'
+            u'module load intel/14.0/nco-4.5.2\n'
+            u'module load python\n'
+            u'\n'
+            u'\n'
+            u'mkdir -p ${RESULTS_DIR}\n'
+            u'\n'
+            u'cd ${WORK_DIR}\n'
+            u'echo "working dir: $(pwd)"\n'
+            u'\n'
+            u'echo "Starting run at $(date)"\n'
+            u'mpirun -np 42 ./nemo.exe : -np 1 ./xios_server.exe\n'
+            u'MPIRUN_EXIT_CODE=$?\n'
+            u'echo "Ended run at $(date)"\n'
+            u'\n'
+            u'echo "Results combining started at $(date)"\n'
+            u'${COMBINE} ${RUN_DESC} --debug\n'
+            u'echo "Results combining ended at $(date)"\n'
+        )
+        if not no_deflate:
+            expected += (
+                u'\n'
+                u'echo "Results deflation started at $(date)"\n'
+                u'module load nco/4.6.6\n'
+                u'${DEFLATE} *_grid_[TUVW]*.nc *_ptrc_T*.nc '
+                u'--jobs 4 --debug\n'
+                u'echo "Results deflation ended at $(date)"\n'
+            )
+        expected += (
+            u'\n'
+            u'echo "Results gathering started at $(date)"\n'
+            u'${GATHER} ${RESULTS_DIR} --debug\n'
+            u'echo "Results gathering ended at $(date)"\n'
+            u'\n'
+            u'chmod go+rx ${RESULTS_DIR}\n'
+            u'chmod g+rw ${RESULTS_DIR}/*\n'
+            u'chmod o+r ${RESULTS_DIR}/*\n'
+            u'\n'
+            u'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
+            u'rmdir $(pwd)\n'
+            u'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
+            u'exit ${MPIRUN_EXIT_CODE}\n'
+        )
+        assert script == expected
+
+    @pytest.mark.parametrize('no_deflate', [
+        True,
+        False,
+    ])
+    def test_sbatch(self, no_deflate):
+        desc_file = StringIO(
+            u'run_id: foo\n'
+            u'walltime: 01:02:03\n'
+            u'email: me@example.com\n'
+            u'account: rrg-allen\n'
+            u'modules to load:\n'
+            u'- netcdf-mpi/4.4.1.1\n'
+            u'- netcdf-fortran-mpi/4.4.4\n'
+            u'- python27-scipy-stack/2017a\n'
+        )
+        run_desc = yaml.load(desc_file)
+        script = nemo_cmd.run._build_batch_script(
+            run_desc,
+            'NEMO.yaml',
+            nemo_processors=42,
+            xios_processors=1,
+            no_deflate=no_deflate,
+            max_deflate_jobs=4,
+            results_dir=Path('results_dir'),
+            run_dir=Path(),
+            queue_job_cmd='sbatch'
+        )
+        expected = (
+            u'#!/bin/bash\n'
+            u'\n'
+            u'#SBATCH --job-name=foo\n'
+            u'#SBATCH --nodes=2\n'
+            u'#SBATCH --ntasks-per-node=32\n'
+            u'#SBATCH --mem=125G\n'
+            u'#SBATCH --time=1:02:03\n'
+            u'#SBATCH --mail-user=me@example.com\n'
+            u'#SBATCH --mail-type=ALL\n'
+            u'#SBATCH --account=rrg-allen\n'
+            u'# stdout and stderr file paths/names\n'
+            u'#SBATCH --output=results_dir/stdout\n'
+            u'#SBATCH --error=results_dir/stderr\n'
+            u'\n'
+            u'RUN_ID="foo"\n'
+            u'RUN_DESC="NEMO.yaml"\n'
+            u'WORK_DIR="."\n'
+            u'RESULTS_DIR="results_dir"\n'
+            u'COMBINE="${HOME}/.local/bin/nemo combine"\n'
+        )
+        if not no_deflate:
+            expected += u'DEFLATE="${HOME}/.local/bin/nemo deflate"\n'
+        expected += (
+            u'GATHER="${HOME}/.local/bin/nemo gather"\n'
+            u'\n'
+            u'\n'
+            u'module load netcdf-mpi/4.4.1.1\n'
+            u'module load netcdf-fortran-mpi/4.4.4\n'
+            u'module load python27-scipy-stack/2017a\n'
+            u'\n'
+            u'\n'
+            u'mkdir -p ${RESULTS_DIR}\n'
+            u'\n'
+            u'cd ${WORK_DIR}\n'
+            u'echo "working dir: $(pwd)"\n'
+            u'\n'
+            u'echo "Starting run at $(date)"\n'
+            u'mpirun -np 42 ./nemo.exe : -np 1 ./xios_server.exe\n'
+            u'MPIRUN_EXIT_CODE=$?\n'
+            u'echo "Ended run at $(date)"\n'
+            u'\n'
+            u'echo "Results combining started at $(date)"\n'
+            u'${COMBINE} ${RUN_DESC} --debug\n'
+            u'echo "Results combining ended at $(date)"\n'
+        )
+        if not no_deflate:
+            expected += (
+                u'\n'
+                u'echo "Results deflation started at $(date)"\n'
+                u'module load nco/4.6.6\n'
+                u'${DEFLATE} *_grid_[TUVW]*.nc *_ptrc_T*.nc '
+                u'--jobs 4 --debug\n'
+                u'echo "Results deflation ended at $(date)"\n'
+            )
+        expected += (
+            u'\n'
+            u'echo "Results gathering started at $(date)"\n'
+            u'${GATHER} ${RESULTS_DIR} --debug\n'
+            u'echo "Results gathering ended at $(date)"\n'
+            u'\n'
+            u'chmod go+rx ${RESULTS_DIR}\n'
+            u'chmod g+rw ${RESULTS_DIR}/*\n'
+            u'chmod o+r ${RESULTS_DIR}/*\n'
+            u'\n'
+            u'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
+            u'rmdir $(pwd)\n'
+            u'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
+            u'exit ${MPIRUN_EXIT_CODE}\n'
+        )
+        assert script == expected
 
 
 class TestPbsDirectives:
