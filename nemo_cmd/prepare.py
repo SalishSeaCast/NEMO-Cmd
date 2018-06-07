@@ -202,9 +202,6 @@ def _check_nemo_exec(run_desc):
     Confirm that the NEMO executable exists, raising a SystemExit
     exception if it does not.
 
-    For NEMO-3.4 runs, confirm check that the IOM server executable
-    exists, issuing a warning if it does not.
-
     :param dict run_desc: Run description dictionary.
 
     :returns: Absolute path of NEMO executable's directory.
@@ -446,12 +443,9 @@ def _copy_run_set_files(
     The file path/name of the IO defs file is taken from the :kbd:`output`
     stanza of the YAML run description file.
     The IO defs file is copied as :file:`iodef.xml` because that is the
-    name that NEMO-3.4 or XIOS expects.
+    name that XIOS expects.
 
-    For NEMO-3.4, the :file:`xmlio_server.def` file is also copied.
-
-    For NEMO-3.6, the domain defs and field defs files used by XIOS
-    are also copied.
+    The domain defs and field defs files used by XIOS are also copied.
     Those file paths/names of those file are taken from the :kbd:`output`
     stanza of the YAML run description file.
     They are copied to :file:`domain_def.xml` and :file:`field_def.xml`,
@@ -767,8 +761,8 @@ def _resolve_forcing_path(run_desc, keys, run_dir):
 
 
 def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
-    """Confirm that the atmospheric forcing files necessary for the NEO-3.6 run
-    are present.
+    """Confirm that the atmospheric forcing files necessary for the NEMO-3.6
+    run are present.
 
     Sections of the namelist file are parsed to determine
     the necessary files, and the date ranges required for the run.
@@ -851,7 +845,7 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
 
 
 def _check_atmos_files(run_desc, run_dir):
-    """Confirm that the atmospheric forcing files necessary for the NEO-3.4 run
+    """Confirm that the atmospheric forcing files necessary for the NEMO-3.4 run
     are present. Sections of the namelist file are parsed to determine
     the necessary files, and the date ranges required for the run.
 
