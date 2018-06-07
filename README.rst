@@ -31,7 +31,7 @@ The ``NEMO-Cmd`` is based on v2.2 of the Salish Sea MEOPAR NEMO model project's 
 License
 =======
 
-The NEMO command processor and documentation are copyright 2013-2017 by the Salish Sea MEOPAR Project Contributors and The University of British Columbia.
+The NEMO command processor and documentation are copyright 2013-2018 by the Salish Sea MEOPAR Project Contributors and The University of British Columbia.
 
 They are licensed under the Apache License, Version 2.0.
 https://www.apache.org/licenses/LICENSE-2.0
