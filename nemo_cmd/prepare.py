@@ -109,7 +109,7 @@ def prepare(desc_file, nocheck_init):
     :rtype: :py:class:`pathlib.Path`
     """
     run_desc = lib.load_run_desc(desc_file)
-    nemo_bin_dir = _check_nemo_exec(run_desc)
+    nemo_bin_dir = check_nemo_exec(run_desc)
     xios_bin_dir = _check_xios_exec(run_desc)
     find_rebuild_nemo_script(run_desc)
     run_set_dir = resolved_path(desc_file).parent
@@ -196,7 +196,7 @@ def get_run_desc_value(
     return value
 
 
-def _check_nemo_exec(run_desc):
+def check_nemo_exec(run_desc):
     """Calculate absolute path of the NEMO executable's directory.
 
     Confirm that the NEMO executable exists, raising a SystemExit
@@ -207,7 +207,7 @@ def _check_nemo_exec(run_desc):
     :returns: Absolute path of NEMO executable's directory.
     :rtype: :py:class:`pathlib.Path`
 
-    :raises: SystemExit
+    :raises: :py:exc:`SystemExit` with exit code 2
     """
     try:
         nemo_config_dir = get_run_desc_value(
