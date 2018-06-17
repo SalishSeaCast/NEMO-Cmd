@@ -5,6 +5,11 @@ Change Log
 1.3 (unreleased)
 ================
 
+* Expose functions in ``nemo_cmd.prepare`` for use by packages like SalishSeaCmd that
+  extend NEMO-Cmd:
+
+  * ``nemo_cmd.prepare.check_nemo_exec()``
+
 * Fix bugs in the ``NEMO.sh`` script generation re: extra ``{}`` in some shell
   variable expressions.
 

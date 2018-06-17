@@ -62,7 +62,7 @@ class TestParser:
 
 
 @patch('nemo_cmd.prepare.lib.load_run_desc')
-@patch('nemo_cmd.prepare._check_nemo_exec')
+@patch('nemo_cmd.prepare.check_nemo_exec')
 @patch('nemo_cmd.prepare._check_xios_exec')
 @patch('nemo_cmd.prepare.find_rebuild_nemo_script')
 @patch('nemo_cmd.prepare.resolved_path')
@@ -182,7 +182,7 @@ class TestGetRunDescValue:
 
 
 class TestCheckNemoExec:
-    """Unit tests for `nemo prepare` _check_nemo_exec() function.
+    """Unit tests for `nemo prepare` check_nemo_exec() function.
     """
 
     @pytest.mark.parametrize(
@@ -203,7 +203,7 @@ class TestCheckNemoExec:
         }
         p_bin_dir = p_code_config.ensure_dir(config_name, 'BLD', 'bin')
         p_bin_dir.ensure('nemo.exe')
-        nemo_bin_dir = nemo_cmd.prepare._check_nemo_exec(run_desc)
+        nemo_bin_dir = nemo_cmd.prepare.check_nemo_exec(run_desc)
         assert nemo_bin_dir == Path(p_bin_dir)
 
     @pytest.mark.parametrize(
@@ -218,7 +218,7 @@ class TestCheckNemoExec:
             ),
         ]
     )
-    @patch('nemo_cmd.prepare.logger')
+    @patch('nemo_cmd.prepare.logger', autospec=True)
     def test_nemo_exec_not_found(
         self, m_logger, code_config_key, nemo_code_config, config_name_key,
         config_name, tmpdir
@@ -231,33 +231,7 @@ class TestCheckNemoExec:
             },
         }
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._check_nemo_exec(run_desc)
-
-    @pytest.mark.parametrize(
-        'config_name_key, nemo_code_config_key',
-        [
-            ('config name', 'NEMO code config'),  # recommended
-            ('config_name', 'NEMO-code-config'),  # backward compatibility
-        ]
-    )
-    @patch('nemo_cmd.prepare.logger')
-    @patch('nemo_cmd.prepare.get_run_desc_value')
-    def test_nemo36_no_iom_server_check(
-        self, m_get_run_desc_value, m_log, config_name_key,
-        nemo_code_config_key, tmpdir
-    ):
-        p_code_config = tmpdir.ensure_dir('NEMO-3.6-code')
-        run_desc = {
-            'config_name': 'SalishSea',
-            'paths': {
-                'NEMO-code-config': str(p_code_config)
-            },
-        }
-        p_code_config.ensure_dir('SalishSea', 'BLD', 'bin')
-        m_get_run_desc_value.side_effect = (Path(p_code_config), 'SalishSea')
-        with patch('nemo_cmd.prepare.Path.exists') as m_exists:
-            nemo_cmd.prepare._check_nemo_exec(run_desc)
-        assert m_exists.call_count == 1
+            nemo_cmd.prepare.check_nemo_exec(run_desc)
 
 
 class TestCheckXiosExec:
