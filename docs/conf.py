@@ -34,7 +34,10 @@ extensions = [
     'sphinx.ext.viewcode',
 ]
 
-intersphinx_mapping = {'python': ('https://docs.python.org/3/', None)}
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3/', None),
+    'salishseacmd': ('https://salishseacmd.readthedocs.io/en/latest/', None),
+}
 
 todo_include_todos = True
 
