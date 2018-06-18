@@ -113,7 +113,7 @@ def prepare(desc_file, nocheck_init):
     xios_bin_dir = check_xios_exec(run_desc)
     find_rebuild_nemo_script(run_desc)
     run_set_dir = resolved_path(desc_file).parent
-    run_dir = _make_run_dir(run_desc)
+    run_dir = make_run_dir(run_desc)
     _make_namelists(run_set_dir, run_desc, run_dir)
     _copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir)
     _make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir)
@@ -263,7 +263,7 @@ def check_xios_exec(run_desc):
     return xios_bin_dir
 
 
-def _make_run_dir(run_desc):
+def make_run_dir(run_desc):
     """Create the temporary directory from which NEMO will be run.
 
     The location is in the runs directory from the run description,

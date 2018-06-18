@@ -10,6 +10,7 @@ Change Log
 
   * ``nemo_cmd.prepare.check_nemo_exec()``
   * ``nemo_cmd.prepare.check_xios_exec()``
+  * ``nemo_cmd.prepare.make_run_dir()``
 
 * Fix bugs in the ``NEMO.sh`` script generation re: extra ``{}`` in some shell
   variable expressions.

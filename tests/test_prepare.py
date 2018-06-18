@@ -66,7 +66,7 @@ class TestParser:
 @patch('nemo_cmd.prepare.check_xios_exec')
 @patch('nemo_cmd.prepare.find_rebuild_nemo_script')
 @patch('nemo_cmd.prepare.resolved_path')
-@patch('nemo_cmd.prepare._make_run_dir')
+@patch('nemo_cmd.prepare.make_run_dir')
 @patch('nemo_cmd.prepare._make_namelists')
 @patch('nemo_cmd.prepare._copy_run_set_files')
 @patch('nemo_cmd.prepare._make_executable_links')
@@ -256,7 +256,7 @@ class TestCheckXiosExec:
 
 
 class TestMakeRunDir:
-    """Unit test for `nemo prepare` _make_run_dir() function.
+    """Unit test for `nemo prepare` make_run_dir() function.
     """
 
     @patch(
@@ -271,7 +271,7 @@ class TestMakeRunDir:
                 'runs directory': str(p_runs_dir)
             }
         }
-        run_dir = nemo_cmd.prepare._make_run_dir(run_desc)
+        run_dir = nemo_cmd.prepare.make_run_dir(run_desc)
         expected = (
             Path(str(p_runs_dir)) / 'foo_2017-10-20T102043.555919-0700'
         )
