@@ -110,7 +110,7 @@ def prepare(desc_file, nocheck_init):
     """
     run_desc = lib.load_run_desc(desc_file)
     nemo_bin_dir = check_nemo_exec(run_desc)
-    xios_bin_dir = _check_xios_exec(run_desc)
+    xios_bin_dir = check_xios_exec(run_desc)
     find_rebuild_nemo_script(run_desc)
     run_set_dir = resolved_path(desc_file).parent
     run_dir = _make_run_dir(run_desc)
@@ -237,7 +237,7 @@ def check_nemo_exec(run_desc):
     return nemo_bin_dir
 
 
-def _check_xios_exec(run_desc):
+def check_xios_exec(run_desc):
     """Calculate absolute path of the XIOS executable's directory.
 
     Confirm that the XIOS executable exists, raising a SystemExit
@@ -248,7 +248,7 @@ def _check_xios_exec(run_desc):
     :returns: Absolute path of XIOS executable's directory.
     :rtype: :py:class:`pathlib.Path`
 
-    :raises: SystemExit
+    :raises: :py:exc:`SystemExit` with exit code 2
     """
     xios_code_path = get_run_desc_value(
         run_desc, ('paths', 'XIOS'), resolve_path=True

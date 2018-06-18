@@ -9,6 +9,7 @@ Change Log
   extend NEMO-Cmd:
 
   * ``nemo_cmd.prepare.check_nemo_exec()``
+  * ``nemo_cmd.prepare.check_xios_exec()``
 
 * Fix bugs in the ``NEMO.sh`` script generation re: extra ``{}`` in some shell
   variable expressions.

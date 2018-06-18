@@ -47,6 +47,8 @@ The :ref:`SalishSeaCmdProcessor` package :kbd:`SalishSeaCmd` is an example of su
 
 .. autofunction:: nemo_cmd.prepare.check_nemo_exec
 
+.. autofunction:: nemo_cmd.prepare.check_xios_exec
+
 
 Functions for Reading Fortran Namelists
 =======================================

@@ -63,7 +63,7 @@ class TestParser:
 
 @patch('nemo_cmd.prepare.lib.load_run_desc')
 @patch('nemo_cmd.prepare.check_nemo_exec')
-@patch('nemo_cmd.prepare._check_xios_exec')
+@patch('nemo_cmd.prepare.check_xios_exec')
 @patch('nemo_cmd.prepare.find_rebuild_nemo_script')
 @patch('nemo_cmd.prepare.resolved_path')
 @patch('nemo_cmd.prepare._make_run_dir')
@@ -235,7 +235,7 @@ class TestCheckNemoExec:
 
 
 class TestCheckXiosExec:
-    """Unit tests for `nemo prepare` _check_xios_exec() function.
+    """Unit tests for `nemo prepare` check_xios_exec() function.
     """
 
     def test_xios_bin_dir_path(self, tmpdir):
@@ -243,7 +243,7 @@ class TestCheckXiosExec:
         run_desc = {'paths': {'XIOS': str(p_xios)}}
         p_bin_dir = p_xios.ensure_dir('bin')
         p_bin_dir.ensure('xios_server.exe')
-        xios_bin_dir = nemo_cmd.prepare._check_xios_exec(run_desc)
+        xios_bin_dir = nemo_cmd.prepare.check_xios_exec(run_desc)
         assert xios_bin_dir == Path(p_bin_dir)
 
     @patch('nemo_cmd.prepare.logger')
@@ -251,7 +251,8 @@ class TestCheckXiosExec:
         p_xios = tmpdir.ensure_dir('XIOS')
         run_desc = {'paths': {'XIOS': str(p_xios)}}
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._check_xios_exec(run_desc)
+            nemo_cmd.prepare.check_xios_exec(run_desc)
+        assert m_logger.error.called
 
 
 class TestMakeRunDir:
