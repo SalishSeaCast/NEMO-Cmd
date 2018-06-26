@@ -177,7 +177,7 @@ def get_run_desc_value(
             .format(': '.join(keys))
         )
         if run_dir:
-            _remove_run_dir(run_dir)
+            remove_run_dir(run_dir)
         raise SystemExit(2)
     if expand_path:
         value = expanded_path(value)
@@ -191,7 +191,7 @@ def get_run_desc_value(
                 )
             )
             if run_dir:
-                _remove_run_dir(run_dir)
+                remove_run_dir(run_dir)
             raise SystemExit(2)
     return value
 
@@ -286,7 +286,7 @@ def make_run_dir(run_desc):
     return run_dir
 
 
-def _remove_run_dir(run_dir):
+def remove_run_dir(run_dir):
     """Remove all files from run_dir, then remove run_dir.
 
     Intended to be used as a clean-up operation when some other part
@@ -372,7 +372,7 @@ def _make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
                         namelist.write(u'\n\n')
                 except IOError as e:
                     logger.error(e)
-                    _remove_run_dir(run_dir)
+                    remove_run_dir(run_dir)
                     raise SystemExit(2)
         ref_namelist = namelist_filename.replace('_cfg', '_ref')
         if ref_namelist not in namelists:
@@ -421,7 +421,7 @@ def _set_mpi_decomposition(namelist_filename, run_desc, run_dir):
             'that says how you want the domain distributed over the '
             'processors in the i (longitude) and j (latitude) dimensions.'
         )
-        _remove_run_dir(run_dir)
+        remove_run_dir(run_dir)
         raise SystemExit(2)
     with (run_dir / namelist_filename).open('rt') as f:
         lines = f.readlines()
@@ -578,7 +578,7 @@ def _set_xios_server_mode(run_desc, run_dir):
             'that say whether to run the XIOS server(s) attached or detached, '
             'and how many of them to use.'
         )
-        _remove_run_dir(run_dir)
+        remove_run_dir(run_dir)
         raise SystemExit(2)
     tree = xml.etree.ElementTree.parse(fspath(run_dir / 'iodef.xml'))
     root = tree.getroot()
@@ -673,7 +673,7 @@ def _make_grid_links(run_desc, run_dir, agrif_n=None):
                 'please check the forcing path and grid file names '
                 'in your run description file'.format(source)
             )
-            _remove_run_dir(run_dir)
+            remove_run_dir(run_dir)
             raise SystemExit(2)
         (run_dir / link_name).symlink_to(source)
 
@@ -701,7 +701,7 @@ def _make_forcing_links(run_desc, run_dir):
                 'please check the forcing paths and file names '
                 'in your run description file'.format(source)
             )
-            _remove_run_dir(run_dir)
+            remove_run_dir(run_dir)
             raise SystemExit(2)
         (run_dir / link_name).symlink_to(source)
         try:
@@ -723,7 +723,7 @@ def _make_forcing_links(run_desc, run_dir):
                         'unknown forcing link checker: {}'
                         .format(link_checker)
                     )
-                    _remove_run_dir(run_dir)
+                    remove_run_dir(run_dir)
                     raise SystemExit(2)
 
 
@@ -840,7 +840,7 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
                             dir=link_path
                         )
                     )
-                    _remove_run_dir(run_dir)
+                    remove_run_dir(run_dir)
                     raise SystemExit(2)
 
 
@@ -927,7 +927,7 @@ def _check_atmos_files(run_desc, run_dir):
                             dir=nemo_forcing_dir / atmos_dir,
                         )
                     )
-                    _remove_run_dir(run_dir)
+                    remove_run_dir(run_dir)
                     raise SystemExit(2)
 
 
@@ -983,7 +983,7 @@ def _make_restart_links(run_desc, run_dir, nocheck_init, agrif_n=None):
                 'please check the restart file paths and file names '
                 'in your run description file'.format(source)
             )
-            _remove_run_dir(run_dir)
+            remove_run_dir(run_dir)
             raise SystemExit(2)
         if nocheck_init:
             (run_dir / link_name).symlink_to(source)
@@ -1088,7 +1088,7 @@ def get_hg_revision(repo, run_dir):
             'unable to find Mercurial repo root in or above '
             '{repo_path}'.format(repo_path=repo_path)
         )
-        _remove_run_dir(run_dir)
+        remove_run_dir(run_dir)
         raise SystemExit(2)
     revision = parents[0]
     repo_rev_file_lines = [
@@ -1216,5 +1216,5 @@ def _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
                     sub_grids_count=sub_grids_count
                 )
             )
-            _remove_run_dir(run_dir)
+            remove_run_dir(run_dir)
             raise SystemExit(2)
