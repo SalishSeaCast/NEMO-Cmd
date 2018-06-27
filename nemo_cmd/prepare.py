@@ -121,7 +121,7 @@ def prepare(desc_file, nocheck_init):
     make_forcing_links(run_desc, run_dir)
     make_restart_links(run_desc, run_dir, nocheck_init)
     _record_vcs_revisions(run_desc, run_dir)
-    _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init)
+    add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init)
     return run_dir
 
 
@@ -1047,7 +1047,7 @@ def get_hg_revision(repo, run_dir):
     return repo_rev_file_lines
 
 
-def _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
+def add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
     """Add file copies and symlinks to temporary run directory for
     AGRIF runs.
 
@@ -1067,12 +1067,9 @@ def _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
     :param boolean nocheck_init: Suppress restart file existence check;
                                  the default is to check
 
-    :raises: SystemExit if mismatching number of sub-grids is detected
+    :raises: :py:exc:`SystemExit` with exit code 2 if mismatching number of
+             sub-grids is detected
     """
-
-    ##TODO: Refactor this into a public function that can be used by prepare
-    ## plug-ins in packages like SalishSeaCmd that extend NEMO-Cmd
-
     try:
         get_run_desc_value(run_desc, ('AGRIF',), fatal=False)
     except KeyError:
@@ -1103,7 +1100,7 @@ def _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
         ),
     }
     try:
-        link_names = get_run_desc_value(
+        get_run_desc_value(
             run_desc, ('restart',), run_dir=run_dir, fatal=False
         )
         run_desc_sections['restart'] = functools.partial(
