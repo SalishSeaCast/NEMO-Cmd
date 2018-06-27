@@ -51,6 +51,8 @@ The :ref:`SalishSeaCmdProcessor` package :kbd:`SalishSeaCmd` is an example of su
 
 .. autofunction:: nemo_cmd.prepare.copy_run_set_files
 
+.. autofunction:: nemo_cmd.prepare.get_hg_revision
+
 .. autofunction:: nemo_cmd.prepare.make_namelists
 
 .. autofunction:: nemo_cmd.prepare.make_executable_links
@@ -66,6 +68,8 @@ The :ref:`SalishSeaCmdProcessor` package :kbd:`SalishSeaCmd` is an example of su
 .. autofunction:: nemo_cmd.prepare.remove_run_dir
 
 .. autofunction:: nemo_cmd.prepare.set_mpi_decomposition
+
+.. autofunction:: nemo_cmd.prepare.write_repo_rev_file
 
 
 Functions for Reading Fortran Namelists
