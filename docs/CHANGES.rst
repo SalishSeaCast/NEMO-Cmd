@@ -13,6 +13,7 @@ Change Log
   * ``nemo_cmd.prepare.make_namelists()``
   * ``nemo_cmd.prepare.make_run_dir()``
   * ``nemo_cmd.prepare.remove_run_dir()``
+  * ``nemo_cmd.prepare.set_mpi_decomposition()``
 
 * Fix bugs in the ``NEMO.sh`` script generation re: extra ``{}`` in some shell
   variable expressions.
