@@ -115,7 +115,7 @@ def prepare(desc_file, nocheck_init):
     run_set_dir = resolved_path(desc_file).parent
     run_dir = make_run_dir(run_desc)
     make_namelists(run_set_dir, run_desc, run_dir)
-    _copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir)
+    copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir)
     _make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir)
     _make_grid_links(run_desc, run_dir)
     _make_forcing_links(run_desc, run_dir)
@@ -442,13 +442,12 @@ def set_mpi_decomposition(namelist_filename, run_desc, run_dir):
         f.writelines(lines)
 
 
-def _copy_run_set_files(
+def copy_run_set_files(
     run_desc, desc_file, run_set_dir, run_dir, agrif_n=None
 ):
     """Copy the run-set files given into run_dir.
 
-    For all versions of NEMO the YAML run description file 
-    (from the command-line) is copied.
+    The YAML run description file (from the command-line) is copied.
     The IO defs file is also copied.
     The file path/name of the IO defs file is taken from the :kbd:`output`
     stanza of the YAML run description file.
@@ -572,7 +571,7 @@ def _set_xios_server_mode(run_desc, run_dir):
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
 
-    :raises: SystemExit
+    :raises: :py:exc:`SystemExit` with exit code 2
     """
     try:
         sep_xios_server = get_run_desc_value(
@@ -1194,7 +1193,7 @@ def _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
         # sub-grid output files
         'output':
         functools.partial(
-            _copy_run_set_files, run_desc, desc_file, run_set_dir, run_dir
+            copy_run_set_files, run_desc, desc_file, run_set_dir, run_dir
         ),
     }
     try:
