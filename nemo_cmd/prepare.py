@@ -393,7 +393,7 @@ def make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
                 fspath(run_dir / namelist_dest.replace('_cfg', '_ref'))
             )
     if 'namelist_cfg' in namelists:
-        _set_mpi_decomposition('namelist_cfg', run_desc, run_dir)
+        set_mpi_decomposition('namelist_cfg', run_desc, run_dir)
     else:
         logger.error(
             'No namelist_cfg key found in namelists section of run '
@@ -403,11 +403,11 @@ def make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
         raise SystemExit(2)
 
 
-def _set_mpi_decomposition(namelist_filename, run_desc, run_dir):
+def set_mpi_decomposition(namelist_filename, run_desc, run_dir):
     """Update the &nammpp namelist jpni & jpnj values with the MPI
     decomposition values from the run description.
 
-    A SystemExit exception is raise if there is no MPI decomposition
+    A :py:exc:`SystemExit` exception is raise if there is no MPI decomposition
     specified in the run description.
 
     :param str namelist_filename: The name of the namelist file.
@@ -417,7 +417,7 @@ def _set_mpi_decomposition(namelist_filename, run_desc, run_dir):
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
 
-    :raises: SystemExit
+    :raises: :py:exc:`SystemExit` with exit code 2
     """
     try:
         jpni, jpnj = get_run_desc_value(

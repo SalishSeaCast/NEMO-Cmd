@@ -337,7 +337,7 @@ class TestMakeNamelist:
         p_nemo_config_dir.ensure('SalishSea/EXP00/namelist_top_ref')
         p_nemo_config_dir.ensure('SalishSea/EXP00/namelist_pisces_ref')
         p_set_mpi_decomp = patch(
-            'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
+            'nemo_cmd.prepare.set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp:
             nemo_cmd.prepare.make_namelists(
@@ -382,7 +382,7 @@ class TestMakeNamelist:
         p_nemo_config_dir.ensure('SalishSea/EXP00/namelist_top_ref')
         p_nemo_config_dir.ensure('SalishSea/EXP00/namelist_pisces_ref')
         p_set_mpi_decomp = patch(
-            'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
+            'nemo_cmd.prepare.set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp:
             nemo_cmd.prepare.make_namelists(
@@ -472,7 +472,7 @@ class TestMakeNamelist:
         }
         p_run_dir = tmpdir.ensure_dir('run_dir')
         p_set_mpi_decomp = patch(
-            'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
+            'nemo_cmd.prepare.set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp:
             nemo_cmd.prepare.make_namelists(
@@ -520,7 +520,7 @@ class TestMakeNamelist:
         }
         p_run_dir = tmpdir.ensure_dir('run_dir')
         p_set_mpi_decomp = patch(
-            'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
+            'nemo_cmd.prepare.set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp:
             nemo_cmd.prepare.make_namelists(
@@ -566,7 +566,7 @@ class TestMakeNamelist:
         p_nemo_config_dir.ensure('SalishSea/EXP00/namelist_top_ref')
         p_nemo_config_dir.ensure('SalishSea/EXP00/namelist_pisces_ref')
         p_set_mpi_decomp = patch(
-            'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
+            'nemo_cmd.prepare.set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp as m_set_mpi_decomp:
             nemo_cmd.prepare.make_namelists(
