@@ -68,7 +68,7 @@ class TestParser:
 @patch('nemo_cmd.prepare.resolved_path')
 @patch('nemo_cmd.prepare.make_run_dir')
 @patch('nemo_cmd.prepare.make_namelists')
-@patch('nemo_cmd.prepare._copy_run_set_files')
+@patch('nemo_cmd.prepare.copy_run_set_files')
 @patch('nemo_cmd.prepare._make_executable_links')
 @patch('nemo_cmd.prepare._make_grid_links')
 @patch('nemo_cmd.prepare._make_forcing_links')
@@ -640,7 +640,7 @@ class TestMakeNamelist:
 
 
 class TestCopyRunSetFiles:
-    """Unit tests for `nemo prepare` _copy_run_set_files() function.
+    """Unit tests for `nemo prepare` copy_run_set_files() function.
     """
 
     @pytest.mark.parametrize(
@@ -673,7 +673,7 @@ class TestCopyRunSetFiles:
             pwd / 'iodef.xml', pwd / 'domain_def.xml', pwd / 'field_def.xml',
             KeyError
         )
-        nemo_cmd.prepare._copy_run_set_files(
+        nemo_cmd.prepare.copy_run_set_files(
             run_desc, desc_file, pwd, Path('run_dir')
         )
         expected = [
@@ -720,7 +720,7 @@ class TestCopyRunSetFiles:
             pwd / 'iodef.xml', pwd / '1_domain_def.xml', pwd / 'field_def.xml',
             KeyError
         )
-        nemo_cmd.prepare._copy_run_set_files(
+        nemo_cmd.prepare.copy_run_set_files(
             run_desc, desc_file, pwd, Path('run_dir'), agrif_n=1
         )
         expected = [
@@ -766,7 +766,7 @@ class TestCopyRunSetFiles:
         m_get_run_desc_value.side_effect = ((pwd / '../iodef.xml').resolve(), (
             pwd / '../domain_def.xml'
         ).resolve(), (pwd / '../field_def.xml').resolve(), KeyError)
-        nemo_cmd.prepare._copy_run_set_files(
+        nemo_cmd.prepare.copy_run_set_files(
             run_desc, desc_file, pwd, Path('run_dir')
         )
         expected = [
@@ -815,7 +815,7 @@ class TestCopyRunSetFiles:
         m_get_run_desc_value.side_effect = ((pwd / '../iodef.xml').resolve(), (
             pwd / '../1_domain_def.xml'
         ).resolve(), (pwd / '../field_def.xml').resolve(), KeyError)
-        nemo_cmd.prepare._copy_run_set_files(
+        nemo_cmd.prepare.copy_run_set_files(
             run_desc, desc_file, pwd, Path('run_dir'), agrif_n=1
         )
         expected = [
@@ -859,7 +859,7 @@ class TestCopyRunSetFiles:
             (pwd / '../field_def.xml').resolve(),
             (pwd / '../file_def.xml').resolve()
         )
-        nemo_cmd.prepare._copy_run_set_files(
+        nemo_cmd.prepare.copy_run_set_files(
             run_desc, desc_file, pwd, Path('run_dir')
         )
         assert m_copy.call_args_list[-1] == call(
@@ -891,7 +891,7 @@ class TestCopyRunSetFiles:
             (pwd / '../field_def.xml').resolve(),
             (pwd / '../1_file_def.xml').resolve()
         )
-        nemo_cmd.prepare._copy_run_set_files(
+        nemo_cmd.prepare.copy_run_set_files(
             run_desc, desc_file, pwd, Path('run_dir'), agrif_n=1
         )
         assert m_copy.call_args_list[-1] == call(
@@ -1361,7 +1361,7 @@ class TestRecordVcsRevision:
 @patch('nemo_cmd.prepare.logger', autospec=True)
 @patch('nemo_cmd.prepare._make_grid_links', autospec=True)
 @patch('nemo_cmd.prepare._make_restart_links', autospec=True)
-@patch('nemo_cmd.prepare._copy_run_set_files', autospec=True)
+@patch('nemo_cmd.prepare.copy_run_set_files', autospec=True)
 @patch('nemo_cmd.prepare.make_namelists', autospec=True)
 class TestAddAgrifFiles:
     """Unit tests for `nemo prepare` _add_agrid_files() function.
