@@ -71,7 +71,7 @@ class TestParser:
 @patch('nemo_cmd.prepare.copy_run_set_files')
 @patch('nemo_cmd.prepare.make_executable_links')
 @patch('nemo_cmd.prepare.make_grid_links')
-@patch('nemo_cmd.prepare._make_forcing_links')
+@patch('nemo_cmd.prepare.make_forcing_links')
 @patch('nemo_cmd.prepare._make_restart_links')
 @patch('nemo_cmd.prepare._record_vcs_revisions')
 @patch('nemo_cmd.prepare._add_agrif_files')
@@ -1067,7 +1067,7 @@ class TestMakeGridLinks:
 
 
 class TestMakeForcingLinks:
-    """Unit tests for `nemo prepare` _make_forcing_links() function.
+    """Unit tests for `nemo prepare` make_forcing_links() function.
     """
 
     def test_abs_path_link(self, tmpdir):
@@ -1087,7 +1087,7 @@ class TestMakeForcingLinks:
         }
         patch_symlink_to = patch('nemo_cmd.prepare.Path.symlink_to')
         with patch_symlink_to as m_symlink_to:
-            nemo_cmd.prepare._make_forcing_links(run_desc, Path('run_dir'))
+            nemo_cmd.prepare.make_forcing_links(run_desc, Path('run_dir'))
         m_symlink_to.assert_called_once_with(Path(p_atmos_ops))
 
     def test_rel_path_link(self, tmpdir):
@@ -1105,7 +1105,7 @@ class TestMakeForcingLinks:
         }
         patch_symlink_to = patch('nemo_cmd.prepare.Path.symlink_to')
         with patch_symlink_to as m_symlink_to:
-            nemo_cmd.prepare._make_forcing_links(run_desc, Path('run_dir'))
+            nemo_cmd.prepare.make_forcing_links(run_desc, Path('run_dir'))
         m_symlink_to.assert_called_once_with(
             Path(p_nemo_forcing.join('rivers'))
         )
@@ -1125,7 +1125,7 @@ class TestMakeForcingLinks:
             }
         }
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_forcing_links(run_desc, Path('run_dir'))
+            nemo_cmd.prepare.make_forcing_links(run_desc, Path('run_dir'))
         m_log.error.assert_called_once_with(
             '{} not found; cannot create symlink - '
             'please check the forcing paths and file names '
@@ -1156,7 +1156,7 @@ class TestMakeForcingLinks:
         }
         patch_symlink_to = patch('nemo_cmd.prepare.Path.symlink_to')
         with patch_symlink_to as m_symlink_to:
-            nemo_cmd.prepare._make_forcing_links(run_desc, Path('run_dir'))
+            nemo_cmd.prepare.make_forcing_links(run_desc, Path('run_dir'))
         m_chk_atmos_frc_link.assert_called_once_with(
             Path('run_dir'), Path(p_atmos_ops), 'namelist_cfg'
         )
@@ -1184,7 +1184,7 @@ class TestMakeForcingLinks:
         patch_symlink_to = patch('nemo_cmd.prepare.Path.symlink_to')
         with patch_symlink_to as m_symlink_to:
             with pytest.raises(SystemExit):
-                nemo_cmd.prepare._make_forcing_links(run_desc, Path('run_dir'))
+                nemo_cmd.prepare.make_forcing_links(run_desc, Path('run_dir'))
 
 
 class TestResolveForcingPath:
