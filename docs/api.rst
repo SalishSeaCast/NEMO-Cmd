@@ -45,6 +45,8 @@ Functions for Preparing NEMO Runs
 The functions are probably most useful for packages that extend the :kbd:`NEMO-Cmd` package to create command processors for particular NEMO configurations.
 The :ref:`SalishSeaCmdProcessor` package :kbd:`SalishSeaCmd` is an example of such an extension package.
 
+.. autofunction:: nemo_cmd.prepare.add_agrif_files
+
 .. autofunction:: nemo_cmd.prepare.check_nemo_exec
 
 .. autofunction:: nemo_cmd.prepare.check_xios_exec

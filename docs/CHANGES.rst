@@ -8,6 +8,7 @@ Change Log
 * Expose functions in ``nemo_cmd.prepare`` for use by packages like SalishSeaCmd that
   extend NEMO-Cmd:
 
+  * ``nemo_cmd.prepare.add_agrif_files()``
   * ``nemo_cmd.prepare.check_nemo_exec()``
   * ``nemo_cmd.prepare.check_xios_exec()``
   * ``nemo_cmd.prepare.copy_run_set_files()``
