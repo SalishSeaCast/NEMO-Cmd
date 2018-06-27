@@ -776,8 +776,8 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
     
-    :param :py:class:`pathlib.Path` link_path: Path of the atmospheric forcing
-                                               files collection.
+    :param link_path: Path of the atmospheric forcing files collection.
+    :type :py:class:`pathlib.Path`:
     
     :param str namelist_filename: File name of the namelist to parse for
                                   atmospheric file names and date ranges.
