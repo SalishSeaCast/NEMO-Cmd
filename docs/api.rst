@@ -55,6 +55,8 @@ The :ref:`SalishSeaCmdProcessor` package :kbd:`SalishSeaCmd` is an example of su
 
 .. autofunction:: nemo_cmd.prepare.make_executable_links
 
+.. autofunction:: nemo_cmd.prepare.make_grid_links
+
 .. autofunction:: nemo_cmd.prepare.make_run_dir
 
 .. autofunction:: nemo_cmd.prepare.remove_run_dir
