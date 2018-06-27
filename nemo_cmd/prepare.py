@@ -119,7 +119,7 @@ def prepare(desc_file, nocheck_init):
     make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir)
     make_grid_links(run_desc, run_dir)
     make_forcing_links(run_desc, run_dir)
-    _make_restart_links(run_desc, run_dir, nocheck_init)
+    make_restart_links(run_desc, run_dir, nocheck_init)
     _record_vcs_revisions(run_desc, run_dir)
     _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init)
     return run_dir
@@ -849,9 +849,9 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
                     raise SystemExit(2)
 
 
-def _make_restart_links(run_desc, run_dir, nocheck_init, agrif_n=None):
-    """For a NEMO-3.6 run, create symlinks in run_dir to the restart
-    files given in the run description restart section.
+def make_restart_links(run_desc, run_dir, nocheck_init, agrif_n=None):
+    """Create symlinks in run_dir to the restart files given in the
+    run description restart section.
 
     :param dict run_desc: Run description dictionary.
 
@@ -863,12 +863,9 @@ def _make_restart_links(run_desc, run_dir, nocheck_init, agrif_n=None):
 
     :param int agrif_n: AGRIF sub-grid number.
 
-    :raises: :py:exc:`SystemExit` if a symlink target does not exist
+    :raises: :py:exc:`SystemExit` with exit code 2 if a symlink target does
+             not exist
     """
-
-    ##TODO: Refactor this into a public function that can be used by prepare
-    ## plug-ins in packages like SalishSeaCmd that extend NEMO-Cmd
-
     keys = ('restart',)
     if agrif_n is not None:
         keys = ('restart', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n))
@@ -1110,7 +1107,7 @@ def _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
             run_desc, ('restart',), run_dir=run_dir, fatal=False
         )
         run_desc_sections['restart'] = functools.partial(
-            _make_restart_links, run_desc, run_dir, nocheck_init
+            make_restart_links, run_desc, run_dir, nocheck_init
         )
     except KeyError:
         # The parent grid is not being initialized from a restart file,

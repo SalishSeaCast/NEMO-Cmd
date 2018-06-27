@@ -72,7 +72,7 @@ class TestParser:
 @patch('nemo_cmd.prepare.make_executable_links')
 @patch('nemo_cmd.prepare.make_grid_links')
 @patch('nemo_cmd.prepare.make_forcing_links')
-@patch('nemo_cmd.prepare._make_restart_links')
+@patch('nemo_cmd.prepare.make_restart_links')
 @patch('nemo_cmd.prepare._record_vcs_revisions')
 @patch('nemo_cmd.prepare._add_agrif_files')
 class TestPrepare:
@@ -1233,13 +1233,13 @@ class TestResolveForcingPath:
 
 
 class TestMakeRestartLinks:
-    """Unit tests for `salishsea prepare` _make_restart_links() function.
+    """Unit tests for `salishsea prepare` make_restart_links() function.
     """
 
     @patch('nemo_cmd.prepare.logger')
     def test_no_restart_key(self, m_logger):
         run_desc = {}
-        nemo_cmd.prepare._make_restart_links(
+        nemo_cmd.prepare.make_restart_links(
             run_desc, Path('run_dir'), nocheck_init=False
         )
         m_logger.warning.assert_called_once_with(
@@ -1265,7 +1265,7 @@ class TestMakeRestartLinks:
         }
         patch_symlink_to = patch('nemo_cmd.prepare.Path.symlink_to')
         with patch_symlink_to as m_symlink_to:
-            nemo_cmd.prepare._make_restart_links(
+            nemo_cmd.prepare.make_restart_links(
                 run_desc, Path('run_dir'), nocheck_init=False
             )
         m_symlink_to.assert_called_once_with(Path(str(p_results)))
@@ -1287,7 +1287,7 @@ class TestMakeRestartLinks:
         }
         patch_symlink_to = patch('nemo_cmd.prepare.Path.symlink_to')
         with patch_symlink_to as m_symlink_to:
-            nemo_cmd.prepare._make_restart_links(
+            nemo_cmd.prepare.make_restart_links(
                 run_desc,
                 Path('run_dir'),
                 nocheck_init=False,
@@ -1304,7 +1304,7 @@ class TestMakeRestartLinks:
             }
         }
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_restart_links(
+            nemo_cmd.prepare.make_restart_links(
                 run_desc, Path('run_dir'), nocheck_init=False
             )
         m_logger.error.assert_called_once_with(
@@ -1323,7 +1323,7 @@ class TestMakeRestartLinks:
         }
         patch_symlink_to = patch('nemo_cmd.prepare.Path.symlink_to')
         with patch_symlink_to as m_symlink_to:
-            nemo_cmd.prepare._make_restart_links(
+            nemo_cmd.prepare.make_restart_links(
                 run_desc, Path('run_dir'), nocheck_init=True
             )
         m_symlink_to.assert_called_once_with(
@@ -1360,7 +1360,7 @@ class TestRecordVcsRevision:
 
 @patch('nemo_cmd.prepare.logger', autospec=True)
 @patch('nemo_cmd.prepare.make_grid_links', autospec=True)
-@patch('nemo_cmd.prepare._make_restart_links', autospec=True)
+@patch('nemo_cmd.prepare.make_restart_links', autospec=True)
 @patch('nemo_cmd.prepare.copy_run_set_files', autospec=True)
 @patch('nemo_cmd.prepare.make_namelists', autospec=True)
 class TestAddAgrifFiles:
