@@ -116,7 +116,7 @@ def prepare(desc_file, nocheck_init):
     run_dir = make_run_dir(run_desc)
     make_namelists(run_set_dir, run_desc, run_dir)
     copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir)
-    _make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir)
+    make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir)
     _make_grid_links(run_desc, run_dir)
     _make_forcing_links(run_desc, run_dir)
     _make_restart_links(run_desc, run_dir, nocheck_init)
@@ -606,9 +606,8 @@ def _set_xios_server_mode(run_desc, run_dir):
         f.writelines(lines)
 
 
-def _make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir):
-    """Create symlinks in run_dir to the NEMO and I/O server executables
-    and record the code repository revision(s) used for the run.
+def make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir):
+    """Create symlinks in run_dir to the NEMO and XIOS executables.
 
     :param nemo_bin_dir: Absolute path of directory containing NEMO executable.
     :type nemo_bin_dir: :py:class:`pathlib.Path`
