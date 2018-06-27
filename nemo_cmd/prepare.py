@@ -114,7 +114,7 @@ def prepare(desc_file, nocheck_init):
     find_rebuild_nemo_script(run_desc)
     run_set_dir = resolved_path(desc_file).parent
     run_dir = make_run_dir(run_desc)
-    _make_namelists(run_set_dir, run_desc, run_dir)
+    make_namelists(run_set_dir, run_desc, run_dir)
     _copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir)
     _make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir)
     _make_grid_links(run_desc, run_dir)
@@ -305,16 +305,16 @@ def remove_run_dir(run_dir):
         pass
 
 
-def _make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
-    """Build the namelist files for the NEMO-3.6 run in run_dir by
+def make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
+    """Build the namelist files for the NEMO run in run_dir by
     concatenating the lists of namelist section files provided in run_desc.
 
     If any of the required namelist section files are missing,
-    delete the run directory and raise a SystemExit exception.
+    delete the run directory and raise a :py:exc:`SystemExit` exception.
 
     :param run_set_dir: Directory containing the run description file,
-                      from which relative paths for the namelist section
-                      files start.
+                        from which relative paths for the namelist section
+                        files start.
     :type run_set_dir: :py:class:`pathlib.Path`
 
     :param dict run_desc: Run description dictionary.
@@ -324,23 +324,31 @@ def _make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
 
     :param int agrif_n: AGRIF sub-grid number.
 
-    :raises: SystemExit
+    :raises: :py:exc:`SystemExit` with exit code 2
     """
-
-    ##TODO: Refactor this into a public function that can be used by prepare
-    ## plug-ins in packages like SalishSeaCmd that extend NEMO-Cmd
-
     try:
-        nemo_code_config = run_desc['paths']['NEMO code config']
+        nemo_config_dir = get_run_desc_value(
+            run_desc, ('paths', 'NEMO code config'),
+            resolve_path=True,
+            run_dir=run_dir,
+            fatal=False
+        )
     except KeyError:
         # Alternate key spelling for backward compatibility
-        nemo_code_config = run_desc['paths']['NEMO-code-config']
-    nemo_config_dir = resolved_path(nemo_code_config)
+        nemo_config_dir = get_run_desc_value(
+            run_desc, ('paths', 'NEMO-code-config'),
+            resolve_path=True,
+            run_dir=run_dir
+        )
     try:
-        config_name = run_desc['config name']
+        config_name = get_run_desc_value(
+            run_desc, ('config name',), run_dir=run_dir, fatal=False
+        )
     except KeyError:
         # Alternate key spelling for backward compatibility
-        config_name = run_desc['config_name']
+        config_name = get_run_desc_value(
+            run_desc, ('config_name',), run_dir=run_dir
+        )
     keys = ('namelists',)
     if agrif_n is not None:
         keys = ('namelists', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n))
@@ -372,6 +380,7 @@ def _make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
                         namelist.write(u'\n\n')
                 except IOError as e:
                     logger.error(e)
+                    namelist.close()
                     remove_run_dir(run_dir)
                     raise SystemExit(2)
         ref_namelist = namelist_filename.replace('_cfg', '_ref')
@@ -390,6 +399,7 @@ def _make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
             'No namelist_cfg key found in namelists section of run '
             'description'
         )
+        remove_run_dir(run_dir)
         raise SystemExit(2)
 
 
@@ -1180,7 +1190,7 @@ def _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
         functools.partial(_make_grid_links, run_desc, run_dir),
         # sub-grid namelist files
         'namelists':
-        functools.partial(_make_namelists, run_set_dir, run_desc, run_dir),
+        functools.partial(make_namelists, run_set_dir, run_desc, run_dir),
         # sub-grid output files
         'output':
         functools.partial(

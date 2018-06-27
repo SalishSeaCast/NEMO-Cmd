@@ -67,7 +67,7 @@ class TestParser:
 @patch('nemo_cmd.prepare.find_rebuild_nemo_script')
 @patch('nemo_cmd.prepare.resolved_path')
 @patch('nemo_cmd.prepare.make_run_dir')
-@patch('nemo_cmd.prepare._make_namelists')
+@patch('nemo_cmd.prepare.make_namelists')
 @patch('nemo_cmd.prepare._copy_run_set_files')
 @patch('nemo_cmd.prepare._make_executable_links')
 @patch('nemo_cmd.prepare._make_grid_links')
@@ -340,7 +340,7 @@ class TestMakeNamelist:
             'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp:
-            nemo_cmd.prepare._make_namelists(
+            nemo_cmd.prepare.make_namelists(
                 Path(p_run_set_dir), run_desc, Path(str(p_run_dir))
             )
         assert p_run_dir.join('namelist_cfg').check(file=True, link=False)
@@ -385,7 +385,7 @@ class TestMakeNamelist:
             'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp:
-            nemo_cmd.prepare._make_namelists(
+            nemo_cmd.prepare.make_namelists(
                 Path(str(p_run_set_dir)),
                 run_desc,
                 Path(str(p_run_dir)),
@@ -414,7 +414,7 @@ class TestMakeNamelist:
         ]
     )
     @patch('nemo_cmd.prepare.logger')
-    def test_file_not_found_error(
+    def test_namelist_file_not_found_error(
         self, m_logger, config_name_key, nemo_code_config_key, tmpdir
     ):
         p_nemo_config_dir = tmpdir.ensure_dir('NEMO-3.6/NEMOGCM/CONFIG')
@@ -430,7 +430,7 @@ class TestMakeNamelist:
         }
         p_run_dir = tmpdir.ensure_dir('run_dir')
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_namelists(
+            nemo_cmd.prepare.make_namelists(
                 Path(p_run_set_dir), run_desc, Path(str(p_run_dir))
             )
 
@@ -475,7 +475,7 @@ class TestMakeNamelist:
             'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp:
-            nemo_cmd.prepare._make_namelists(
+            nemo_cmd.prepare.make_namelists(
                 Path(p_run_set_dir), run_desc, Path(str(p_run_dir))
             )
         assert p_run_dir.join('namelist_ref').check(file=True, link=False)
@@ -523,7 +523,7 @@ class TestMakeNamelist:
             'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp:
-            nemo_cmd.prepare._make_namelists(
+            nemo_cmd.prepare.make_namelists(
                 Path(str(p_run_set_dir)),
                 run_desc,
                 Path(str(p_run_dir)),
@@ -569,7 +569,7 @@ class TestMakeNamelist:
             'nemo_cmd.prepare._set_mpi_decomposition', autospec=True
         )
         with p_set_mpi_decomp as m_set_mpi_decomp:
-            nemo_cmd.prepare._make_namelists(
+            nemo_cmd.prepare.make_namelists(
                 Path(p_run_set_dir), run_desc, Path(str(p_run_dir))
             )
         m_set_mpi_decomp.assert_called_once_with(
@@ -604,7 +604,7 @@ class TestMakeNamelist:
         p_nemo_config_dir.ensure('SalishSea/EXP00/namelist_top_ref')
         p_nemo_config_dir.ensure('SalishSea/EXP00/namelist_pisces_ref')
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_namelists(
+            nemo_cmd.prepare.make_namelists(
                 Path(p_run_set_dir), run_desc, Path(str(p_run_dir))
             )
 
@@ -631,7 +631,7 @@ class TestMakeNamelist:
         p_nemo_config_dir.ensure('SalishSea/EXP00/1_namelist_top_ref')
         p_nemo_config_dir.ensure('SalishSea/EXP00/1_namelist_pisces_ref')
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_namelists(
+            nemo_cmd.prepare.make_namelists(
                 Path(str(p_run_set_dir)),
                 run_desc,
                 Path(str(p_run_dir)),
@@ -1362,7 +1362,7 @@ class TestRecordVcsRevision:
 @patch('nemo_cmd.prepare._make_grid_links', autospec=True)
 @patch('nemo_cmd.prepare._make_restart_links', autospec=True)
 @patch('nemo_cmd.prepare._copy_run_set_files', autospec=True)
-@patch('nemo_cmd.prepare._make_namelists', autospec=True)
+@patch('nemo_cmd.prepare.make_namelists', autospec=True)
 class TestAddAgrifFiles:
     """Unit tests for `nemo prepare` _add_agrid_files() function.
     """

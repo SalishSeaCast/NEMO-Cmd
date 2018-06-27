@@ -10,6 +10,7 @@ Change Log
 
   * ``nemo_cmd.prepare.check_nemo_exec()``
   * ``nemo_cmd.prepare.check_xios_exec()``
+  * ``nemo_cmd.prepare.make_namelists()``
   * ``nemo_cmd.prepare.make_run_dir()``
   * ``nemo_cmd.prepare.remove_run_dir()``
 
