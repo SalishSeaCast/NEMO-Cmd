@@ -118,7 +118,7 @@ def prepare(desc_file, nocheck_init):
     copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir)
     make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir)
     make_grid_links(run_desc, run_dir)
-    _make_forcing_links(run_desc, run_dir)
+    make_forcing_links(run_desc, run_dir)
     _make_restart_links(run_desc, run_dir, nocheck_init)
     _record_vcs_revisions(run_desc, run_dir)
     _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init)
@@ -682,16 +682,17 @@ def make_grid_links(run_desc, run_dir, agrif_n=None):
         (run_dir / link_name).symlink_to(source)
 
 
-def _make_forcing_links(run_desc, run_dir):
-    """For a NEMO-3.6 run, create symlinks in run_dir to the forcing
-    directory/file names given in the run description forcing section.
+def make_forcing_links(run_desc, run_dir):
+    """Create symlinks in run_dir to the forcing directory/file names given
+    in the run description forcing section.
 
     :param dict run_desc: Run description dictionary.
 
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
 
-    :raises: :py:exc:`SystemExit` if a symlink target does not exist
+    :raises: :py:exc:`SystemExit` with exit code 2 if a symlink target
+             does not exist
     """
     link_checkers = {'atmospheric': _check_atmospheric_forcing_link}
     link_names = get_run_desc_value(run_desc, ('forcing',), run_dir=run_dir)
@@ -751,7 +752,8 @@ def _resolve_forcing_path(run_desc, keys, run_dir):
     :return: Resolved path
     :rtype: :py:class:`pathlib.Path`
 
-    :raises: :py:exc:`SystemExit` if the NEMO-forcing repo path does not exist
+    :raises: :py:exc:`SystemExit` with exit code 2 if the NEMO-forcing repo
+             path does not exist
     """
     path = get_run_desc_value(
         run_desc, (('forcing',) + keys), expand_path=True, fatal=False
