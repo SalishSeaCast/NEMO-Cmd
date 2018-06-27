@@ -767,13 +767,11 @@ def _resolve_forcing_path(run_desc, keys, run_dir):
 
 
 def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
-    """Confirm that the atmospheric forcing files necessary for the NEMO-3.6
+    """Confirm that the atmospheric forcing files necessary for the NEMO
     run are present.
 
     Sections of the namelist file are parsed to determine
     the necessary files, and the date ranges required for the run.
-    
-    This is the atmospheric forcing link check function used for NEMO-3.6 runs.
 
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
@@ -784,7 +782,8 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
     :param str namelist_filename: File name of the namelist to parse for
                                   atmospheric file names and date ranges.
 
-    :raises: :py:exc:`SystemExit` if an atmospheric forcing file does not exist
+    :raises: :py:exc:`SystemExit` with exit code 2 if an atmospheric forcing
+             file does not exist
     """
     namelist = namelist2dict(fspath(run_dir / namelist_filename))
     if not namelist['namsbc'][0]['ln_blk_core']:
@@ -844,93 +843,6 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
                             startm1=startm1.format('YYYY-MM-DD'),
                             end=end_date.format('YYYY-MM-DD'),
                             dir=link_path
-                        )
-                    )
-                    remove_run_dir(run_dir)
-                    raise SystemExit(2)
-
-
-def _check_atmos_files(run_desc, run_dir):
-    """Confirm that the atmospheric forcing files necessary for the NEMO-3.4 run
-    are present. Sections of the namelist file are parsed to determine
-    the necessary files, and the date ranges required for the run.
-
-    This is the atmospheric forcing link check function used for NEMO-3.4 runs.
-    
-    :param dict run_desc: Run description dictionary.
-
-    :param run_dir: Path of the temporary run directory.
-    :type run_dir: :py:class:`pathlib.Path`
-
-    :raises: :py:exc:`SystemExit` if an atmospheric forcing file does not exist
-    """
-    namelist = namelist2dict(fspath(run_dir / 'namelist'))
-    if not namelist['namsbc'][0]['ln_blk_core']:
-        return
-    date0 = arrow.get(str(namelist['namrun'][0]['nn_date0']), 'YYYYMMDD')
-    it000 = namelist['namrun'][0]['nn_it000']
-    itend = namelist['namrun'][0]['nn_itend']
-    dt = namelist['namdom'][0]['rn_rdt']
-    start_date = date0.replace(seconds=it000 * dt - 1)
-    end_date = date0.replace(seconds=itend * dt - 1)
-    qtys = (
-        'sn_wndi sn_wndj sn_qsr sn_qlw sn_tair sn_humi sn_prec sn_snow'.split()
-    )
-    core_dir = namelist['namsbc_core'][0]['cn_dir']
-    file_info = {
-        'core': {
-            'dir': core_dir,
-            'params': [],
-        },
-    }
-    for qty in qtys:
-        flread_params = namelist['namsbc_core'][0][qty]
-        file_info['core']['params'].append(
-            (flread_params[0], flread_params[5])
-        )
-    if namelist['namsbc'][0]['ln_apr_dyn']:
-        apr_dir = namelist['namsbc_apr'][0]['cn_dir']
-        file_info['apr'] = {
-            'dir': apr_dir,
-            'params': [],
-        }
-        flread_params = namelist['namsbc_apr'][0]['sn_apr']
-        file_info['apr']['params'].append((flread_params[0], flread_params[5]))
-    startm1 = start_date.replace(days=-1)
-    for r in arrow.Arrow.range('day', startm1, end_date):
-        for v in file_info.values():
-            for basename, period in v['params']:
-                if period == 'daily':
-                    file_path = os.path.join(
-                        v['dir'], '{basename}_'
-                        'y{date.year}m{date.month:02d}d{date.day:02d}.nc'
-                        .format(basename=basename, date=r)
-                    )
-                elif period == 'yearly':
-                    file_path = os.path.join(
-                        v['dir'], '{basename}.nc'.format(basename=basename)
-                    )
-                if not (run_dir / file_path).exists():
-                    nemo_forcing_dir = get_run_desc_value(
-                        run_desc, ('paths', 'forcing'),
-                        resolve_path=True,
-                        run_dir=run_dir
-                    )
-                    atmos_dir = _resolve_forcing_path(
-                        run_desc, ('atmospheric',), run_dir
-                    )
-                    logger.error(
-                        '{file_path} not found; '
-                        'please confirm that atmospheric forcing files '
-                        'for {startm1} through '
-                        '{end} are in the {dir} collection, '
-                        'and that atmospheric forcing paths in your '
-                        'run description and surface boundary conditions '
-                        'namelist are in agreement.'.format(
-                            file_path=file_path,
-                            startm1=startm1.format('YYYY-MM-DD'),
-                            end=end_date.format('YYYY-MM-DD'),
-                            dir=nemo_forcing_dir / atmos_dir,
                         )
                     )
                     remove_run_dir(run_dir)
