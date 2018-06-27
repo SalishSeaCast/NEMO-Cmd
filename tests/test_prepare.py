@@ -69,7 +69,7 @@ class TestParser:
 @patch('nemo_cmd.prepare.make_run_dir')
 @patch('nemo_cmd.prepare.make_namelists')
 @patch('nemo_cmd.prepare.copy_run_set_files')
-@patch('nemo_cmd.prepare._make_executable_links')
+@patch('nemo_cmd.prepare.make_executable_links')
 @patch('nemo_cmd.prepare._make_grid_links')
 @patch('nemo_cmd.prepare._make_forcing_links')
 @patch('nemo_cmd.prepare._make_restart_links')
@@ -901,7 +901,7 @@ class TestCopyRunSetFiles:
 
 
 class TestMakeExecutableLinks:
-    """Unit tests for `nemo prepare` _make_executable_links() function.
+    """Unit tests for `nemo prepare` make_executable_links() function.
     """
 
     def test_nemo_exe_symlink(self, tmpdir):
@@ -911,7 +911,7 @@ class TestMakeExecutableLinks:
         p_nemo_bin_dir.ensure('nemo.exe')
         p_xios_bin_dir = tmpdir.ensure_dir('XIOS/bin')
         p_run_dir = tmpdir.ensure_dir('run_dir')
-        nemo_cmd.prepare._make_executable_links(
+        nemo_cmd.prepare.make_executable_links(
             Path(p_nemo_bin_dir), Path(str(p_run_dir)), Path(p_xios_bin_dir)
         )
         assert p_run_dir.join('nemo.exe').check(file=True, link=True)
@@ -923,7 +923,7 @@ class TestMakeExecutableLinks:
         p_nemo_bin_dir.ensure('nemo.exe')
         p_xios_bin_dir = tmpdir.ensure_dir('XIOS/bin')
         p_run_dir = tmpdir.ensure_dir('run_dir')
-        nemo_cmd.prepare._make_executable_links(
+        nemo_cmd.prepare.make_executable_links(
             Path(p_nemo_bin_dir), Path(str(p_run_dir)), Path(p_xios_bin_dir)
         )
         assert p_run_dir.join('nemo.exe').check(file=True, link=True)
@@ -937,7 +937,7 @@ class TestMakeExecutableLinks:
         p_xios_bin_dir = tmpdir.ensure_dir('XIOS/bin')
         p_xios_bin_dir.ensure('xios_server.exe')
         p_run_dir = tmpdir.ensure_dir('run_dir')
-        nemo_cmd.prepare._make_executable_links(
+        nemo_cmd.prepare.make_executable_links(
             Path(p_nemo_bin_dir), Path(str(p_run_dir)), Path(p_xios_bin_dir)
         )
         assert p_run_dir.join('xios_server.exe').check(file=True, link=True)
