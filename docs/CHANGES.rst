@@ -14,6 +14,7 @@ Change Log
   * ``nemo_cmd.prepare.make_executable_links()``
   * ``nemo_cmd.prepare.make_forcing_links()``
   * ``nemo_cmd.prepare.make_grid_links()``
+  * ``nemo_cmd.prepare.make_restart_links()``
   * ``nemo_cmd.prepare.make_namelists()``
   * ``nemo_cmd.prepare.make_run_dir()``
   * ``nemo_cmd.prepare.remove_run_dir()``
