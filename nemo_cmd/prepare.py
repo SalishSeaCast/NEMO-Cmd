@@ -117,7 +117,7 @@ def prepare(desc_file, nocheck_init):
     make_namelists(run_set_dir, run_desc, run_dir)
     copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir)
     make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir)
-    _make_grid_links(run_desc, run_dir)
+    make_grid_links(run_desc, run_dir)
     _make_forcing_links(run_desc, run_dir)
     _make_restart_links(run_desc, run_dir, nocheck_init)
     _record_vcs_revisions(run_desc, run_dir)
@@ -625,7 +625,7 @@ def make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir):
     (run_dir / 'xios_server.exe').symlink_to(xios_server_exec)
 
 
-def _make_grid_links(run_desc, run_dir, agrif_n=None):
+def make_grid_links(run_desc, run_dir, agrif_n=None):
     """Create symlinks in run_dir to the file names that NEMO expects
     to the bathymetry and coordinates files given in the run_desc dict.
 
@@ -639,12 +639,8 @@ def _make_grid_links(run_desc, run_dir, agrif_n=None):
 
     :param int agrif_n: AGRIF sub-grid number.
 
-    :raises: SystemExit
+    :raises: :py:exec:`SystemExit` with exit code 2
     """
-
-    ##TODO: Refactor this into a public function that can be used by prepare
-    ## plug-ins in packages like SalishSeaCmd that extend NEMO-Cmd
-
     coords_keys = ('grid', 'coordinates')
     coords_filename = 'coordinates.nc'
     bathy_keys = ('grid', 'bathymetry')
@@ -1185,7 +1181,7 @@ def _add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
     run_desc_sections = {
         # sub-grid coordinates and bathymetry files
         'grid':
-        functools.partial(_make_grid_links, run_desc, run_dir),
+        functools.partial(make_grid_links, run_desc, run_dir),
         # sub-grid namelist files
         'namelists':
         functools.partial(make_namelists, run_set_dir, run_desc, run_dir),

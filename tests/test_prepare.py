@@ -70,7 +70,7 @@ class TestParser:
 @patch('nemo_cmd.prepare.make_namelists')
 @patch('nemo_cmd.prepare.copy_run_set_files')
 @patch('nemo_cmd.prepare.make_executable_links')
-@patch('nemo_cmd.prepare._make_grid_links')
+@patch('nemo_cmd.prepare.make_grid_links')
 @patch('nemo_cmd.prepare._make_forcing_links')
 @patch('nemo_cmd.prepare._make_restart_links')
 @patch('nemo_cmd.prepare._record_vcs_revisions')
@@ -946,19 +946,19 @@ class TestMakeExecutableLinks:
 @patch('nemo_cmd.prepare.logger')
 @patch('nemo_cmd.prepare.remove_run_dir')
 class TestMakeGridLinks:
-    """Unit tests for `nemo prepare` _make_grid_links() function.
+    """Unit tests for `nemo prepare` make_grid_links() function.
     """
 
     def test_no_grid_coordinates_key(self, m_rm_run_dir, m_logger):
         run_desc = {}
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_grid_links(run_desc, Path('run_dir'))
+            nemo_cmd.prepare.make_grid_links(run_desc, Path('run_dir'))
         m_rm_run_dir.assert_called_once_with(Path('run_dir'))
 
     def test_no_grid_bathymetry_key(self, m_rm_run_dir, m_logger):
         run_desc = {'grid': {'coordinates': 'coords.nc'}}
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_grid_links(run_desc, Path('run_dir'))
+            nemo_cmd.prepare.make_grid_links(run_desc, Path('run_dir'))
         m_rm_run_dir.assert_called_once_with(Path('run_dir'))
 
     def test_no_forcing_key(self, m_rm_run_dir, m_logger):
@@ -969,7 +969,7 @@ class TestMakeGridLinks:
             }
         }
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_grid_links(run_desc, Path('run_dir'))
+            nemo_cmd.prepare.make_grid_links(run_desc, Path('run_dir'))
         m_rm_run_dir.assert_called_once_with(Path('run_dir'))
 
     def test_no_link_path_absolute_coords_bathy(self, m_rm_run_dir, m_logger):
@@ -980,7 +980,7 @@ class TestMakeGridLinks:
             },
         }
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_grid_links(run_desc, Path('run_dir'))
+            nemo_cmd.prepare.make_grid_links(run_desc, Path('run_dir'))
         m_logger.error.assert_called_once_with(
             '/coords.nc not found; cannot create symlink - '
             'please check the forcing path and grid file names '
@@ -1004,7 +1004,7 @@ class TestMakeGridLinks:
             },
         }
         with pytest.raises(SystemExit):
-            nemo_cmd.prepare._make_grid_links(run_desc, Path(str(run_dir)))
+            nemo_cmd.prepare.make_grid_links(run_desc, Path(str(run_dir)))
         m_logger.error.assert_called_once_with(
             '{}/coords.nc not found; cannot create symlink - '
             'please check the forcing path and grid file names '
@@ -1027,7 +1027,7 @@ class TestMakeGridLinks:
                 'bathymetry': 'bathy.nc'
             },
         }
-        nemo_cmd.prepare._make_grid_links(run_desc, Path(str(run_dir)))
+        nemo_cmd.prepare.make_grid_links(run_desc, Path(str(run_dir)))
         assert Path(str(run_dir), 'coordinates.nc').is_symlink()
         assert Path(str(run_dir), 'coordinates.nc').samefile(
             str(grid_dir.join('coords.nc'))
@@ -1053,7 +1053,7 @@ class TestMakeGridLinks:
                 }
             }
         }
-        nemo_cmd.prepare._make_grid_links(
+        nemo_cmd.prepare.make_grid_links(
             run_desc, Path(str(run_dir)), agrif_n=1
         )
         assert Path(str(run_dir), '1_coordinates.nc').is_symlink()
@@ -1359,7 +1359,7 @@ class TestRecordVcsRevision:
 
 
 @patch('nemo_cmd.prepare.logger', autospec=True)
-@patch('nemo_cmd.prepare._make_grid_links', autospec=True)
+@patch('nemo_cmd.prepare.make_grid_links', autospec=True)
 @patch('nemo_cmd.prepare._make_restart_links', autospec=True)
 @patch('nemo_cmd.prepare.copy_run_set_files', autospec=True)
 @patch('nemo_cmd.prepare.make_namelists', autospec=True)
