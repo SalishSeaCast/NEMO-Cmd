@@ -219,8 +219,9 @@ def run(
     separate_xios_server = get_run_desc_value(
         run_desc, ('output', 'separate XIOS server')
     )
-    xios_processors = get_run_desc_value(run_desc, ('output', 'XIOS servers')
-                                         ) if separate_xios_server else 0
+    xios_processors = get_run_desc_value(run_desc,
+                                         ('output', 'XIOS servers'
+                                          )) if separate_xios_server else 0
     results_dir = Path(results_dir)
     batch_script = _build_batch_script(
         run_desc, fspath(desc_file), nemo_processors, xios_processors,
