@@ -168,7 +168,7 @@ class TestTakeAction:
 
 @patch('nemo_cmd.run.subprocess.check_output', return_value='msg')
 @patch('nemo_cmd.run._build_batch_script', return_value=u'script')
-@patch('nemo_cmd.run.lib.get_n_processors', return_value=144)
+@patch('nemo_cmd.run.get_n_processors', return_value=144)
 @patch('nemo_cmd.run.lib.load_run_desc')
 @patch('nemo_cmd.run.api.prepare')
 class TestRun:
@@ -200,7 +200,7 @@ class TestRun:
         )
         m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
         m_lrd.assert_called_once_with(Path('nemo.yaml'))
-        m_gnp.assert_called_once_with(m_lrd())
+        m_gnp.assert_called_once_with(m_lrd(), Path(str(p_run_dir)))
         m_bbs.assert_called_once_with(
             m_lrd(), 'nemo.yaml', 144, xios_servers, False, 4,
             Path(str(p_results_dir)), Path(str(p_run_dir)), queue_job_cmd
@@ -237,7 +237,7 @@ class TestRun:
         )
         m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
         m_lrd.assert_called_once_with(Path('nemo.yaml'))
-        m_gnp.assert_called_once_with(m_lrd())
+        m_gnp.assert_called_once_with(m_lrd(), Path(str(p_run_dir)))
         m_bbs.assert_called_once_with(
             m_lrd(), 'nemo.yaml', 144, xios_servers, False, 4,
             Path(str(p_results_dir)), Path(str(p_run_dir)), queue_job_cmd
@@ -274,7 +274,7 @@ class TestRun:
         )
         m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
         m_lrd.assert_called_once_with(Path('nemo.yaml'))
-        m_gnp.assert_called_once_with(m_lrd())
+        m_gnp.assert_called_once_with(m_lrd(), Path(str(p_run_dir)))
         m_bbs.assert_called_once_with(
             m_lrd(), 'nemo.yaml', 144, xios_servers, True, 4,
             Path(str(p_results_dir)), Path(str(p_run_dir)), queue_job_cmd
@@ -308,7 +308,7 @@ class TestRun:
         )
         m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
         m_lrd.assert_called_once_with(Path('nemo.yaml'))
-        m_gnp.assert_called_once_with(m_lrd())
+        m_gnp.assert_called_once_with(m_lrd(), Path(str(p_run_dir)))
         m_bbs.assert_called_once_with(
             m_lrd(),
             'nemo.yaml',
@@ -344,7 +344,7 @@ class TestRun:
         )
         m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
         m_lrd.assert_called_once_with(Path('nemo.yaml'))
-        m_gnp.assert_called_once_with(m_lrd())
+        m_gnp.assert_called_once_with(m_lrd(), Path(str(p_run_dir)))
         m_bbs.assert_called_once_with(
             m_lrd(),
             'nemo.yaml',

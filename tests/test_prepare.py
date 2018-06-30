@@ -639,6 +639,113 @@ class TestMakeNamelist:
             )
 
 
+@patch('nemo_cmd.prepare.logger', autospec=True)
+class TestGetNProcessors:
+    """Unit tests for get_n_processors function.
+    """
+
+    @pytest.mark.parametrize(
+        'lpe_key',
+        [
+            'land processor elimination',
+            'Land processor elimination',  # Backward compatibility
+        ]
+    )
+    def test_without_land_processor_elimination(self, m_logger, lpe_key):
+        run_desc = {'MPI decomposition': '8x18', 'grid': {lpe_key: False}}
+        n_processors = nemo_cmd.prepare.get_n_processors(
+            run_desc, Path('run_dir')
+        )
+        assert not m_logger.warning.called
+        assert n_processors == 144
+
+    def test_no_land_processor_elimination_warning(self, m_logger):
+        run_desc = {
+            'MPI decomposition': '8x18',
+        }
+        n_processors = nemo_cmd.prepare.get_n_processors(
+            run_desc, Path('run_dir')
+        )
+        assert m_logger.warning.called
+        assert n_processors == 144
+
+    @pytest.mark.parametrize(
+        'lpe_key',
+        [
+            'land processor elimination',
+            'Land processor elimination',  # Backward compatibility
+        ]
+    )
+    @patch('nemo_cmd.prepare._lookup_lpe_n_processors', return_value=88)
+    def test_mpi_lpe_mapping_absolute_path(
+        self, m_lookup, m_logger, lpe_key, tmpdir
+    ):
+        lpe_mpi_mapping = tmpdir.ensure('bathymetry_201702.csv')
+        run_desc = {
+            'MPI decomposition': '8x18',
+            'grid': {
+                lpe_key: str(lpe_mpi_mapping)
+            }
+        }
+        n_processors = nemo_cmd.prepare.get_n_processors(
+            run_desc, Path('run_dir')
+        )
+        m_lookup.assert_called_once_with(Path(str(lpe_mpi_mapping)), 8, 18)
+        assert n_processors == 88
+
+    @pytest.mark.parametrize(
+        'lpe_key',
+        [
+            'land processor elimination',
+            'Land processor elimination',  # Backward compatibility
+        ]
+    )
+    @patch('nemo_cmd.prepare._lookup_lpe_n_processors', return_value=88)
+    def test_mpi_lpe_mapping_relative_path(
+        self, m_lookup, m_logger, lpe_key, tmpdir
+    ):
+        p_forcing = tmpdir.ensure_dir('NEMO-forcing')
+        run_desc = {
+            'MPI decomposition': '8x18',
+            'paths': {
+                'forcing': str(p_forcing)
+            },
+            'grid': {
+                lpe_key: 'bathymetry_201702.csv'
+            }
+        }
+        n_processors = nemo_cmd.prepare.get_n_processors(
+            run_desc, Path('run_dir')
+        )
+        m_lookup.assert_called_once_with(
+            Path(str(p_forcing.join('grid', 'bathymetry_201702.csv'))), 8, 18
+        )
+        assert n_processors == 88
+
+    @pytest.mark.parametrize(
+        'lpe_key',
+        [
+            'land processor elimination',
+            'Land processor elimination',  # Backward compatibility
+        ]
+    )
+    @patch('nemo_cmd.prepare._lookup_lpe_n_processors', return_value=None)
+    def test_no_mpi_lpe_mapping(self, m_lookup, m_logger, lpe_key, tmpdir):
+        p_forcing = tmpdir.ensure_dir('NEMO-forcing')
+        run_desc = {
+            'MPI decomposition': '8x18',
+            'paths': {
+                'forcing': str(p_forcing)
+            },
+            'grid': {
+                lpe_key: 'bathymetry_201702.csv'
+            }
+        }
+        with pytest.raises(ValueError):
+            nemo_cmd.prepare.get_n_processors(run_desc, Path('run_dir'))
+        assert m_logger.error.called
+
+
 class TestCopyRunSetFiles:
     """Unit tests for `nemo prepare` copy_run_set_files() function.
     """
