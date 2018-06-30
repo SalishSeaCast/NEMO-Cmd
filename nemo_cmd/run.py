@@ -34,7 +34,7 @@ import cliff.command
 
 from nemo_cmd import api, lib
 from nemo_cmd.fspath import fspath
-from nemo_cmd.prepare import get_run_desc_value
+from nemo_cmd.prepare import get_n_processors, get_run_desc_value
 
 logger = logging.getLogger(__name__)
 
@@ -215,7 +215,7 @@ def run(
     if not quiet:
         logger.info('Created run directory {}'.format(run_dir))
     run_desc = lib.load_run_desc(desc_file)
-    nemo_processors = lib.get_n_processors(run_desc)
+    nemo_processors = get_n_processors(run_desc, run_dir)
     separate_xios_server = get_run_desc_value(
         run_desc, ('output', 'separate XIOS server')
     )
