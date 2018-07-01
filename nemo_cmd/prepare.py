@@ -434,11 +434,26 @@ def set_mpi_decomposition(namelist_filename, run_desc, run_dir):
         remove_run_dir(run_dir)
         raise SystemExit(2)
     jpnij = str(get_n_processors(run_desc, run_dir))
-    with (run_dir / namelist_filename).open('rt') as f:
-        lines = f.readlines()
+    lines = _read_namelist(namelist_filename, run_dir)
     for key, new_value in {'jpni': jpni, 'jpnj': jpnj, 'jpnij': jpnij}.items():
         value, i = get_namelist_value(key, lines)
         lines[i] = lines[i].replace(value, new_value)
+    _write_namelist(lines, namelist_filename, run_dir)
+
+
+def _read_namelist(namelist_filename, run_dir):
+    """Encapsulate file access to facilitate testability of
+    set_mpi_decomposition().
+    """
+    with (run_dir / namelist_filename).open('rt') as f:
+        lines = f.readlines()
+    return lines
+
+
+def _write_namelist(lines, namelist_filename, run_dir):
+    """Encapsulate file access to facilitate testability of
+    set_mpi_decomposition().
+    """
     with (run_dir / namelist_filename).open('wt') as f:
         f.writelines(lines)
 
