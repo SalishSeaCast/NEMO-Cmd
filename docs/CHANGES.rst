@@ -14,14 +14,16 @@ Change Log
   * ``nemo_cmd.prepare.copy_run_set_files()``
   * ``nemo_cmd.prepare.get_hg_revision()``
   * ``nemo_cmd.prepare.get_n_processors()``
+  * ``nemo_cmd.prepare.load_run_desc()``
   * ``nemo_cmd.prepare.make_executable_links()``
   * ``nemo_cmd.prepare.make_forcing_links()``
   * ``nemo_cmd.prepare.make_grid_links()``
-  * ``nemo_cmd.prepare.make_restart_links()``
   * ``nemo_cmd.prepare.make_namelists()``
+  * ``nemo_cmd.prepare.make_restart_links()``
   * ``nemo_cmd.prepare.make_run_dir()``
   * ``nemo_cmd.prepare.remove_run_dir()``
   * ``nemo_cmd.prepare.set_mpi_decomposition()``
+  * ``nemo_cmd.prepare.write_repo_rev_file()``
 
 * Fix bugs in the ``NEMO.sh`` script generation re: extra ``{}`` in some shell
   variable expressions.

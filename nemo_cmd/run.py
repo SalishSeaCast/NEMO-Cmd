@@ -32,9 +32,9 @@ import subprocess
 
 import cliff.command
 
-from nemo_cmd import api, lib
+from nemo_cmd import api
 from nemo_cmd.fspath import fspath
-from nemo_cmd.prepare import get_n_processors, get_run_desc_value
+from nemo_cmd.prepare import get_n_processors, get_run_desc_value, load_run_desc
 
 logger = logging.getLogger(__name__)
 
@@ -214,14 +214,13 @@ def run(
     run_dir = api.prepare(desc_file, nocheck_init)
     if not quiet:
         logger.info('Created run directory {}'.format(run_dir))
-    run_desc = lib.load_run_desc(desc_file)
+    run_desc = load_run_desc(desc_file)
     nemo_processors = get_n_processors(run_desc, run_dir)
     separate_xios_server = get_run_desc_value(
         run_desc, ('output', 'separate XIOS server')
     )
-    xios_processors = get_run_desc_value(run_desc,
-                                         ('output', 'XIOS servers'
-                                          )) if separate_xios_server else 0
+    xios_processors = get_run_desc_value(run_desc, ('output', 'XIOS servers')
+                                         ) if separate_xios_server else 0
     results_dir = Path(results_dir)
     batch_script = _build_batch_script(
         run_desc, fspath(desc_file), nemo_processors, xios_processors,

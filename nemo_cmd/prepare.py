@@ -34,8 +34,9 @@ import arrow
 import cliff.command
 from dateutil import tz
 import hglib
+import yaml
 
-from nemo_cmd import lib, fspath, resolved_path, expanded_path
+from nemo_cmd import fspath, resolved_path, expanded_path
 from nemo_cmd.combine import find_rebuild_nemo_script
 from nemo_cmd.namelist import namelist2dict, get_namelist_value
 
@@ -108,7 +109,7 @@ def prepare(desc_file, nocheck_init):
     :returns: Path of the temporary run directory
     :rtype: :py:class:`pathlib.Path`
     """
-    run_desc = lib.load_run_desc(desc_file)
+    run_desc = load_run_desc(desc_file)
     nemo_bin_dir = check_nemo_exec(run_desc)
     xios_bin_dir = check_xios_exec(run_desc)
     find_rebuild_nemo_script(run_desc)
@@ -123,6 +124,20 @@ def prepare(desc_file, nocheck_init):
     _record_vcs_revisions(run_desc, run_dir)
     add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init)
     return run_dir
+
+
+def load_run_desc(desc_file):
+    """Load the run description file contents into a data structure.
+
+    :param desc_file: File path/name of the YAML run description file.
+    :type desc_file: :py:class:`pathlib.Path`
+
+    :returns: Contents of run description file parsed from YAML into a dict.
+    :rtype: dict
+    """
+    with open(fspath(desc_file), 'rt') as f:
+        run_desc = yaml.safe_load(f)
+    return run_desc
 
 
 def get_run_desc_value(
