@@ -57,13 +57,13 @@ The :ref:`SalishSeaCmdProcessor` package :kbd:`SalishSeaCmd` is an example of su
 
 .. autofunction:: nemo_cmd.prepare.get_n_processors
 
-.. autofunction:: nemo_cmd.prepare.make_namelists
-
 .. autofunction:: nemo_cmd.prepare.make_executable_links
 
 .. autofunction:: nemo_cmd.prepare.make_forcing_links
 
 .. autofunction:: nemo_cmd.prepare.make_grid_links
+
+.. autofunction:: nemo_cmd.prepare.make_namelists
 
 .. autofunction:: nemo_cmd.prepare.make_restart_links
 
@@ -98,7 +98,9 @@ Functions for Working with File System Paths
 
 .. _UtilityFunction:
 
-Utility Function
-================
+Utility Functions
+=================
 
 .. autofunction:: nemo_cmd.prepare.get_run_desc_value
+
+.. autofunction:: nemo_cmd.prepare.load_run_desc

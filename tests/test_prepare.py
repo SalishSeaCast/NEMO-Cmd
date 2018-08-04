@@ -61,7 +61,7 @@ class TestParser:
         assert getattr(parsed_args, attr)
 
 
-@patch('nemo_cmd.prepare.lib.load_run_desc')
+@patch('nemo_cmd.prepare.load_run_desc')
 @patch('nemo_cmd.prepare.check_nemo_exec')
 @patch('nemo_cmd.prepare.check_xios_exec')
 @patch('nemo_cmd.prepare.find_rebuild_nemo_script')

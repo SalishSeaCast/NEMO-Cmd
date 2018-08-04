@@ -169,7 +169,7 @@ class TestTakeAction:
 @patch('nemo_cmd.run.subprocess.check_output', return_value='msg')
 @patch('nemo_cmd.run._build_batch_script', return_value=u'script')
 @patch('nemo_cmd.run.get_n_processors', return_value=144)
-@patch('nemo_cmd.run.lib.load_run_desc')
+@patch('nemo_cmd.run.load_run_desc')
 @patch('nemo_cmd.run.api.prepare')
 class TestRun:
     """Unit tests for `salishsea run` run() function.
