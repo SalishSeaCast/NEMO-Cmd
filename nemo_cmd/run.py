@@ -234,10 +234,11 @@ def run(
     starting_dir = Path.cwd()
     os.chdir(fspath(run_dir))
     if waitjob:
-        ## TODO: This is qsub syntax that needs to be generalized
-        ## for other queue managers such as slurm
-        cmd = '{submit_job} -W depend=afterok:{waitjob} NEMO.sh'.format(
-            submit_job=queue_job_cmd, waitjob=waitjob
+        depend_opt = (
+            '-W depend=afterok' if queue_job_cmd == 'qsub' else '-d afterok'
+        )
+        cmd = '{submit_job} {depend_opt}:{waitjob} NEMO.sh'.format(
+            submit_job=queue_job_cmd, depend_opt=depend_opt, waitjob=waitjob
         )
     else:
         cmd = '{submit_job} NEMO.sh'.format(submit_job=queue_job_cmd)
