@@ -361,6 +361,101 @@ class TestRun:
         assert m_logger.error.called
         assert submit_job_msg is None
 
+    @pytest.mark.parametrize(
+        'sep_xios_server, xios_servers', [
+            (False, 0),
+            (True, 4),
+        ]
+    )
+    def test_run_qsub_waitjob(
+        self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, sep_xios_server,
+        xios_servers, tmpdir
+    ):
+        p_run_dir = tmpdir.ensure_dir('run_dir')
+        m_prepare.return_value = Path(str(p_run_dir))
+        p_results_dir = tmpdir.ensure_dir('results_dir')
+        m_lrd.return_value = {
+            'output': {
+                'separate XIOS server': sep_xios_server,
+                'XIOS servers': xios_servers,
+            }
+        }
+        queue_job_cmd = 'qsub'
+        with patch('nemo_cmd.run.os.getenv', return_value='orcinus'):
+            qsb_msg = nemo_cmd.run.run(
+                Path('nemo.yaml'),
+                str(p_results_dir),
+                waitjob=42,
+                queue_job_cmd=queue_job_cmd,
+            )
+        m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
+        m_lrd.assert_called_once_with(Path('nemo.yaml'))
+        m_gnp.assert_called_once_with(m_lrd(), Path(m_prepare()))
+        m_bbs.assert_called_once_with(
+            m_lrd(),
+            'nemo.yaml',
+            144,
+            xios_servers,
+            False,
+            4,
+            Path(str(p_results_dir)),
+            Path(str(p_run_dir)),
+            queue_job_cmd,
+        )
+        m_sco.assert_called_once_with(
+            ['qsub', '-W', 'depend=afterok:42', 'NEMO.sh'],
+            universal_newlines=True
+        )
+        assert p_run_dir.join('NEMO.sh').check(file=True)
+        assert qsb_msg == 'msg'
+
+    @pytest.mark.parametrize(
+        'sep_xios_server, xios_servers', [
+            (False, 0),
+            (True, 4),
+        ]
+    )
+    def test_run_sbatch_waitjob(
+        self, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, sep_xios_server,
+        xios_servers, tmpdir
+    ):
+        p_run_dir = tmpdir.ensure_dir('run_dir')
+        m_prepare.return_value = Path(str(p_run_dir))
+        p_results_dir = tmpdir.ensure_dir('results_dir')
+        m_lrd.return_value = {
+            'output': {
+                'separate XIOS server': sep_xios_server,
+                'XIOS servers': xios_servers,
+            }
+        }
+        queue_job_cmd = 'sbatch'
+        with patch('nemo_cmd.run.os.getenv', return_value='cedar'):
+            qsb_msg = nemo_cmd.run.run(
+                Path('nemo.yaml'),
+                str(p_results_dir),
+                waitjob=42,
+                queue_job_cmd=queue_job_cmd,
+            )
+        m_prepare.assert_called_once_with(Path('nemo.yaml'), False)
+        m_lrd.assert_called_once_with(Path('nemo.yaml'))
+        m_gnp.assert_called_once_with(m_lrd(), Path(m_prepare()))
+        m_bbs.assert_called_once_with(
+            m_lrd(),
+            'nemo.yaml',
+            144,
+            xios_servers,
+            False,
+            4,
+            Path(str(p_results_dir)),
+            Path(str(p_run_dir)),
+            queue_job_cmd,
+        )
+        m_sco.assert_called_once_with(
+            ['sbatch', '-d', 'afterok:42', 'NEMO.sh'], universal_newlines=True
+        )
+        assert p_run_dir.join('NEMO.sh').check(file=True)
+        assert qsb_msg == 'msg'
+
 
 class TestBuiltBatchScript:
     """Unit tests for _build_batch_script() function.

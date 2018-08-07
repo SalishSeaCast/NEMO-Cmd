@@ -5,6 +5,9 @@ Change Log
 1.3 (unreleased)
 ================
 
+* Add support for ``--waitjob`` command-line option on systems that use slurm resource
+  manager.
+
 * Expose functions in ``nemo_cmd.prepare`` for use by packages like SalishSeaCmd that
   extend NEMO-Cmd:
 
