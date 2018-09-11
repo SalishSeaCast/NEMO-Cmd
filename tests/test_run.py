@@ -627,7 +627,7 @@ class TestBuiltBatchScript:
             u'modules to load:\n'
             u'- netcdf-mpi/4.4.1.1\n'
             u'- netcdf-fortran-mpi/4.4.4\n'
-            u'- python27-scipy-stack/2017a\n'
+            u'- python/3.7.0\n'
         )
         run_desc = yaml.load(desc_file)
         script = nemo_cmd.run._build_batch_script(
@@ -670,7 +670,7 @@ class TestBuiltBatchScript:
             u'\n'
             u'module load netcdf-mpi/4.4.1.1\n'
             u'module load netcdf-fortran-mpi/4.4.4\n'
-            u'module load python27-scipy-stack/2017a\n'
+            u'module load python/3.7.0\n'
             u'\n'
             u'\n'
             u'mkdir -p ${RESULTS_DIR}\n'
