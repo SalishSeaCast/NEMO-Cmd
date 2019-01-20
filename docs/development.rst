@@ -20,10 +20,31 @@
 :kbd:`NEMO-Cmd` Package Development
 ***********************************
 
+.. image:: https://img.shields.io/badge/license-Apache%202-cb2533.svg
+    :target: https://www.apache.org/licenses/LICENSE-2.0
+    :alt: Licensed under the Apache License, Version 2.0
+.. image:: https://img.shields.io/badge/python-3.5-blue.svg
+    :target: https://docs.python.org/3.5/
+    :alt: Python Version
+.. image:: https://img.shields.io/badge/version%20control-hg-blue.svg
+    :target: https://bitbucket.org/salishsea/nemo-cmd/
+    :alt: Mercurial on Bitbucket
+.. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
+    :target: https://nemo-cmd.readthedocs.io/en/latest/
+    :alt: Documentation Status
+.. image:: https://img.shields.io/bitbucket/issues/43ravens/nemo_nowcast.svg
+    :target: https://bitbucket.org/salishsea/nemo-cmd/issues?status=new&status=open
+    :alt: Issue Tracker
+
+
 .. _NEMO-CmdPythonVersions:
 
 Python Versions
 ===============
+
+.. image:: https://img.shields.io/badge/python-3.6-blue.svg
+    :target: https://docs.python.org/3.6/
+    :alt: Python Version
 
 The :kbd:`NEMO-Cmd` package is developed and tested using `Python`_ 3.6.
 However,
@@ -34,6 +55,10 @@ the package must also run under `Python`_ 2.7 for use on the Westgrid and Comput
 
 Getting the Code
 ================
+
+.. image:: https://img.shields.io/badge/version%20control-hg-blue.svg
+    :target: https://bitbucket.org/salishsea/nemo-cmd/
+    :alt: Mercurial on Bitbucket
 
 Clone the code and documentation `repository`_ from Bitbucket with:
 
@@ -112,6 +137,10 @@ in the repository root directory.
 
 Building the Documentation
 ==========================
+
+.. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
+    :target: https://nemo-cmd.readthedocs.io/en/latest/
+    :alt: Documentation Status
 
 The documentation for the :kbd:`NEMO-Cmd` package is written in `reStructuredText`_ and converted to HTML using `Sphinx`_.
 Creating a :ref:`NEMO-CmdDevelopmentEnvironment` as described above includes the installation of Sphinx.
@@ -233,6 +262,10 @@ create a Python 2.7 :ref:`NEMO-CmdDevelopmentEnvironment`.
 Version Control Repository
 ==========================
 
+.. image:: https://img.shields.io/badge/version%20control-hg-blue.svg
+    :target: https://bitbucket.org/salishsea/nemo-cmd/
+    :alt: Mercurial on Bitbucket
+
 The :kbd:`NEMO-Cmd` package code and documentation source files are available from the `Mercurial`_ repository at https://bitbucket.org/salishsea/nemo-cmd.
 
 
@@ -240,6 +273,10 @@ The :kbd:`NEMO-Cmd` package code and documentation source files are available fr
 
 Issue Tracker
 =============
+
+.. image:: https://img.shields.io/bitbucket/issues/43ravens/nemo_nowcast.svg
+    :target: https://bitbucket.org/salishsea/nemo-cmd/issues?status=new&status=open
+    :alt: Issue Tracker
 
 Development tasks,
 bug reports,

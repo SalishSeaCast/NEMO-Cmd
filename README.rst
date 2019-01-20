@@ -2,6 +2,22 @@
 NEMO Command Processor
 **********************
 
+.. image:: https://img.shields.io/badge/license-Apache%202-cb2533.svg
+    :target: https://www.apache.org/licenses/LICENSE-2.0
+    :alt: Licensed under the Apache License, Version 2.0
+.. image:: https://img.shields.io/badge/python-3.6-blue.svg
+    :target: https://docs.python.org/3.6/
+    :alt: Python Version
+.. image:: https://img.shields.io/badge/version%20control-hg-blue.svg
+    :target: https://bitbucket.org/salishsea/nemo-cmd/
+    :alt: Mercurial on Bitbucket
+.. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
+    :target: https://nemo-cmd.readthedocs.io/en/latest/
+    :alt: Documentation Status
+.. image:: https://img.shields.io/bitbucket/issues/43ravens/nemo_nowcast.svg
+    :target: https://bitbucket.org/salishsea/nemo-cmd/issues?status=new&status=open
+    :alt: Issue Tracker
+
 The NEMO command processor, ``nemo``, is a command line tool for doing various operations associated with running the `NEMO`_ ocean model.
 
 .. _NEMO: http://www.nemo-ocean.eu/
@@ -30,6 +46,10 @@ The ``NEMO-Cmd`` is based on v2.2 of the Salish Sea MEOPAR NEMO model project's 
 
 License
 =======
+
+.. image:: https://img.shields.io/badge/license-Apache%202-cb2533.svg
+    :target: https://www.apache.org/licenses/LICENSE-2.0
+    :alt: Licensed under the Apache License, Version 2.0
 
 The NEMO command processor and documentation are copyright 2013-2018 by the Salish Sea MEOPAR Project Contributors and The University of British Columbia.
 
