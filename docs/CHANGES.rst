@@ -2,8 +2,12 @@
 Change Log
 **********
 
-1.3 (unreleased)
-================
+1.3
+===
+
+* Change to use ``python/3.7.0` module for `slurm workload manager`_ systems due to
+  deprecation of ``python27-scipy-stack`` module on ``cedar.computecanada.ca`` and
+``graham.computecanada.ca``.
 
 * Add support for ``--waitjob`` command-line option on systems that use slurm resource
   manager.
