@@ -18,6 +18,7 @@ Gather results files from a NEMO run into a specified directory.
 """
 import logging
 import shutil
+
 try:
     from pathlib import Path
 except ImportError:
@@ -37,7 +38,7 @@ class Gather(cliff.command.Command):
 
     def get_parser(self, prog_name):
         parser = super(Gather, self).get_parser(prog_name)
-        parser.description = '''
+        parser.description = """
             Gather the results files from the NEMO run in the present working
             directory into files in RESULTS_DIR.
             The run description file,
@@ -46,12 +47,12 @@ class Gather(cliff.command.Command):
             RESULTS_DIR.
 
             If RESULTS_DIR does not exist it will be created.
-        '''
+        """
         parser.add_argument(
-            'results_dir',
+            "results_dir",
             type=Path,
-            metavar='RESULTS_DIR',
-            help='directory to store results into'
+            metavar="RESULTS_DIR",
+            help="directory to store results into",
         )
         return parser
 
@@ -81,7 +82,7 @@ def gather(results_dir):
     :type results_dir: :py:class:`pathlib.Path`
     """
     results_dir.mkdir(parents=True, exist_ok=True)
-    symlinks = {p for p in Path.cwd().glob('*') if p.is_symlink()}
+    symlinks = {p for p in Path.cwd().glob("*") if p.is_symlink()}
     try:
         _move_results(results_dir, symlinks)
     except Exception:
@@ -94,14 +95,12 @@ def _move_results(results_dir, symlinks):
     abs_results_dir = results_dir.resolve()
     if cwd.samefile(abs_results_dir):
         return
-    logger.info('Moving run definition and results files...')
-    for p in cwd.glob('*'):
+    logger.info("Moving run definition and results files...")
+    for p in cwd.glob("*"):
         if p not in symlinks:
             src = p.relative_to(cwd)
-            suffix = '/' if src.is_dir() else ''
-            logger.info(
-                'Moving {}{} to {}/'.format(src, suffix, abs_results_dir)
-            )
+            suffix = "/" if src.is_dir() else ""
+            logger.info("Moving {}{} to {}/".format(src, suffix, abs_results_dir))
             if src.is_dir():
                 shutil.move(fspath(src), fspath(abs_results_dir))
             else:
@@ -109,6 +108,6 @@ def _move_results(results_dir, symlinks):
 
 
 def _delete_symlinks(symlinks):
-    logger.info('Deleting symbolic links...')
+    logger.info("Deleting symbolic links...")
     for ln in symlinks:
         ln.unlink()

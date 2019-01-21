@@ -20,6 +20,7 @@ files with the same name-root.
 import logging
 import os
 import shlex
+
 try:
     from pathlib import Path
 except ImportError:
@@ -42,17 +43,17 @@ class Combine(cliff.command.Command):
 
     def get_parser(self, prog_name):
         parser = super(Combine, self).get_parser(prog_name)
-        parser.description = '''
+        parser.description = """
             Combine the per-processor results and/or restart files from an MPI
             NEMO run described in DESC_FILE using the the NEMO rebuild_nemo
             tool.
             Delete the per-processor files.
-        '''
+        """
         parser.add_argument(
-            'run_desc_file',
+            "run_desc_file",
             type=Path,
-            metavar='RUN_DESC_FILE',
-            help='file path/name of run description YAML file'
+            metavar="RUN_DESC_FILE",
+            help="file path/name of run description YAML file",
         )
         return parser
 
@@ -78,7 +79,7 @@ def combine(run_desc_file):
     :param run_desc_file: File path/name of the run description YAML file.
     :type run_desc_file: :py:class:`pathlib.Path`
     """
-    with run_desc_file.open('rt') as f:
+    with run_desc_file.open("rt") as f:
         run_desc = yaml.safe_load(f)
     name_roots = _get_results_files()
     if name_roots:
@@ -101,66 +102,57 @@ def find_rebuild_nemo_script(run_desc):
     :raises: :py:exc:`SystemExit` if the :file:`rebuild_nemo` script does not
              exist.
     """
-    nemo_code_config = Path(
-        os.path.expandvars(run_desc['paths']['NEMO code config'])
-    ).expanduser().resolve()
+    nemo_code_config = (
+        Path(os.path.expandvars(run_desc["paths"]["NEMO code config"]))
+        .expanduser()
+        .resolve()
+    )
     rebuild_nemo_exec = (
-        nemo_code_config / '..' / 'TOOLS' / 'REBUILD_NEMO' / 'rebuild_nemo.exe'
+        nemo_code_config / ".." / "TOOLS" / "REBUILD_NEMO" / "rebuild_nemo.exe"
     )
     if not rebuild_nemo_exec.exists():
         logger.error(
-            '{} not found - did you forget to build it?'
-            .format(rebuild_nemo_exec)
+            "{} not found - did you forget to build it?".format(rebuild_nemo_exec)
         )
         raise SystemExit(2)
-    rebuild_nemo_script = rebuild_nemo_exec.with_suffix('').resolve()
+    rebuild_nemo_script = rebuild_nemo_exec.with_suffix("").resolve()
     return rebuild_nemo_script
 
 
 def _get_results_files():
-    result_pattern = '*_0000.nc'
-    name_roots = [
-        fspath(fn.stem)[:-5] for fn in Path.cwd().glob(result_pattern)
-    ]
+    result_pattern = "*_0000.nc"
+    name_roots = [fspath(fn.stem)[:-5] for fn in Path.cwd().glob(result_pattern)]
     if not name_roots:
-        logger.info(
-            'no files found that match the {} pattern'.format(result_pattern)
-        )
+        logger.info("no files found that match the {} pattern".format(result_pattern))
     return name_roots
 
 
 def _combine_results_files(rebuild_nemo_script, name_roots):
     for fn in name_roots:
-        files = Path.cwd().glob('{fn}_[0-9][0-9][0-9][0-9].nc'.format(fn=fn))
+        files = Path.cwd().glob("{fn}_[0-9][0-9][0-9][0-9].nc".format(fn=fn))
         # Count the number of items yielded by the glob generator
         nfiles = sum(1 for _ in files)
         if nfiles == 1:
             # Results from a single processor are simply renamed
-            shutil.move('{fn}_0000.nc'.format(fn=fn), '{fn}.nc'.format(fn=fn))
-            logger.info('{fn}_0000.nc renamed to {fn}.nc'.format(fn=fn))
+            shutil.move("{fn}_0000.nc".format(fn=fn), "{fn}.nc".format(fn=fn))
+            logger.info("{fn}_0000.nc renamed to {fn}.nc".format(fn=fn))
         else:
-            cmd = (
-                '{rebuild_nemo_script} {fn} {nfiles}'.format(
-                    rebuild_nemo_script=rebuild_nemo_script,
-                    fn=fn,
-                    nfiles=nfiles
-                )
+            cmd = "{rebuild_nemo_script} {fn} {nfiles}".format(
+                rebuild_nemo_script=rebuild_nemo_script, fn=fn, nfiles=nfiles
             )
             logger.info(cmd)
             result = subprocess.check_output(
-                shlex.split(cmd),
-                stderr=subprocess.STDOUT,
-                universal_newlines=True
+                shlex.split(cmd), stderr=subprocess.STDOUT, universal_newlines=True
             )
             logger.info(result)
-            os.unlink('nam_rebuild')
+            os.unlink("nam_rebuild")
 
 
 def _delete_results_files(name_roots):
-    logger.info('Deleting per-processor files...')
+    logger.info("Deleting per-processor files...")
     for name_root in name_roots:
         filepaths = Path.cwd().glob(
-            '{name_root}_[0-9][0-9][0-9][0-9].nc'.format(name_root=name_root)
+            "{name_root}_[0-9][0-9][0-9][0-9].nc".format(name_root=name_root)
         )
         for fp in filepaths:
             fp.unlink()

@@ -19,6 +19,7 @@ Deflate variables in netCDF files using Lempel-Ziv compression.
 import logging
 import math
 import multiprocessing
+
 try:
     from pathlib import Path
 except ImportError:
@@ -40,30 +41,30 @@ class Deflate(cliff.command.Command):
 
     def get_parser(self, prog_name):
         parser = super(Deflate, self).get_parser(prog_name)
-        parser.description = '''
+        parser.description = """
             Deflate variables in netCDF files using Lempel-Ziv compression.
             Converts files to netCDF-4 format.
             The deflated file replaces the original file.
             This command is effectively the same as running
             ncks -4 -L -O FILEPATH FILEPATH
             for each FILEPATH.
-        '''
+        """
         parser.add_argument(
-            'filepaths',
-            nargs='+',
+            "filepaths",
+            nargs="+",
             type=Path,
-            metavar='FILEPATH',
-            help='Path/name of file to be deflated.'
+            metavar="FILEPATH",
+            help="Path/name of file to be deflated.",
         )
         parser.add_argument(
-            '-j',
-            '--jobs',
+            "-j",
+            "--jobs",
             type=int,
             default=math.floor(multiprocessing.cpu_count() / 2),
             help=(
-                'Maximum number of concurrent deflation processes allowed. '
-                'Defaults to 1/2 the number of cores detected.'
-            )
+                "Maximum number of concurrent deflation processes allowed. "
+                "Defaults to 1/2 the number of cores detected."
+            ),
         )
         return parser
 
@@ -83,6 +84,7 @@ class Deflate(cliff.command.Command):
 class DeflateJob(object):
     """netCDF file deflation job.
     """
+
     #: Path/name of the netCDF file to deflate.
     filepath = attr.ib()
     #: Lempel-Ziv compression level to use.
@@ -99,17 +101,17 @@ class DeflateJob(object):
 
         Cache the subprocess object and its process id as job attributes.
         """
-        cmd = 'nccopy -s -4 -d{0.dfl_lvl} {0.filepath} {0.filepath}.nccopy.tmp'.format(
+        cmd = "nccopy -s -4 -d{0.dfl_lvl} {0.filepath} {0.filepath}.nccopy.tmp".format(
             self
         )
         self.process = subprocess.Popen(
             shlex.split(cmd),
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
-            universal_newlines=True
+            universal_newlines=True,
         )
         self.pid = self.process.pid
-        logger.debug('deflating {0.filepath} in process {0.pid}'.format(self))
+        logger.debug("deflating {0.filepath} in process {0.pid}".format(self))
 
     @property
     def done(self):
@@ -121,13 +123,11 @@ class DeflateJob(object):
         self.returncode = self.process.poll()
         if self.returncode is not None:
             if self.returncode == 0:
-                Path('{0.filepath}.nccopy.tmp'.format(self)).rename(
-                    self.filepath
-                )
+                Path("{0.filepath}.nccopy.tmp".format(self)).rename(self.filepath)
             finished = True
             logger.debug(
-                'deflating {0.filepath} finished '
-                'with return code {0.returncode}'.format(self)
+                "deflating {0.filepath} finished "
+                "with return code {0.returncode}".format(self)
             )
         return finished
 
@@ -145,7 +145,7 @@ def deflate(filepaths, max_concurrent_jobs):
     processes allowed.
     """
     logger.info(
-        'Deflating in up to {} concurrent sub-processes'.format(
+        "Deflating in up to {} concurrent sub-processes".format(
             int(max_concurrent_jobs)
         )
     )
@@ -174,7 +174,7 @@ def _poll_and_launch(jobs, jobs_in_progress):
         if running_job.done:
             result, _ = running_job.process.communicate()
             logger.error(result) if result else logger.info(
-                'netCDF4 deflated {.filepath}'.format(running_job)
+                "netCDF4 deflated {.filepath}".format(running_job)
             )
             jobs_in_progress.pop(running_job.pid)
             try:

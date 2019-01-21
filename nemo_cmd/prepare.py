@@ -21,6 +21,7 @@ from copy import copy
 import functools
 import logging
 import os
+
 try:
     from pathlib import Path
 except ImportError:
@@ -50,31 +51,31 @@ class Prepare(cliff.command.Command):
 
     def get_parser(self, prog_name):
         parser = super(Prepare, self).get_parser(prog_name)
-        parser.description = '''
+        parser.description = """
             Set up the NEMO run described in DESC_FILE
             and print the path to the run directory.
-        '''
+        """
         parser.add_argument(
-            'desc_file',
-            metavar='DESC_FILE',
+            "desc_file",
+            metavar="DESC_FILE",
             type=Path,
-            help='run description YAML file'
+            help="run description YAML file",
         )
         parser.add_argument(
-            '--nocheck-initial-conditions',
-            dest='nocheck_init',
-            action='store_true',
-            help='''
+            "--nocheck-initial-conditions",
+            dest="nocheck_init",
+            action="store_true",
+            help="""
             Suppress checking of the initial conditions link.
             Useful if you are submitting a job to an HPC qsub queue and want
             the submitted job to wait for completion of a previous job.
-            '''
+            """,
         )
         parser.add_argument(
-            '-q',
-            '--quiet',
-            action='store_true',
-            help="don't show the run directory path on completion"
+            "-q",
+            "--quiet",
+            action="store_true",
+            help="don't show the run directory path on completion",
         )
         return parser
 
@@ -88,7 +89,7 @@ class Prepare(cliff.command.Command):
         """
         run_dir = prepare(parsed_args.desc_file, parsed_args.nocheck_init)
         if not parsed_args.quiet:
-            logger.info('Created run directory {}'.format(run_dir))
+            logger.info("Created run directory {}".format(run_dir))
         return run_dir
 
 
@@ -135,18 +136,13 @@ def load_run_desc(desc_file):
     :returns: Contents of run description file parsed from YAML into a dict.
     :rtype: dict
     """
-    with open(fspath(desc_file), 'rt') as f:
+    with open(fspath(desc_file), "rt") as f:
         run_desc = yaml.safe_load(f)
     return run_desc
 
 
 def get_run_desc_value(
-    run_desc,
-    keys,
-    expand_path=False,
-    resolve_path=False,
-    run_dir=None,
-    fatal=True
+    run_desc, keys, expand_path=False, resolve_path=False, run_dir=None, fatal=True
 ):
     """Get the run description value defined by the sequence of keys.
 
@@ -188,8 +184,9 @@ def get_run_desc_value(
         if not fatal:
             raise
         logger.error(
-            '"{}" key not found - please check your run description YAML file'
-            .format(': '.join(keys))
+            '"{}" key not found - please check your run description YAML file'.format(
+                ": ".join(keys)
+            )
         )
         if run_dir:
             remove_run_dir(run_dir)
@@ -201,9 +198,7 @@ def get_run_desc_value(
         if not value.exists():
             logger.error(
                 '{path} path from "{keys}" key not found - please check your '
-                'run description YAML file'.format(
-                    path=value, keys=': '.join(keys)
-                )
+                "run description YAML file".format(path=value, keys=": ".join(keys))
             )
             if run_dir:
                 remove_run_dir(run_dir)
@@ -226,28 +221,22 @@ def check_nemo_exec(run_desc):
     """
     try:
         nemo_config_dir = get_run_desc_value(
-            run_desc, ('paths', 'NEMO code config'),
-            resolve_path=True,
-            fatal=False
+            run_desc, ("paths", "NEMO code config"), resolve_path=True, fatal=False
         )
     except KeyError:
         # Alternate key spelling for backward compatibility
         nemo_config_dir = get_run_desc_value(
-            run_desc, ('paths', 'NEMO-code-config'), resolve_path=True
+            run_desc, ("paths", "NEMO-code-config"), resolve_path=True
         )
     try:
-        config_name = get_run_desc_value(
-            run_desc, ('config name',), fatal=False
-        )
+        config_name = get_run_desc_value(run_desc, ("config name",), fatal=False)
     except KeyError:
         # Alternate key spelling for backward compatibility
-        config_name = get_run_desc_value(run_desc, ('config_name',))
-    nemo_bin_dir = nemo_config_dir / config_name / 'BLD' / 'bin'
-    nemo_exec = nemo_bin_dir / 'nemo.exe'
+        config_name = get_run_desc_value(run_desc, ("config_name",))
+    nemo_bin_dir = nemo_config_dir / config_name / "BLD" / "bin"
+    nemo_exec = nemo_bin_dir / "nemo.exe"
     if not nemo_exec.exists():
-        logger.error(
-            '{} not found - did you forget to build it?'.format(nemo_exec)
-        )
+        logger.error("{} not found - did you forget to build it?".format(nemo_exec))
         raise SystemExit(2)
     return nemo_bin_dir
 
@@ -265,15 +254,11 @@ def check_xios_exec(run_desc):
 
     :raises: :py:exc:`SystemExit` with exit code 2
     """
-    xios_code_path = get_run_desc_value(
-        run_desc, ('paths', 'XIOS'), resolve_path=True
-    )
-    xios_bin_dir = xios_code_path / 'bin'
-    xios_exec = xios_bin_dir / 'xios_server.exe'
+    xios_code_path = get_run_desc_value(run_desc, ("paths", "XIOS"), resolve_path=True)
+    xios_bin_dir = xios_code_path / "bin"
+    xios_exec = xios_bin_dir / "xios_server.exe"
     if not xios_exec.exists():
-        logger.error(
-            '{} not found - did you forget to build it?'.format(xios_exec)
-        )
+        logger.error("{} not found - did you forget to build it?".format(xios_exec))
         raise SystemExit(2)
     return xios_bin_dir
 
@@ -289,13 +274,12 @@ def make_run_dir(run_desc):
     :returns: Path of the temporary run directory
     :rtype: :py:class:`pathlib.Path`
     """
-    run_id = get_run_desc_value(run_desc, ('run_id',))
+    run_id = get_run_desc_value(run_desc, ("run_id",))
     runs_dir = get_run_desc_value(
-        run_desc, ('paths', 'runs directory'), resolve_path=True
+        run_desc, ("paths", "runs directory"), resolve_path=True
     )
-    run_dir = runs_dir / '{run_id}_{timestamp}'.format(
-        run_id=run_id,
-        timestamp=arrow.now().format('YYYY-MM-DDTHHmmss.SSSSSSZ')
+    run_dir = runs_dir / "{run_id}_{timestamp}".format(
+        run_id=run_id, timestamp=arrow.now().format("YYYY-MM-DDTHHmmss.SSSSSSZ")
     )
     run_dir.mkdir()
     return run_dir
@@ -343,76 +327,69 @@ def make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
     """
     try:
         nemo_config_dir = get_run_desc_value(
-            run_desc, ('paths', 'NEMO code config'),
+            run_desc,
+            ("paths", "NEMO code config"),
             resolve_path=True,
             run_dir=run_dir,
-            fatal=False
+            fatal=False,
         )
     except KeyError:
         # Alternate key spelling for backward compatibility
         nemo_config_dir = get_run_desc_value(
-            run_desc, ('paths', 'NEMO-code-config'),
-            resolve_path=True,
-            run_dir=run_dir
+            run_desc, ("paths", "NEMO-code-config"), resolve_path=True, run_dir=run_dir
         )
     try:
         config_name = get_run_desc_value(
-            run_desc, ('config name',), run_dir=run_dir, fatal=False
+            run_desc, ("config name",), run_dir=run_dir, fatal=False
         )
     except KeyError:
         # Alternate key spelling for backward compatibility
-        config_name = get_run_desc_value(
-            run_desc, ('config_name',), run_dir=run_dir
-        )
-    keys = ('namelists',)
+        config_name = get_run_desc_value(run_desc, ("config_name",), run_dir=run_dir)
+    keys = ("namelists",)
     if agrif_n is not None:
-        keys = ('namelists', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n))
+        keys = ("namelists", "AGRIF_{agrif_n}".format(agrif_n=agrif_n))
     namelists = get_run_desc_value(run_desc, keys, run_dir=run_dir)
     for namelist_filename in namelists:
-        if namelist_filename.startswith('AGRIF'):
+        if namelist_filename.startswith("AGRIF"):
             continue
         namelist_dest = namelist_filename
-        keys = ('namelists', namelist_filename)
+        keys = ("namelists", namelist_filename)
         if agrif_n is not None:
-            namelist_dest = '{agrif_n}_{namelist_filename}'.format(
+            namelist_dest = "{agrif_n}_{namelist_filename}".format(
                 agrif_n=agrif_n, namelist_filename=namelist_filename
             )
             keys = (
-                'namelists', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n),
-                namelist_filename
+                "namelists",
+                "AGRIF_{agrif_n}".format(agrif_n=agrif_n),
+                namelist_filename,
             )
-        with (run_dir / namelist_dest).open('wt') as namelist:
-            namelist_files = get_run_desc_value(
-                run_desc, keys, run_dir=run_dir
-            )
+        with (run_dir / namelist_dest).open("wt") as namelist:
+            namelist_files = get_run_desc_value(run_desc, keys, run_dir=run_dir)
             for nl in namelist_files:
                 nl_path = expanded_path(nl)
                 if not nl_path.is_absolute():
                     nl_path = run_set_dir / nl_path
                 try:
-                    with nl_path.open('rt') as f:
+                    with nl_path.open("rt") as f:
                         namelist.writelines(f.readlines())
-                        namelist.write(u'\n\n')
+                        namelist.write(u"\n\n")
                 except IOError as e:
                     logger.error(e)
                     namelist.close()
                     remove_run_dir(run_dir)
                     raise SystemExit(2)
-        ref_namelist = namelist_filename.replace('_cfg', '_ref')
+        ref_namelist = namelist_filename.replace("_cfg", "_ref")
         if ref_namelist not in namelists:
-            ref_namelist_source = (
-                nemo_config_dir / config_name / 'EXP00' / ref_namelist
-            )
+            ref_namelist_source = nemo_config_dir / config_name / "EXP00" / ref_namelist
             shutil.copy2(
                 fspath(ref_namelist_source),
-                fspath(run_dir / namelist_dest.replace('_cfg', '_ref'))
+                fspath(run_dir / namelist_dest.replace("_cfg", "_ref")),
             )
-    if 'namelist_cfg' in namelists:
-        set_mpi_decomposition('namelist_cfg', run_desc, run_dir)
+    if "namelist_cfg" in namelists:
+        set_mpi_decomposition("namelist_cfg", run_desc, run_dir)
     else:
         logger.error(
-            'No namelist_cfg key found in namelists section of run '
-            'description'
+            "No namelist_cfg key found in namelists section of run " "description"
         )
         remove_run_dir(run_dir)
         raise SystemExit(2)
@@ -436,21 +413,21 @@ def set_mpi_decomposition(namelist_filename, run_desc, run_dir):
     """
     try:
         jpni, jpnj = get_run_desc_value(
-            run_desc, ('MPI decomposition',), fatal=False
-        ).split('x')
+            run_desc, ("MPI decomposition",), fatal=False
+        ).split("x")
     except KeyError:
         logger.error(
-            'MPI decomposition value not found in YAML run description file. '
-            'Please add a line like:\n'
-            '  MPI decomposition: 8x18\n'
-            'that says how you want the domain distributed over the '
-            'processors in the i (longitude) and j (latitude) dimensions.'
+            "MPI decomposition value not found in YAML run description file. "
+            "Please add a line like:\n"
+            "  MPI decomposition: 8x18\n"
+            "that says how you want the domain distributed over the "
+            "processors in the i (longitude) and j (latitude) dimensions."
         )
         remove_run_dir(run_dir)
         raise SystemExit(2)
     jpnij = str(get_n_processors(run_desc, run_dir))
     lines = _read_namelist(namelist_filename, run_dir)
-    for key, new_value in {'jpni': jpni, 'jpnj': jpnj, 'jpnij': jpnij}.items():
+    for key, new_value in {"jpni": jpni, "jpnj": jpnj, "jpnij": jpnij}.items():
         value, i = get_namelist_value(key, lines)
         lines[i] = lines[i].replace(value, new_value)
     _write_namelist(lines, namelist_filename, run_dir)
@@ -460,7 +437,7 @@ def _read_namelist(namelist_filename, run_dir):
     """Encapsulate file access to facilitate testability of
     set_mpi_decomposition().
     """
-    with (run_dir / namelist_filename).open('rt') as f:
+    with (run_dir / namelist_filename).open("rt") as f:
         lines = f.readlines()
     return lines
 
@@ -469,7 +446,7 @@ def _write_namelist(lines, namelist_filename, run_dir):
     """Encapsulate file access to facilitate testability of
     set_mpi_decomposition().
     """
-    with (run_dir / namelist_filename).open('wt') as f:
+    with (run_dir / namelist_filename).open("wt") as f:
         f.writelines(lines)
 
 
@@ -486,24 +463,23 @@ def get_n_processors(run_desc, run_dir):
     :rtype: int
     """
     jpni, jpnj = map(
-        int,
-        get_run_desc_value(run_desc, ('MPI decomposition',)).split('x')
+        int, get_run_desc_value(run_desc, ("MPI decomposition",)).split("x")
     )
     try:
         mpi_lpe_mapping = get_run_desc_value(
-            run_desc, ('grid', 'land processor elimination'), fatal=False
+            run_desc, ("grid", "land processor elimination"), fatal=False
         )
     except KeyError:
         # Alternate key spelling for backward compatibility
         try:
             mpi_lpe_mapping = get_run_desc_value(
-                run_desc, ('grid', 'Land processor elimination'), fatal=False
+                run_desc, ("grid", "Land processor elimination"), fatal=False
             )
         except KeyError:
             logger.warning(
-                'No grid: land processor elimination: key found in run '
-                'description YAML file, so proceeding on the assumption that '
-                'you want to run without land processor elimination'
+                "No grid: land processor elimination: key found in run "
+                "description YAML file, so proceeding on the assumption that "
+                "you want to run without land processor elimination"
             )
             mpi_lpe_mapping = False
     if not mpi_lpe_mapping:
@@ -511,28 +487,30 @@ def get_n_processors(run_desc, run_dir):
 
     try:
         mpi_lpe_mapping = get_run_desc_value(
-            run_desc, ('grid', 'land processor elimination'),
+            run_desc,
+            ("grid", "land processor elimination"),
             expand_path=True,
             fatal=False,
-            run_dir=run_dir
+            run_dir=run_dir,
         )
     except KeyError:
         # Alternate key spelling for backward compatibility
         mpi_lpe_mapping = get_run_desc_value(
-            run_desc, ('grid', 'Land processor elimination'),
+            run_desc,
+            ("grid", "Land processor elimination"),
             expand_path=True,
-            run_dir=run_dir
+            run_dir=run_dir,
         )
     if not mpi_lpe_mapping.is_absolute():
         nemo_forcing_dir = get_run_desc_value(
-            run_desc, ('paths', 'forcing'), resolve_path=True, run_dir=run_dir
+            run_desc, ("paths", "forcing"), resolve_path=True, run_dir=run_dir
         )
-        mpi_lpe_mapping = nemo_forcing_dir / 'grid' / mpi_lpe_mapping
+        mpi_lpe_mapping = nemo_forcing_dir / "grid" / mpi_lpe_mapping
     n_processors = _lookup_lpe_n_processors(mpi_lpe_mapping, jpni, jpnj)
     if n_processors is None:
         msg = (
-            'No land processor elimination choice found for {jpni}x{jpnj} '
-            'MPI decomposition'.format(jpni=jpni, jpnj=jpnj)
+            "No land processor elimination choice found for {jpni}x{jpnj} "
+            "MPI decomposition".format(jpni=jpni, jpnj=jpnj)
         )
         logger.error(msg)
         raise ValueError(msg)
@@ -542,16 +520,14 @@ def get_n_processors(run_desc, run_dir):
 def _lookup_lpe_n_processors(mpi_lpe_mapping, jpni, jpnj):
     """Encapsulate file access to facilitate testability of get_n_processors().
     """
-    with mpi_lpe_mapping.open('rt') as f:
+    with mpi_lpe_mapping.open("rt") as f:
         for line in f:
-            cjpni, cjpnj, cnw = map(int, line.split(','))
+            cjpni, cjpnj, cnw = map(int, line.split(","))
             if jpni == cjpni and jpnj == cjpnj:
                 return cnw
 
 
-def copy_run_set_files(
-    run_desc, desc_file, run_set_dir, run_dir, agrif_n=None
-):
+def copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir, agrif_n=None):
     """Copy the run-set files given into run_dir.
 
     The YAML run description file (from the command-line) is copied.
@@ -588,74 +564,60 @@ def copy_run_set_files(
     """
     try:
         iodefs = get_run_desc_value(
-            run_desc, ('output', 'iodefs'),
-            resolve_path=True,
-            run_dir=run_dir,
-            fatal=False
-        )
-    except KeyError:
-        # Alternate key spelling for backward compatibility
-        iodefs = get_run_desc_value(
-            run_desc, ('output', 'files'), resolve_path=True, run_dir=run_dir
-        )
-    run_set_files = [
-        (iodefs, 'iodef.xml'),
-        (run_set_dir / desc_file.name, desc_file.name),
-    ]
-    try:
-        keys = ('output', 'domaindefs')
-        domain_def_filename = 'domain_def.xml'
-        if agrif_n is not None:
-            keys = (
-                'output', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n),
-                'domaindefs'
-            )
-            domain_def_filename = '{agrif_n}_domain_def.xml'.format(
-                agrif_n=agrif_n
-            )
-        domains_def = get_run_desc_value(
             run_desc,
-            keys,
+            ("output", "iodefs"),
             resolve_path=True,
             run_dir=run_dir,
             fatal=False,
         )
     except KeyError:
         # Alternate key spelling for backward compatibility
-        keys = ('output', 'domain')
+        iodefs = get_run_desc_value(
+            run_desc, ("output", "files"), resolve_path=True, run_dir=run_dir
+        )
+    run_set_files = [
+        (iodefs, "iodef.xml"),
+        (run_set_dir / desc_file.name, desc_file.name),
+    ]
+    try:
+        keys = ("output", "domaindefs")
+        domain_def_filename = "domain_def.xml"
         if agrif_n is not None:
-            keys = (
-                'output', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n), 'domain'
-            )
+            keys = ("output", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "domaindefs")
+            domain_def_filename = "{agrif_n}_domain_def.xml".format(agrif_n=agrif_n)
+        domains_def = get_run_desc_value(
+            run_desc, keys, resolve_path=True, run_dir=run_dir, fatal=False
+        )
+    except KeyError:
+        # Alternate key spelling for backward compatibility
+        keys = ("output", "domain")
+        if agrif_n is not None:
+            keys = ("output", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "domain")
         domains_def = get_run_desc_value(
             run_desc, keys, resolve_path=True, run_dir=run_dir
         )
     try:
         fields_def = get_run_desc_value(
-            run_desc, ('output', 'fielddefs'),
+            run_desc,
+            ("output", "fielddefs"),
             resolve_path=True,
             run_dir=run_dir,
-            fatal=False
+            fatal=False,
         )
     except KeyError:
         # Alternate key spelling for backward compatibility
         fields_def = get_run_desc_value(
-            run_desc, ('output', 'fields'), resolve_path=True, run_dir=run_dir
+            run_desc, ("output", "fields"), resolve_path=True, run_dir=run_dir
         )
-    run_set_files.extend([
-        (domains_def, domain_def_filename),
-        (fields_def, 'field_def.xml'),
-    ])
+    run_set_files.extend(
+        [(domains_def, domain_def_filename), (fields_def, "field_def.xml")]
+    )
     try:
-        keys = ('output', 'filedefs')
-        file_def_filename = 'file_def.xml'
+        keys = ("output", "filedefs")
+        file_def_filename = "file_def.xml"
         if agrif_n is not None:
-            keys = (
-                'output', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n), 'filedefs'
-            )
-            file_def_filename = '{agrif_n}_file_def.xml'.format(
-                agrif_n=agrif_n
-            )
+            keys = ("output", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "filedefs")
+            file_def_filename = "{agrif_n}_file_def.xml".format(agrif_n=agrif_n)
         files_def = get_run_desc_value(
             run_desc, keys, resolve_path=True, run_dir=run_dir, fatal=False
         )
@@ -682,34 +644,32 @@ def _set_xios_server_mode(run_desc, run_dir):
     """
     try:
         sep_xios_server = get_run_desc_value(
-            run_desc, ('output', 'separate XIOS server'), fatal=False
+            run_desc, ("output", "separate XIOS server"), fatal=False
         )
     except KeyError:
         logger.error(
-            'separate XIOS server key/value not found in output section '
-            'of YAML run description file. '
-            'Please add lines like:\n'
-            '  separate XIOS server: True\n'
-            '  XIOS servers: 1\n'
-            'that say whether to run the XIOS server(s) attached or detached, '
-            'and how many of them to use.'
+            "separate XIOS server key/value not found in output section "
+            "of YAML run description file. "
+            "Please add lines like:\n"
+            "  separate XIOS server: True\n"
+            "  XIOS servers: 1\n"
+            "that say whether to run the XIOS server(s) attached or detached, "
+            "and how many of them to use."
         )
         remove_run_dir(run_dir)
         raise SystemExit(2)
-    tree = xml.etree.ElementTree.parse(fspath(run_dir / 'iodef.xml'))
+    tree = xml.etree.ElementTree.parse(fspath(run_dir / "iodef.xml"))
     root = tree.getroot()
-    using_server = root.find(
-        'context[@id="xios"]//variable[@id="using_server"]'
-    )
-    using_server.text = 'true' if sep_xios_server else 'false'
+    using_server = root.find('context[@id="xios"]//variable[@id="using_server"]')
+    using_server.text = "true" if sep_xios_server else "false"
     using_server_line = xml.etree.ElementTree.tostring(using_server).decode()
-    with (run_dir / 'iodef.xml').open('rt') as f:
+    with (run_dir / "iodef.xml").open("rt") as f:
         lines = f.readlines()
     for i, line in enumerate(lines):
-        if 'using_server' in line:
+        if "using_server" in line:
             lines[i] = using_server_line
             break
-    with (run_dir / 'iodef.xml').open('wt') as f:
+    with (run_dir / "iodef.xml").open("wt") as f:
         f.writelines(lines)
 
 
@@ -725,11 +685,11 @@ def make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir):
     :param xios_bin_dir: Absolute path of directory containing XIOS executable.
     :type xios_bin_dir: :py:class:`pathlib.Path`
     """
-    nemo_exec = nemo_bin_dir / 'nemo.exe'
-    (run_dir / 'nemo.exe').symlink_to(nemo_exec)
-    iom_server_exec = nemo_bin_dir / 'server.exe'
-    xios_server_exec = xios_bin_dir / 'xios_server.exe'
-    (run_dir / 'xios_server.exe').symlink_to(xios_server_exec)
+    nemo_exec = nemo_bin_dir / "nemo.exe"
+    (run_dir / "nemo.exe").symlink_to(nemo_exec)
+    iom_server_exec = nemo_bin_dir / "server.exe"
+    xios_server_exec = xios_bin_dir / "xios_server.exe"
+    (run_dir / "xios_server.exe").symlink_to(xios_server_exec)
 
 
 def make_grid_links(run_desc, run_dir, agrif_n=None):
@@ -748,19 +708,15 @@ def make_grid_links(run_desc, run_dir, agrif_n=None):
 
     :raises: :py:exec:`SystemExit` with exit code 2
     """
-    coords_keys = ('grid', 'coordinates')
-    coords_filename = 'coordinates.nc'
-    bathy_keys = ('grid', 'bathymetry')
-    bathy_filename = 'bathy_meter.nc'
+    coords_keys = ("grid", "coordinates")
+    coords_filename = "coordinates.nc"
+    bathy_keys = ("grid", "bathymetry")
+    bathy_filename = "bathy_meter.nc"
     if agrif_n is not None:
-        coords_keys = (
-            'grid', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n), 'coordinates'
-        )
-        coords_filename = '{agrif_n}_coordinates.nc'.format(agrif_n=agrif_n)
-        bathy_keys = (
-            'grid', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n), 'bathymetry'
-        )
-        bathy_filename = '{agrif_n}_bathy_meter.nc'.format(agrif_n=agrif_n)
+        coords_keys = ("grid", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "coordinates")
+        coords_filename = "{agrif_n}_coordinates.nc".format(agrif_n=agrif_n)
+        bathy_keys = ("grid", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "bathymetry")
+        bathy_filename = "{agrif_n}_bathy_meter.nc".format(agrif_n=agrif_n)
     coords_path = get_run_desc_value(
         run_desc, coords_keys, expand_path=True, run_dir=run_dir
     )
@@ -768,21 +724,22 @@ def make_grid_links(run_desc, run_dir, agrif_n=None):
         run_desc, bathy_keys, expand_path=True, run_dir=run_dir
     )
     if coords_path.is_absolute() and bathy_path.is_absolute():
-        grid_paths = ((coords_path, coords_filename),
-                      (bathy_path, bathy_filename))
+        grid_paths = ((coords_path, coords_filename), (bathy_path, bathy_filename))
     else:
         nemo_forcing_dir = get_run_desc_value(
-            run_desc, ('paths', 'forcing'), resolve_path=True, run_dir=run_dir
+            run_desc, ("paths", "forcing"), resolve_path=True, run_dir=run_dir
         )
-        grid_dir = nemo_forcing_dir / 'grid'
-        grid_paths = ((grid_dir / coords_path, coords_filename),
-                      (grid_dir / bathy_path, bathy_filename))
+        grid_dir = nemo_forcing_dir / "grid"
+        grid_paths = (
+            (grid_dir / coords_path, coords_filename),
+            (grid_dir / bathy_path, bathy_filename),
+        )
     for source, link_name in grid_paths:
         if not source.exists():
             logger.error(
-                '{} not found; cannot create symlink - '
-                'please check the forcing path and grid file names '
-                'in your run description file'.format(source)
+                "{} not found; cannot create symlink - "
+                "please check the forcing path and grid file names "
+                "in your run description file".format(source)
             )
             remove_run_dir(run_dir)
             raise SystemExit(2)
@@ -801,39 +758,37 @@ def make_forcing_links(run_desc, run_dir):
     :raises: :py:exc:`SystemExit` with exit code 2 if a symlink target
              does not exist
     """
-    link_checkers = {'atmospheric': _check_atmospheric_forcing_link}
-    link_names = get_run_desc_value(run_desc, ('forcing',), run_dir=run_dir)
+    link_checkers = {"atmospheric": _check_atmospheric_forcing_link}
+    link_names = get_run_desc_value(run_desc, ("forcing",), run_dir=run_dir)
     for link_name in link_names:
-        source = _resolve_forcing_path(
-            run_desc, (link_name, 'link to'), run_dir
-        )
+        source = _resolve_forcing_path(run_desc, (link_name, "link to"), run_dir)
         if not source.exists():
             logger.error(
-                '{} not found; cannot create symlink - '
-                'please check the forcing paths and file names '
-                'in your run description file'.format(source)
+                "{} not found; cannot create symlink - "
+                "please check the forcing paths and file names "
+                "in your run description file".format(source)
             )
             remove_run_dir(run_dir)
             raise SystemExit(2)
         (run_dir / link_name).symlink_to(source)
         try:
             link_checker = get_run_desc_value(
-                run_desc, ('forcing', link_name, 'check link'),
+                run_desc,
+                ("forcing", link_name, "check link"),
                 run_dir=run_dir,
-                fatal=False
+                fatal=False,
             )
-            link_checkers[link_checker['type']](
-                run_dir, source, link_checker['namelist filename']
+            link_checkers[link_checker["type"]](
+                run_dir, source, link_checker["namelist filename"]
             )
         except KeyError:
-            if 'check link' not in link_names[link_name]:
+            if "check link" not in link_names[link_name]:
                 # No forcing link checker specified
                 pass
             else:
                 if link_checker is not None:
                     logger.error(
-                        'unknown forcing link checker: {}'
-                        .format(link_checker)
+                        "unknown forcing link checker: {}".format(link_checker)
                     )
                     remove_run_dir(run_dir)
                     raise SystemExit(2)
@@ -863,12 +818,12 @@ def _resolve_forcing_path(run_desc, keys, run_dir):
              path does not exist
     """
     path = get_run_desc_value(
-        run_desc, (('forcing',) + keys), expand_path=True, fatal=False
+        run_desc, (("forcing",) + keys), expand_path=True, fatal=False
     )
     if path.is_absolute():
         return path.resolve()
     nemo_forcing_dir = get_run_desc_value(
-        run_desc, ('paths', 'forcing'), resolve_path=True, run_dir=run_dir
+        run_desc, ("paths", "forcing"), resolve_path=True, run_dir=run_dir
     )
     return nemo_forcing_dir / path
 
@@ -893,63 +848,53 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
              file does not exist
     """
     namelist = namelist2dict(fspath(run_dir / namelist_filename))
-    if not namelist['namsbc'][0]['ln_blk_core']:
+    if not namelist["namsbc"][0]["ln_blk_core"]:
         return
-    start_date = arrow.get(str(namelist['namrun'][0]['nn_date0']), 'YYYYMMDD')
-    it000 = namelist['namrun'][0]['nn_it000']
-    itend = namelist['namrun'][0]['nn_itend']
-    dt = namelist['namdom'][0]['rn_rdt']
+    start_date = arrow.get(str(namelist["namrun"][0]["nn_date0"]), "YYYYMMDD")
+    it000 = namelist["namrun"][0]["nn_it000"]
+    itend = namelist["namrun"][0]["nn_itend"]
+    dt = namelist["namdom"][0]["rn_rdt"]
     end_date = start_date.replace(seconds=(itend - it000) * dt - 1)
-    qtys = (
-        'sn_wndi sn_wndj sn_qsr sn_qlw sn_tair sn_humi sn_prec sn_snow'.split()
-    )
-    core_dir = namelist['namsbc_core'][0]['cn_dir']
-    file_info = {
-        'core': {
-            'dir': core_dir,
-            'params': [],
-        },
-    }
+    qtys = "sn_wndi sn_wndj sn_qsr sn_qlw sn_tair sn_humi sn_prec sn_snow".split()
+    core_dir = namelist["namsbc_core"][0]["cn_dir"]
+    file_info = {"core": {"dir": core_dir, "params": []}}
     for qty in qtys:
-        flread_params = namelist['namsbc_core'][0][qty]
-        file_info['core']['params'].append(
-            (flread_params[0], flread_params[5])
-        )
-    if namelist['namsbc'][0]['ln_apr_dyn']:
-        apr_dir = namelist['namsbc_apr'][0]['cn_dir']
-        file_info['apr'] = {
-            'dir': apr_dir,
-            'params': [],
-        }
-        flread_params = namelist['namsbc_apr'][0]['sn_apr']
-        file_info['apr']['params'].append((flread_params[0], flread_params[5]))
+        flread_params = namelist["namsbc_core"][0][qty]
+        file_info["core"]["params"].append((flread_params[0], flread_params[5]))
+    if namelist["namsbc"][0]["ln_apr_dyn"]:
+        apr_dir = namelist["namsbc_apr"][0]["cn_dir"]
+        file_info["apr"] = {"dir": apr_dir, "params": []}
+        flread_params = namelist["namsbc_apr"][0]["sn_apr"]
+        file_info["apr"]["params"].append((flread_params[0], flread_params[5]))
     startm1 = start_date.replace(days=-1)
-    for r in arrow.Arrow.range('day', startm1, end_date):
+    for r in arrow.Arrow.range("day", startm1, end_date):
         for v in file_info.values():
-            for basename, period in v['params']:
-                if period == 'daily':
+            for basename, period in v["params"]:
+                if period == "daily":
                     file_path = os.path.join(
-                        v['dir'], '{basename}_'
-                        'y{date.year}m{date.month:02d}d{date.day:02d}.nc'
-                        .format(basename=basename, date=r)
+                        v["dir"],
+                        "{basename}_"
+                        "y{date.year}m{date.month:02d}d{date.day:02d}.nc".format(
+                            basename=basename, date=r
+                        ),
                     )
-                elif period == 'yearly':
+                elif period == "yearly":
                     file_path = os.path.join(
-                        v['dir'], '{basename}.nc'.format(basename=basename)
+                        v["dir"], "{basename}.nc".format(basename=basename)
                     )
                 if not (run_dir / file_path).exists():
                     logger.error(
-                        '{file_path} not found; '
-                        'please confirm that atmospheric forcing files '
-                        'for {startm1} through '
-                        '{end} are in the {dir} collection, '
-                        'and that atmospheric forcing paths in your '
-                        'run description and surface boundary conditions '
-                        'namelist are in agreement.'.format(
+                        "{file_path} not found; "
+                        "please confirm that atmospheric forcing files "
+                        "for {startm1} through "
+                        "{end} are in the {dir} collection, "
+                        "and that atmospheric forcing paths in your "
+                        "run description and surface boundary conditions "
+                        "namelist are in agreement.".format(
                             file_path=file_path,
-                            startm1=startm1.format('YYYY-MM-DD'),
-                            end=end_date.format('YYYY-MM-DD'),
-                            dir=link_path
+                            startm1=startm1.format("YYYY-MM-DD"),
+                            end=end_date.format("YYYY-MM-DD"),
+                            dir=link_path,
                         )
                     )
                     remove_run_dir(run_dir)
@@ -973,37 +918,33 @@ def make_restart_links(run_desc, run_dir, nocheck_init, agrif_n=None):
     :raises: :py:exc:`SystemExit` with exit code 2 if a symlink target does
              not exist
     """
-    keys = ('restart',)
+    keys = ("restart",)
     if agrif_n is not None:
-        keys = ('restart', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n))
+        keys = ("restart", "AGRIF_{agrif_n}".format(agrif_n=agrif_n))
     try:
-        link_names = get_run_desc_value(
-            run_desc, keys, run_dir=run_dir, fatal=False
-        )
+        link_names = get_run_desc_value(run_desc, keys, run_dir=run_dir, fatal=False)
     except KeyError:
         logger.warning(
-            'No restart section found in run description YAML file, '
-            'so proceeding on the assumption that initial conditions '
-            'have been provided'
+            "No restart section found in run description YAML file, "
+            "so proceeding on the assumption that initial conditions "
+            "have been provided"
         )
         return
     for link_name in link_names:
-        if link_name.startswith('AGRIF'):
+        if link_name.startswith("AGRIF"):
             continue
-        keys = ('restart', link_name)
+        keys = ("restart", link_name)
         if agrif_n is not None:
-            keys = (
-                'restart', 'AGRIF_{agrif_n}'.format(agrif_n=agrif_n), link_name
-            )
-            link_name = '{agrif_n}_{link_name}'.format(
+            keys = ("restart", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), link_name)
+            link_name = "{agrif_n}_{link_name}".format(
                 agrif_n=agrif_n, link_name=link_name
             )
         source = get_run_desc_value(run_desc, keys, expand_path=True)
         if not source.exists() and not nocheck_init:
             logger.error(
-                '{} not found; cannot create symlink - '
-                'please check the restart file paths and file names '
-                'in your run description file'.format(source)
+                "{} not found; cannot create symlink - "
+                "please check the restart file paths and file names "
+                "in your run description file".format(source)
             )
             remove_run_dir(run_dir)
             raise SystemExit(2)
@@ -1022,15 +963,13 @@ def _record_vcs_revisions(run_desc, run_dir):
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
     """
-    if 'vcs revisions' not in run_desc:
+    if "vcs revisions" not in run_desc:
         return
-    vcs_funcs = {'hg': get_hg_revision}
-    vcs_tools = get_run_desc_value(
-        run_desc, ('vcs revisions',), run_dir=run_dir
-    )
+    vcs_funcs = {"hg": get_hg_revision}
+    vcs_tools = get_run_desc_value(run_desc, ("vcs revisions",), run_dir=run_dir)
     for vcs_tool in vcs_tools:
         repos = get_run_desc_value(
-            run_desc, ('vcs revisions', vcs_tool), run_dir=run_dir
+            run_desc, ("vcs revisions", vcs_tool), run_dir=run_dir
         )
         for repo in repos:
             write_repo_rev_file(Path(repo), run_dir, vcs_funcs[vcs_tool])
@@ -1056,9 +995,9 @@ def write_repo_rev_file(repo, run_dir, vcs_func):
     repo_path = resolved_path(repo)
     repo_rev_file_lines = vcs_func(repo_path, run_dir)
     if repo_rev_file_lines:
-        rev_file = run_dir / '{repo.name}_rev.txt'.format(repo=repo_path)
-        with rev_file.open('wt') as f:
-            f.writelines(u'{}\n'.format(line) for line in repo_rev_file_lines)
+        rev_file = run_dir / "{repo.name}_rev.txt".format(repo=repo_path)
+        with rev_file.open("wt") as f:
+            f.writelines(u"{}\n".format(line) for line in repo_rev_file_lines)
 
 
 def get_hg_revision(repo, run_dir):
@@ -1085,8 +1024,9 @@ def get_hg_revision(repo, run_dir):
     """
     if not repo.exists():
         logger.warning(
-            'revision and status requested for non-existent repo: {repo}'
-            .format(repo=repo)
+            "revision and status requested for non-existent repo: {repo}".format(
+                repo=repo
+            )
         )
         return []
     repo_path = copy(repo)
@@ -1096,59 +1036,56 @@ def get_hg_revision(repo, run_dir):
                 parents = hg.parents()
                 files = [f[1] for f in hg.status(change=[parents[0].rev])]
                 status = hg.status(
-                    modified=True,
-                    added=True,
-                    removed=True,
-                    deleted=True,
-                    copies=True
+                    modified=True, added=True, removed=True, deleted=True, copies=True
                 )
             break
         except hglib.error.ServerError:
             repo = repo.parent
     else:
         logger.error(
-            'unable to find Mercurial repo root in or above '
-            '{repo_path}'.format(repo_path=repo_path)
+            "unable to find Mercurial repo root in or above "
+            "{repo_path}".format(repo_path=repo_path)
         )
         remove_run_dir(run_dir)
         raise SystemExit(2)
     revision = parents[0]
     repo_rev_file_lines = [
-        'changset:   {rev}:{node}'.format(
+        "changset:   {rev}:{node}".format(
             rev=revision.rev.decode(), node=revision.node.decode()
         )
     ]
     if revision.tags:
         repo_rev_file_lines.append(
-            'tag:        {tags}'.format(tags=revision.tags.decode())
+            "tag:        {tags}".format(tags=revision.tags.decode())
         )
     if len(parents) > 1:
         repo_rev_file_lines.extend(
-            'parent:     {rev}:{node}'.
-            format(rev=parent.rev.decode(), node=parent.node.decode())
+            "parent:     {rev}:{node}".format(
+                rev=parent.rev.decode(), node=parent.node.decode()
+            )
             for parent in parents
         )
     date = arrow.get(revision.date).replace(tzinfo=tz.tzlocal())
-    repo_rev_file_lines.extend([
-        'user:       {}'.format(revision.author.decode()),
-        'date:       {}'.format(date.format('ddd MMM DD HH:mm:ss YYYY ZZ')),
-        'files:      {}'.format(' '.join(f.decode() for f in files)),
-        'description:',
-    ])
     repo_rev_file_lines.extend(
-        line.decode() for line in revision.desc.splitlines()
+        [
+            "user:       {}".format(revision.author.decode()),
+            "date:       {}".format(date.format("ddd MMM DD HH:mm:ss YYYY ZZ")),
+            "files:      {}".format(" ".join(f.decode() for f in files)),
+            "description:",
+        ]
     )
-    ignore = (u'CONFIG/cfg.txt', u'TOOLS/COMPILE/full_key_list.txt')
+    repo_rev_file_lines.extend(line.decode() for line in revision.desc.splitlines())
+    ignore = (u"CONFIG/cfg.txt", u"TOOLS/COMPILE/full_key_list.txt")
     for s in copy(status):
         if s[1].decode().endswith(ignore):
             status.remove(s)
     if status:
         logger.warning(
-            'There are uncommitted changes in {}'.format(resolved_path(repo))
+            "There are uncommitted changes in {}".format(resolved_path(repo))
         )
-        repo_rev_file_lines.append('uncommitted changes:')
+        repo_rev_file_lines.append("uncommitted changes:")
         repo_rev_file_lines.extend(
-            '{code} {path}'.format(code=s[0].decode(), path=s[1].decode())
+            "{code} {path}".format(code=s[0].decode(), path=s[1].decode())
             for s in status
         )
     return repo_rev_file_lines
@@ -1178,39 +1115,33 @@ def add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
              sub-grids is detected
     """
     try:
-        get_run_desc_value(run_desc, ('AGRIF',), fatal=False)
+        get_run_desc_value(run_desc, ("AGRIF",), fatal=False)
     except KeyError:
         # Not an AGRIF run
         return
     fixed_grids = get_run_desc_value(
-        run_desc, ('AGRIF', 'fixed grids'), run_dir, resolve_path=True
+        run_desc, ("AGRIF", "fixed grids"), run_dir, resolve_path=True
     )
-    shutil.copy2(fspath(fixed_grids), fspath(run_dir / 'AGRIF_FixedGrids.in'))
+    shutil.copy2(fspath(fixed_grids), fspath(run_dir / "AGRIF_FixedGrids.in"))
     # Get number of sub-grids
     n_sub_grids = 0
-    with (run_dir / 'AGRIF_FixedGrids.in').open('rt') as f:
-        n_sub_grids = len([
-            line for line in f
-            if not line.startswith('#') and len(line.split()) == 8
-        ])
+    with (run_dir / "AGRIF_FixedGrids.in").open("rt") as f:
+        n_sub_grids = len(
+            [line for line in f if not line.startswith("#") and len(line.split()) == 8]
+        )
     run_desc_sections = {
         # sub-grid coordinates and bathymetry files
-        'grid':
-        functools.partial(make_grid_links, run_desc, run_dir),
+        "grid": functools.partial(make_grid_links, run_desc, run_dir),
         # sub-grid namelist files
-        'namelists':
-        functools.partial(make_namelists, run_set_dir, run_desc, run_dir),
+        "namelists": functools.partial(make_namelists, run_set_dir, run_desc, run_dir),
         # sub-grid output files
-        'output':
-        functools.partial(
+        "output": functools.partial(
             copy_run_set_files, run_desc, desc_file, run_set_dir, run_dir
         ),
     }
     try:
-        get_run_desc_value(
-            run_desc, ('restart',), run_dir=run_dir, fatal=False
-        )
-        run_desc_sections['restart'] = functools.partial(
+        get_run_desc_value(run_desc, ("restart",), run_dir=run_dir, fatal=False)
+        run_desc_sections["restart"] = functools.partial(
             make_restart_links, run_desc, run_dir, nocheck_init
         )
     except KeyError:
@@ -1221,18 +1152,18 @@ def add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
         sub_grids_count = 0
         section = get_run_desc_value(run_desc, (run_desc_section,))
         for key in section:
-            if key.startswith('AGRIF'):
+            if key.startswith("AGRIF"):
                 sub_grids_count += 1
-                agrif_n = int(key.split('_')[1])
+                agrif_n = int(key.split("_")[1])
                 func(agrif_n=agrif_n)
         if sub_grids_count != n_sub_grids:
             logger.error(
-                'Expected {n_sub_grids} AGRIF sub-grids in {section} section, '
-                'but found {sub_grids_count} - '
-                'please check your run description file'.format(
+                "Expected {n_sub_grids} AGRIF sub-grids in {section} section, "
+                "but found {sub_grids_count} - "
+                "please check your run description file".format(
                     n_sub_grids=n_sub_grids,
                     section=run_desc_section,
-                    sub_grids_count=sub_grids_count
+                    sub_grids_count=sub_grids_count,
                 )
             )
             remove_run_dir(run_dir)

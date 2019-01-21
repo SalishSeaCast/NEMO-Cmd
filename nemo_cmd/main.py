@@ -28,14 +28,14 @@ from nemo_cmd import __pkg_metadata__
 
 
 class NEMO_App(cliff.app.App):
-    CONSOLE_MESSAGE_FORMAT = '%(name)s %(levelname)s: %(message)s'
+    CONSOLE_MESSAGE_FORMAT = "%(name)s %(levelname)s: %(message)s"
 
     def __init__(self):
         super(NEMO_App, self).__init__(
             description=__pkg_metadata__.DESCRIPTION,
             version=__pkg_metadata__.VERSION,
             command_manager=cliff.commandmanager.CommandManager(
-                'nemo.app', convert_underscores=False
+                "nemo.app", convert_underscores=False
             ),
             stderr=sys.stdout,
         )
@@ -46,5 +46,5 @@ def main(argv=sys.argv[1:]):
     return app.run(argv)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main(sys.argv[1:]))

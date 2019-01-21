@@ -31,6 +31,9 @@ dependencies:
   - python-hglib
   - pyyaml
 
+  # For coding style
+  - black
+
   # For unit tests
   - coverage
   - pytest
@@ -38,7 +41,3 @@ dependencies:
   # For documentation
   - sphinx
   - sphinx_rtd_theme
-
-  - pip:
-    # For code style maintenance
-    - yapf

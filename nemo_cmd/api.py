@@ -22,6 +22,7 @@ and by other software.
 import datetime
 import logging
 import os
+
 try:
     from pathlib import Path
 except ImportError:
@@ -41,7 +42,7 @@ log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 handler = logging.StreamHandler()
 handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(name)s %(levelname)s: %(message)s')
+formatter = logging.Formatter("%(name)s %(levelname)s: %(message)s")
 handler.setFormatter(formatter)
 log.addHandler(handler)
 
@@ -75,9 +76,7 @@ def deflate(filepaths, max_concurrent_jobs):
         return deflate_plugin.deflate(filepaths, max_concurrent_jobs)
     except AttributeError:
         # filepaths is sequence of path strings not Path objects
-        return deflate_plugin.deflate(
-            map(Path, filepaths), max_concurrent_jobs
-        )
+        return deflate_plugin.deflate(map(Path, filepaths), max_concurrent_jobs)
 
 
 def find_rebuild_nemo_script(run_desc):
@@ -136,17 +135,17 @@ def prepare(run_desc_file, nocheck_init=False):
 
 
 def run_description(
-    config_name='SalishSea',
+    config_name="SalishSea",
     run_id=None,
     walltime=None,
-    mpi_decomposition='8x18',
+    mpi_decomposition="8x18",
     NEMO_code=None,
     XIOS_code=None,
     forcing_path=None,
     runs_dir=None,
     forcing=None,
     init_conditions=None,
-    namelists=None
+    namelists=None,
 ):
     """Return a NEMO run description dict template.
 
@@ -218,50 +217,50 @@ def run_description(
 
     """
     run_description = {
-        'config_name': config_name,
-        'MPI decomposition': mpi_decomposition,
-        'run_id': run_id,
-        'walltime': walltime,
-        'paths': {
-            'NEMO-code': NEMO_code,
-            'XIOS': XIOS_code,
-            'forcing': forcing_path,
-            'runs directory': runs_dir,
+        "config_name": config_name,
+        "MPI decomposition": mpi_decomposition,
+        "run_id": run_id,
+        "walltime": walltime,
+        "paths": {
+            "NEMO-code": NEMO_code,
+            "XIOS": XIOS_code,
+            "forcing": forcing_path,
+            "runs directory": runs_dir,
         },
-        'grid': {
-            'coordinates': 'coordinates_seagrid_SalishSea.nc',
-            'bathymetry': 'bathy_meter_SalishSea2.nc',
+        "grid": {
+            "coordinates": "coordinates_seagrid_SalishSea.nc",
+            "bathymetry": "bathy_meter_SalishSea2.nc",
         },
-        'forcing': forcing,
-        'output': {
-            'files': 'iodef.xml',
-        }
+        "forcing": forcing,
+        "output": {"files": "iodef.xml"},
     }
     if namelists is None:
-        run_description['namelists'] = {
-            'namelist_cfg': [
-                'namelist.time',
-                'namelist.domain',
-                'namelist.surface',
-                'namelist.lateral',
-                'namelist.bottom',
-                'namelist.tracer',
-                'namelist.dynamics',
-                'namelist.vertical',
-                'namelist.compute',
+        run_description["namelists"] = {
+            "namelist_cfg": [
+                "namelist.time",
+                "namelist.domain",
+                "namelist.surface",
+                "namelist.lateral",
+                "namelist.bottom",
+                "namelist.tracer",
+                "namelist.dynamics",
+                "namelist.vertical",
+                "namelist.compute",
             ]
         }
     else:
-        run_description['namelists'] = namelists
-    run_description['output'].update({
-        'domain': 'domain_def.xml',
-        'fields': None,
-        'separate XIOS server': True,
-        'XIOS servers': 1,
-    })
+        run_description["namelists"] = namelists
+    run_description["output"].update(
+        {
+            "domain": "domain_def.xml",
+            "fields": None,
+            "separate XIOS server": True,
+            "XIOS servers": 1,
+        }
+    )
     if NEMO_code is not None:
-        run_description['output']['fields'] = os.path.join(
-            NEMO_code, 'NEMOGCM/CONFIG/SHARED/field_def.xml'
+        run_description["output"]["fields"] = os.path.join(
+            NEMO_code, "NEMOGCM/CONFIG/SHARED/field_def.xml"
         )
     return run_description
 
@@ -280,10 +279,10 @@ def run_in_subprocess(run_id, run_desc, results_dir):
     :arg results_dir: Directory to store results into.
     :type results_dir: str
     """
-    yaml_file = '{}_subprocess_run.yaml'.format(run_id)
-    with open(yaml_file, 'wt') as f:
+    yaml_file = "{}_subprocess_run.yaml".format(run_id)
+    with open(yaml_file, "wt") as f:
         yaml.dump(run_desc, f, default_flow_style=False)
-    cmd = ['salishsea', 'run']
+    cmd = ["salishsea", "run"]
     cmd.extend([yaml_file, results_dir])
     try:
         output = subprocess.check_output(
@@ -294,7 +293,7 @@ def run_in_subprocess(run_id, run_desc, results_dir):
                 log.info(line)
     except subprocess.CalledProcessError as e:
         log.error(
-            'subprocess {cmd} failed with return code {status}'.format(
+            "subprocess {cmd} failed with return code {status}".format(
                 cmd=cmd, status=e.returncode
             )
         )
@@ -320,7 +319,7 @@ def _run_subcommand(app, app_args, argv):
     :type argv: list
     """
     command_manager = cliff.commandmanager.CommandManager(
-        'salishsea.app', convert_underscores=False
+        "salishsea.app", convert_underscores=False
     )
     try:
         subcommand = command_manager.find_command(argv)
@@ -345,13 +344,7 @@ def _run_subcommand(app, app_args, argv):
     return result
 
 
-def pbs_common(
-    run_description,
-    n_processors,
-    email,
-    results_dir,
-    pmem='2000mb',
-):
+def pbs_common(run_description, n_processors, email, results_dir, pmem="2000mb"):
     """Return the common PBS directives used to run NEMO in a TORQUE/PBS
     multiple processor context.
 
@@ -378,30 +371,26 @@ def pbs_common(
     :rtype: Unicode str
     """
     try:
-        td = datetime.timedelta(seconds=run_description['walltime'])
+        td = datetime.timedelta(seconds=run_description["walltime"])
     except TypeError:
-        t = datetime.datetime.strptime(
-            run_description['walltime'], '%H:%M:%S'
-        ).time()
-        td = datetime.timedelta(
-            hours=t.hour, minutes=t.minute, seconds=t.second
-        )
+        t = datetime.datetime.strptime(run_description["walltime"], "%H:%M:%S").time()
+        td = datetime.timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
     walltime = td2hms(td)
     pbs_directives = (
-        u'#PBS -N {run_id}\n'
-        u'#PBS -S /bin/bash\n'
-        u'#PBS -l procs={procs}\n'
-        u'# memory per processor\n'
-        u'#PBS -l pmem={pmem}\n'
-        u'#PBS -l walltime={walltime}\n'
-        u'# email when the job [b]egins and [e]nds, or is [a]borted\n'
-        u'#PBS -m bea\n'
-        u'#PBS -M {email}\n'
-        u'# stdout and stderr file paths/names\n'
-        u'#PBS -o {results_dir}/stdout\n'
-        u'#PBS -e {results_dir}/stderr\n'
+        u"#PBS -N {run_id}\n"
+        u"#PBS -S /bin/bash\n"
+        u"#PBS -l procs={procs}\n"
+        u"# memory per processor\n"
+        u"#PBS -l pmem={pmem}\n"
+        u"#PBS -l walltime={walltime}\n"
+        u"# email when the job [b]egins and [e]nds, or is [a]borted\n"
+        u"#PBS -m bea\n"
+        u"#PBS -M {email}\n"
+        u"# stdout and stderr file paths/names\n"
+        u"#PBS -o {results_dir}/stdout\n"
+        u"#PBS -e {results_dir}/stderr\n"
     ).format(
-        run_id=run_description['run_id'],
+        run_id=run_description["run_id"],
         procs=n_processors,
         pmem=pmem,
         walltime=walltime,
@@ -423,9 +412,9 @@ def td2hms(timedelta):
     :rtype: unicode
     """
     seconds = int(timedelta.total_seconds())
-    periods = (('hour', 60 * 60), ('minute', 60), ('second', 1))
+    periods = (("hour", 60 * 60), ("minute", 60), ("second", 1))
     hms = []
     for period_name, period_seconds in periods:
         period_value, seconds = divmod(seconds, period_seconds)
         hms.append(period_value)
-    return u'{0[0]}:{0[1]:02d}:{0[2]:02d}'.format(hms)
+    return u"{0[0]}:{0[1]:02d}:{0[2]:02d}".format(hms)

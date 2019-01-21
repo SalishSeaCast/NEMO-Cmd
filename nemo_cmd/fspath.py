@@ -24,6 +24,7 @@ The :func:`resolved_path` function returns an absolute :class:`pathlib.Path`
 object with shell and user variables expanded and symlinks resolved.
 """
 import os
+
 try:
     from pathlib import Path
 except ImportError:
@@ -44,7 +45,7 @@ def fspath(path):
     :return: String representation of path.
     :rtype: str
     """
-    return os.fspath(path) if hasattr(os, 'fspath') else str(path)
+    return os.fspath(path) if hasattr(os, "fspath") else str(path)
 
 
 def expanded_path(path):
