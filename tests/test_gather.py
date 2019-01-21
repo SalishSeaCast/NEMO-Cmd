@@ -50,21 +50,21 @@ class TestGetParser:
     """
 
     def test_get_parser(self, gather_cmd):
-        parser = gather_cmd.get_parser('nemo gather')
-        assert parser.prog == 'nemo gather'
+        parser = gather_cmd.get_parser("nemo gather")
+        assert parser.prog == "nemo gather"
 
     def test_parsed_args_defaults(self, gather_cmd):
-        parser = gather_cmd.get_parser('nemo gather')
-        parsed_args = parser.parse_args(['/results/'])
-        assert parsed_args.results_dir == Path('/results/')
+        parser = gather_cmd.get_parser("nemo gather")
+        parsed_args = parser.parse_args(["/results/"])
+        assert parsed_args.results_dir == Path("/results/")
 
 
 class TestTakeAction:
     """Unit test for `nemo gather` sub-command take_action() method.
     """
 
-    @patch('nemo_cmd.gather.gather')
+    @patch("nemo_cmd.gather.gather")
     def test_take_action(self, m_gather, gather_cmd):
-        parsed_args = SimpleNamespace(results_dir=Path('/results/'))
+        parsed_args = SimpleNamespace(results_dir=Path("/results/"))
         gather_cmd.take_action(parsed_args)
-        m_gather.assert_called_once_with(Path('/results/'))
+        m_gather.assert_called_once_with(Path("/results/"))

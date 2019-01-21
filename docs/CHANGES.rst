@@ -6,6 +6,10 @@ Change Log
 v19.1.dev0 (unreleased)
 =======================
 
+* Change to use `black`_ for code style management.
+
+  .. _black: https://black.readthedocs.io/en/stable/
+
 * Change to `CalVer`_ versioning convention.
   Version identifier format is now ``yy.n[.devn]``,
   where ``yy`` is the (post-2000) year of release,

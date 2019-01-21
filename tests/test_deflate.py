@@ -50,13 +50,13 @@ class TestParser:
     """
 
     def test_get_parser(self, deflate_cmd):
-        parser = deflate_cmd.get_parser('nemo deflate')
-        assert parser.prog == 'nemo deflate'
+        parser = deflate_cmd.get_parser("nemo deflate")
+        assert parser.prog == "nemo deflate"
 
     def test_parsed_args(self, deflate_cmd):
-        parser = deflate_cmd.get_parser('nemo deflate')
-        parsed_args = parser.parse_args(['foo.nc', 'bar.nc', '-j6'])
-        assert parsed_args.filepaths == [Path('foo.nc'), Path('bar.nc')]
+        parser = deflate_cmd.get_parser("nemo deflate")
+        parsed_args = parser.parse_args(["foo.nc", "bar.nc", "-j6"])
+        assert parsed_args.filepaths == [Path("foo.nc"), Path("bar.nc")]
         assert parsed_args.jobs == 6
 
 
@@ -64,10 +64,10 @@ class TestTakeAction:
     """Unit test for `nemo deflate` sub-command take_action() method.
     """
 
-    @patch('nemo_cmd.deflate.deflate')
+    @patch("nemo_cmd.deflate.deflate")
     def test_take_action(self, m_deflate, deflate_cmd):
         parsed_args = SimpleNamespace(
-            filepaths=[Path('foo.nc'), Path('bar.nc')], jobs=6
+            filepaths=[Path("foo.nc"), Path("bar.nc")], jobs=6
         )
         deflate_cmd.take_action(parsed_args)
-        m_deflate.assert_called_once_with([Path('foo.nc'), Path('bar.nc')], 6)
+        m_deflate.assert_called_once_with([Path("foo.nc"), Path("bar.nc")], 6)

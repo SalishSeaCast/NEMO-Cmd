@@ -15,6 +15,7 @@
 """SalishSeaCmd combine sub-command plug-in unit tests
 """
 from io import StringIO
+
 try:
     from unittest.mock import Mock, patch
 except ImportError:
@@ -33,83 +34,82 @@ class TestRunDescription(object):
     def test_no_arguments(self):
         run_desc = nemo_cmd.api.run_description()
         expected = {
-            'config_name': 'SalishSea',
-            'run_id': None,
-            'walltime': None,
-            'MPI decomposition': '8x18',
-            'paths': {
-                'NEMO-code': None,
-                'XIOS': None,
-                'forcing': None,
-                'runs directory': None,
+            "config_name": "SalishSea",
+            "run_id": None,
+            "walltime": None,
+            "MPI decomposition": "8x18",
+            "paths": {
+                "NEMO-code": None,
+                "XIOS": None,
+                "forcing": None,
+                "runs directory": None,
             },
-            'grid': {
-                'coordinates': 'coordinates_seagrid_SalishSea.nc',
-                'bathymetry': 'bathy_meter_SalishSea2.nc',
+            "grid": {
+                "coordinates": "coordinates_seagrid_SalishSea.nc",
+                "bathymetry": "bathy_meter_SalishSea2.nc",
             },
-            'forcing': None,
-            'namelists': {
-                'namelist_cfg': [
-                    'namelist.time',
-                    'namelist.domain',
-                    'namelist.surface',
-                    'namelist.lateral',
-                    'namelist.bottom',
-                    'namelist.tracer',
-                    'namelist.dynamics',
-                    'namelist.vertical',
-                    'namelist.compute',
+            "forcing": None,
+            "namelists": {
+                "namelist_cfg": [
+                    "namelist.time",
+                    "namelist.domain",
+                    "namelist.surface",
+                    "namelist.lateral",
+                    "namelist.bottom",
+                    "namelist.tracer",
+                    "namelist.dynamics",
+                    "namelist.vertical",
+                    "namelist.compute",
                 ]
             },
-            'output': {
-                'files': 'iodef.xml',
-                'domain': 'domain_def.xml',
-                'fields': None,
-                'separate XIOS server': True,
-                'XIOS servers': 1,
+            "output": {
+                "files": "iodef.xml",
+                "domain": "domain_def.xml",
+                "fields": None,
+                "separate XIOS server": True,
+                "XIOS servers": 1,
             },
         }
         assert run_desc == expected
 
     def test_all_arguments(self):
         run_desc = nemo_cmd.api.run_description(
-            config_name='SOG',
-            run_id='foo',
-            walltime='1:00:00',
-            mpi_decomposition='6x14',
-            NEMO_code='../../NEMO-code/',
-            XIOS_code='../../XIOS/',
-            forcing_path='../../NEMO-forcing/',
-            runs_dir='../../SalishSea/',
+            config_name="SOG",
+            run_id="foo",
+            walltime="1:00:00",
+            mpi_decomposition="6x14",
+            NEMO_code="../../NEMO-code/",
+            XIOS_code="../../XIOS/",
+            forcing_path="../../NEMO-forcing/",
+            runs_dir="../../SalishSea/",
             forcing={},
-            init_conditions='../../22-25Sep/SalishSea_00019008_restart.nc',
-            namelists={}
+            init_conditions="../../22-25Sep/SalishSea_00019008_restart.nc",
+            namelists={},
         )
         expected = {
-            'config_name': 'SOG',
-            'run_id': 'foo',
-            'walltime': '1:00:00',
-            'MPI decomposition': '6x14',
-            'paths': {
-                'NEMO-code': '../../NEMO-code/',
-                'XIOS': '../../XIOS/',
-                'forcing': '../../NEMO-forcing/',
-                'runs directory': '../../SalishSea/',
+            "config_name": "SOG",
+            "run_id": "foo",
+            "walltime": "1:00:00",
+            "MPI decomposition": "6x14",
+            "paths": {
+                "NEMO-code": "../../NEMO-code/",
+                "XIOS": "../../XIOS/",
+                "forcing": "../../NEMO-forcing/",
+                "runs directory": "../../SalishSea/",
             },
-            'grid': {
-                'coordinates': 'coordinates_seagrid_SalishSea.nc',
-                'bathymetry': 'bathy_meter_SalishSea2.nc',
+            "grid": {
+                "coordinates": "coordinates_seagrid_SalishSea.nc",
+                "bathymetry": "bathy_meter_SalishSea2.nc",
             },
-            'forcing': {},
-            'namelists': {},
-            'output': {
-                'files': 'iodef.xml',
-                'domain': 'domain_def.xml',
-                'fields':
-                '../../NEMO-code/NEMOGCM/CONFIG/SHARED/field_def.xml',
-                'separate XIOS server': True,
-                'XIOS servers': 1,
-            }
+            "forcing": {},
+            "namelists": {},
+            "output": {
+                "files": "iodef.xml",
+                "domain": "domain_def.xml",
+                "fields": "../../NEMO-code/NEMOGCM/CONFIG/SHARED/field_def.xml",
+                "separate XIOS server": True,
+                "XIOS servers": 1,
+            },
         }
         assert run_desc == expected
 
@@ -122,7 +122,7 @@ class TestRunSubcommand(object):
             return_code = nemo_cmd.api._run_subcommand(app, app_args, [])
             assert return_code == 2
 
-    @patch('nemo_cmd.api.log.error')
+    @patch("nemo_cmd.api.log.error")
     def test_command_not_found_logged(self, m_log):
         app = Mock(spec=cliff.app.App)
         app_args = Mock(debug=False)
@@ -130,26 +130,26 @@ class TestRunSubcommand(object):
         assert m_log.called
         assert return_code == 2
 
-    @patch('nemo_cmd.api.cliff.commandmanager.CommandManager')
-    @patch('nemo_cmd.api.log.exception')
+    @patch("nemo_cmd.api.cliff.commandmanager.CommandManager")
+    @patch("nemo_cmd.api.log.exception")
     def test_command_exception_logged(self, m_log, m_cmd_mgr):
         app = Mock(spec=cliff.app.App)
         app_args = Mock(debug=True)
         cmd_factory = Mock(spec=cliff.command.Command)
         cmd_factory().take_action.side_effect = Exception
-        m_cmd_mgr().find_command.return_value = (cmd_factory, 'bar', 'baz')
-        nemo_cmd.api._run_subcommand(app, app_args, ['foo'])
+        m_cmd_mgr().find_command.return_value = (cmd_factory, "bar", "baz")
+        nemo_cmd.api._run_subcommand(app, app_args, ["foo"])
         assert m_log.called
 
-    @patch('nemo_cmd.api.cliff.commandmanager.CommandManager')
-    @patch('nemo_cmd.api.log.error')
+    @patch("nemo_cmd.api.cliff.commandmanager.CommandManager")
+    @patch("nemo_cmd.api.log.error")
     def test_command_exception_logged_as_error(self, m_log, m_cmd_mgr):
         app = Mock(spec=cliff.app.App)
         app_args = Mock(debug=False)
         cmd_factory = Mock(spec=cliff.command.Command)
         cmd_factory().take_action.side_effect = Exception
-        m_cmd_mgr().find_command.return_value = (cmd_factory, 'bar', 'baz')
-        nemo_cmd.api._run_subcommand(app, app_args, ['foo'])
+        m_cmd_mgr().find_command.return_value = (cmd_factory, "bar", "baz")
+        nemo_cmd.api._run_subcommand(app, app_args, ["foo"])
         assert m_log.called
 
 
@@ -162,21 +162,17 @@ class TestPbsCommon:
 
         re: issue#16
         """
-        desc_file = StringIO(u'run_id: foo\n' u'walltime: 01:02:03\n')
+        desc_file = StringIO(u"run_id: foo\n" u"walltime: 01:02:03\n")
         run_desc = yaml.load(desc_file)
-        pbs_directives = nemo_cmd.api.pbs_common(
-            run_desc, 42, 'me@example.com', 'foo/'
-        )
-        assert 'walltime=1:02:03' in pbs_directives
+        pbs_directives = nemo_cmd.api.pbs_common(run_desc, 42, "me@example.com", "foo/")
+        assert "walltime=1:02:03" in pbs_directives
 
     def test_walltime_no_leading_zero(self):
         """Ensure correct handling of walltime w/o leading zero in YAML desc file
 
         re: issue#16
         """
-        desc_file = StringIO(u'run_id: foo\n' u'walltime: 1:02:03\n')
+        desc_file = StringIO(u"run_id: foo\n" u"walltime: 1:02:03\n")
         run_desc = yaml.load(desc_file)
-        pbs_directives = nemo_cmd.api.pbs_common(
-            run_desc, 42, 'me@example.com', 'foo/'
-        )
-        assert 'walltime=1:02:03' in pbs_directives
+        pbs_directives = nemo_cmd.api.pbs_common(run_desc, 42, "me@example.com", "foo/")
+        assert "walltime=1:02:03" in pbs_directives

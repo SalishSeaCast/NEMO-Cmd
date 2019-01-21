@@ -14,7 +14,7 @@
 # limitations under the License.
 """NEMO-Cmd -- NEMO command processor
 """
-PROJECT = 'NEMO-Cmd'
-DESCRIPTION = 'NEMO Command Processor'
-VERSION = '19.1.dev0'
-DEV_STATUS = '5 - Production'
+PROJECT = "NEMO-Cmd"
+DESCRIPTION = "NEMO Command Processor"
+VERSION = "19.1.dev0"
+DEV_STATUS = "5 - Production"
