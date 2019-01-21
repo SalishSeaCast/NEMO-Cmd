@@ -706,7 +706,7 @@ def make_grid_links(run_desc, run_dir, agrif_n=None):
 
     :param int agrif_n: AGRIF sub-grid number.
 
-    :raises: :py:exec:`SystemExit` with exit code 2
+    :raises: :py:exc:`SystemExit` with exit code 2
     """
     coords_keys = ("grid", "coordinates")
     coords_filename = "coordinates.nc"
