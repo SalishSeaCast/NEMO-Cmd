@@ -1,9 +1,15 @@
 # conda environment description file for readthedocs build environment
 
-name: gomss-nowcast-rtd
+name: nemo-cmd-rtd
 
 channels:
   - defaults
 
 dependencies:
-  - python=3.5
+  - python=3.6
+
+  # RTD packages
+  - mock
+  - pillow
+  - sphinx
+  - sphinx_rtd_theme
