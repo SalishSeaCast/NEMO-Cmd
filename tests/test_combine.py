@@ -12,30 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""SalishSeaCmd combine sub-command plug-in unit tests
+"""NEMO-Cmd combine sub-command plug-in unit tests
 """
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
+from pathlib import Path
 import shlex
 import subprocess
-
-try:
-    from types import SimpleNamespace
-except ImportError:
-    # Python 2.7
-    class SimpleNamespace:
-        def __init__(self, **kwargs):
-            self.__dict__.update(kwargs)
-
-
-try:
-    from unittest.mock import call, Mock, patch
-except ImportError:
-    # Python 2.7
-    from mock import call, Mock, patch
+from types import SimpleNamespace
+from unittest.mock import call, Mock, patch
 
 import cliff.app
 import pytest
@@ -68,15 +51,15 @@ class TestTakeAction:
     """Unit test for `nemo combine` sub-command take_action() method.
     """
 
-    @patch("nemo_cmd.combine.combine")
+    @patch("nemo_cmd.combine.combine", autospec=True)
     def test_take_action(self, m_combine, combine_cmd):
         parsed_args = SimpleNamespace(run_desc_file=Path("nemo.yaml"))
         combine_cmd.take_action(parsed_args)
         m_combine.assert_called_once_with(Path("nemo.yaml"))
 
 
-@patch("nemo_cmd.combine.Path")
-@patch("nemo_cmd.combine.logger")
+@patch("nemo_cmd.combine.Path", autospec=True)
+@patch("nemo_cmd.combine.logger", autospec=True)
 class TestGetResultsFiles:
     def test_get_results_files(self, m_logger, m_path):
         m_path.cwd().glob.return_value = [
@@ -91,7 +74,7 @@ class TestGetResultsFiles:
         assert m_logger.info.called
 
 
-@patch("nemo_cmd.combine.logger")
+@patch("nemo_cmd.combine.logger", autospec=True)
 class TestFindRebuildNemoScript:
     """Unit tests for _find_rebuild_nemo_script function.
     """
@@ -118,20 +101,20 @@ class TestFindRebuildNemoScript:
         assert m_logger.error.called
 
 
-@patch("nemo_cmd.combine.logger")
-@patch("nemo_cmd.combine.Path")
+@patch("nemo_cmd.combine.logger", autospec=True)
+@patch("nemo_cmd.combine.Path", autospec=True)
 class TestCombineResultsFiles:
     """Unit tests for _combine_results_files function.
     """
 
-    @patch("nemo_cmd.combine.shutil.move")
+    @patch("nemo_cmd.combine.shutil.move", autospec=True)
     def test_single_processor_result(self, m_move, m_path, m_logger):
         m_path.cwd().glob.return_value = ["foo_0000.nc"]
         nemo_cmd.combine._combine_results_files("rebuild_nemo", ["foo"])
         assert m_move.call_args == call("foo_0000.nc", "foo.nc")
 
-    @patch("nemo_cmd.combine.subprocess.check_output")
-    @patch("nemo_cmd.combine.os.unlink")
+    @patch("nemo_cmd.combine.subprocess.check_output", autospec=True)
+    @patch("nemo_cmd.combine.os.unlink", autospec=True)
     def test_rebuild_nemo_subprocess(self, m_unlink, m_check_output, m_path, m_logger):
         m_path.cwd().glob.return_value = ["foo_0000.nc", "foo_0001.nc"]
         nemo_cmd.combine._combine_results_files("rebuild_nemo", ["foo"])
@@ -142,7 +125,7 @@ class TestCombineResultsFiles:
         )
 
 
-@patch("nemo_cmd.combine.Path")
+@patch("nemo_cmd.combine.Path", autospec=True)
 class TestDeleteResultsFiles:
     """Unit tests for _delete_results_files function.
     """

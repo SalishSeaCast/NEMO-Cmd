@@ -14,29 +14,10 @@
 # limitations under the License.
 """NEMO-Cmd run sub-command plug-in unit tests
 """
-try:
-    from io import StringIO
-except ImportError:
-    # Python 2.7
-    from cStringIO import StringIO
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
-try:
-    from types import SimpleNamespace
-except ImportError:
-    # Python 2.7
-    class SimpleNamespace:
-        def __init__(self, **kwargs):
-            self.__dict__.update(kwargs)
-
-
-try:
-    from unittest.mock import Mock, patch
-except ImportError:
-    from mock import Mock, patch
+from io import StringIO
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
 import cliff.app
 import pytest
@@ -98,12 +79,12 @@ class TestParser:
             parsed_args = parser.parse_args(["foo", "baz", "--queue-job-cmd", "fling"])
 
 
-@patch("nemo_cmd.run.logger")
+@patch("nemo_cmd.run.logger", autospec=True)
 class TestTakeAction:
     """Unit tests for `salishsea run` sub-command take_action() method.
     """
 
-    @patch("nemo_cmd.run.run", return_value="qsub message")
+    @patch("nemo_cmd.run.run", return_value="qsub message", autospec=True)
     def test_take_action(self, m_run, m_logger, run_cmd):
         parsed_args = SimpleNamespace(
             desc_file="desc file",
@@ -122,7 +103,7 @@ class TestTakeAction:
         )
         m_logger.info.assert_called_once_with("qsub message")
 
-    @patch("nemo_cmd.run.run", return_value="qsub message")
+    @patch("nemo_cmd.run.run", return_value="qsub message", autospec=True)
     def test_take_action_quiet(self, m_run, m_logger, run_cmd):
         parsed_args = SimpleNamespace(
             desc_file="desc file",
@@ -138,7 +119,7 @@ class TestTakeAction:
         run_cmd.run(parsed_args)
         assert not m_logger.info.called
 
-    @patch("nemo_cmd.run.run", return_value=None)
+    @patch("nemo_cmd.run.run", return_value=None, autospec=True)
     def test_take_action_no_submit(self, m_run, m_logger, run_cmd):
         parsed_args = SimpleNamespace(
             desc_file="desc file",
@@ -155,11 +136,11 @@ class TestTakeAction:
         assert not m_logger.info.called
 
 
-@patch("nemo_cmd.run.subprocess.check_output", return_value="msg")
-@patch("nemo_cmd.run._build_batch_script", return_value=u"script")
-@patch("nemo_cmd.run.get_n_processors", return_value=144)
-@patch("nemo_cmd.run.load_run_desc")
-@patch("nemo_cmd.run.api.prepare")
+@patch("nemo_cmd.run.subprocess.check_output", return_value="msg", autospec=True)
+@patch("nemo_cmd.run._build_batch_script", return_value=u"script", autospec=True)
+@patch("nemo_cmd.run.get_n_processors", return_value=144, autospec=True)
+@patch("nemo_cmd.run.load_run_desc", spec=True)
+@patch("nemo_cmd.run.api.prepare", spec=True)
 class TestRun:
     """Unit tests for `salishsea run` run() function.
     """
@@ -344,7 +325,7 @@ class TestRun:
         )
         assert submit_job_msg == "msg"
 
-    @patch("nemo_cmd.run.logger")
+    @patch("nemo_cmd.run.logger", autospec=True)
     def test_unknown_queue_job_cmd(
         self, m_logger, m_prepare, m_lrd, m_gnp, m_bbs, m_sco, tmpdir
     ):

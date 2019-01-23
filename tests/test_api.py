@@ -15,12 +15,7 @@
 """SalishSeaCmd combine sub-command plug-in unit tests
 """
 from io import StringIO
-
-try:
-    from unittest.mock import Mock, patch
-except ImportError:
-    # Python 2.7
-    from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 import cliff.app
 import cliff.command
@@ -122,7 +117,7 @@ class TestRunSubcommand(object):
             return_code = nemo_cmd.api._run_subcommand(app, app_args, [])
             assert return_code == 2
 
-    @patch("nemo_cmd.api.log.error")
+    @patch("nemo_cmd.api.log.error", autospec=True)
     def test_command_not_found_logged(self, m_log):
         app = Mock(spec=cliff.app.App)
         app_args = Mock(debug=False)
@@ -130,8 +125,8 @@ class TestRunSubcommand(object):
         assert m_log.called
         assert return_code == 2
 
-    @patch("nemo_cmd.api.cliff.commandmanager.CommandManager")
-    @patch("nemo_cmd.api.log.exception")
+    @patch("nemo_cmd.api.cliff.commandmanager.CommandManager", spec=True)
+    @patch("nemo_cmd.api.log.exception", autospec=True)
     def test_command_exception_logged(self, m_log, m_cmd_mgr):
         app = Mock(spec=cliff.app.App)
         app_args = Mock(debug=True)
@@ -141,8 +136,8 @@ class TestRunSubcommand(object):
         nemo_cmd.api._run_subcommand(app, app_args, ["foo"])
         assert m_log.called
 
-    @patch("nemo_cmd.api.cliff.commandmanager.CommandManager")
-    @patch("nemo_cmd.api.log.error")
+    @patch("nemo_cmd.api.cliff.commandmanager.CommandManager", spec=True)
+    @patch("nemo_cmd.api.log.error", autospec=True)
     def test_command_exception_logged_as_error(self, m_log, m_cmd_mgr):
         app = Mock(spec=cliff.app.App)
         app_args = Mock(debug=False)

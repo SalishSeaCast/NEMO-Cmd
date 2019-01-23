@@ -12,27 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""SalishSeaCmd gather sub-command plug-in unit tests
+"""NEMO-Cmd gather sub-command plug-in unit tests
 """
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
-try:
-    from types import SimpleNamespace
-except ImportError:
-    # Python 2.7
-    class SimpleNamespace:
-        def __init__(self, **kwargs):
-            self.__dict__.update(kwargs)
-
-
-try:
-    from unittest.mock import Mock, patch
-except ImportError:
-    # Python 2.7
-    from mock import Mock, patch
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
 import cliff.app
 import pytest
@@ -63,7 +47,7 @@ class TestTakeAction:
     """Unit test for `nemo gather` sub-command take_action() method.
     """
 
-    @patch("nemo_cmd.gather.gather")
+    @patch("nemo_cmd.gather.gather", autospec=True)
     def test_take_action(self, m_gather, gather_cmd):
         parsed_args = SimpleNamespace(results_dir=Path("/results/"))
         gather_cmd.take_action(parsed_args)
