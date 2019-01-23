@@ -16,19 +16,12 @@
 
 Prepare for, execute, and gather the results of a run of the NEMO model.
 """
-from __future__ import division
-
 import datetime
 import logging
 import math
 import time
 import os
-
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
+from pathlib import Path
 import subprocess
 
 import cliff.command

@@ -19,12 +19,7 @@ Deflate variables in netCDF files using Lempel-Ziv compression.
 import logging
 import math
 import multiprocessing
-
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
+from pathlib import Path
 import shlex
 import subprocess
 import time

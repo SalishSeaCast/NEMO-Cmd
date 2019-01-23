@@ -12,7 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""SalishSeaCmd command plug-in for combine sub-command.
+"""NEMO-Cmd command plug-in for combine sub-command.
 
 Combine per-processor files from an MPI Salish Sea NEMO run into single
 files with the same name-root.
@@ -20,12 +20,7 @@ files with the same name-root.
 import logging
 import os
 import shlex
-
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
+from pathlib import Path
 import shutil
 import subprocess
 

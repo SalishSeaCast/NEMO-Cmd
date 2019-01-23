@@ -12,27 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""SalishSeaCmd deflate sub-command plug-in unit tests
+"""NEMO-Cmd deflate sub-command plug-in unit tests
 """
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
-try:
-    from types import SimpleNamespace
-except ImportError:
-    # Python 2.7
-    class SimpleNamespace:
-        def __init__(self, **kwargs):
-            self.__dict__.update(kwargs)
-
-
-try:
-    from unittest.mock import call, Mock, patch
-except ImportError:
-    # Python 2.7
-    from mock import call, Mock, patch
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import call, Mock, patch
 
 import cliff.app
 import pytest
@@ -64,7 +48,7 @@ class TestTakeAction:
     """Unit test for `nemo deflate` sub-command take_action() method.
     """
 
-    @patch("nemo_cmd.deflate.deflate")
+    @patch("nemo_cmd.deflate.deflate", autospec=True)
     def test_take_action(self, m_deflate, deflate_cmd):
         parsed_args = SimpleNamespace(
             filepaths=[Path("foo.nc"), Path("bar.nc")], jobs=6

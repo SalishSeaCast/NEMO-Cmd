@@ -24,12 +24,7 @@ The :func:`resolved_path` function returns an absolute :class:`pathlib.Path`
 object with shell and user variables expanded and symlinks resolved.
 """
 import os
-
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
+from pathlib import Path
 
 
 def fspath(path):

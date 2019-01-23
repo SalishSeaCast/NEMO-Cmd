@@ -22,12 +22,7 @@ and by other software.
 import datetime
 import logging
 import os
-
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
+from pathlib import Path
 import subprocess
 
 import cliff.commandmanager

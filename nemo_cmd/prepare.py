@@ -21,12 +21,7 @@ from copy import copy
 import functools
 import logging
 import os
-
-try:
-    from pathlib import Path
-except ImportError:
-    # Python 2.7
-    from pathlib2 import Path
+from pathlib import Path
 import shutil
 import time
 import xml.etree.ElementTree
