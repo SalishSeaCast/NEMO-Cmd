@@ -17,7 +17,7 @@ NEMO Command Processor
 .. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
     :target: https://nemo-cmd.readthedocs.io/en/latest/
     :alt: Documentation Status
-.. image:: https://img.shields.io/bitbucket/issues/43ravens/nemo_nowcast.svg
+.. image:: https://img.shields.io/bitbucket/issues/salishsea/nemo-cmd.svg
     :target: https://bitbucket.org/salishsea/nemo-cmd/issues?status=new&status=open
     :alt: Issue Tracker
 
