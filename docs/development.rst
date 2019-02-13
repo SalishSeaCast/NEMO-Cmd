@@ -23,8 +23,8 @@
 .. image:: https://img.shields.io/badge/license-Apache%202-cb2533.svg
     :target: https://www.apache.org/licenses/LICENSE-2.0
     :alt: Licensed under the Apache License, Version 2.0
-.. image:: https://img.shields.io/badge/python-3.5-blue.svg
-    :target: https://docs.python.org/3.5/
+.. image:: https://img.shields.io/badge/python-3.5+-blue.svg
+    :target: https://docs.python.org/3.7/
     :alt: Python Version
 .. image:: https://img.shields.io/badge/version%20control-hg-blue.svg
     :target: https://bitbucket.org/salishsea/nemo-cmd/
@@ -45,11 +45,11 @@
 Python Versions
 ===============
 
-.. image:: https://img.shields.io/badge/python-3.6-blue.svg
-    :target: https://docs.python.org/3.6/
+.. image:: https://img.shields.io/badge/python-3.5+-blue.svg
+    :target: https://docs.python.org/3.7/
     :alt: Python Version
 
-The :kbd:`NEMO-Cmd` package is developed and tested using `Python`_ 3.6.
+The :kbd:`NEMO-Cmd` package is developed and tested using `Python`_ 3.7.
 However,
 the package must also run under `Python`_ 3.5 for use on the Westgrid :kbd:`orcinus` HPC platform.
 

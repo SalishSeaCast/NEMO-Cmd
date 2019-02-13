@@ -6,7 +6,7 @@ Change Log
 v19.1.dev0 (unreleased)
 =======================
 
-* Drop support for Python 2.7; minimum version is now 3.4.
+* Drop support for Python 2.7; minimum version is now 3.5.
 
 * Change to use `black`_ for code style management.
 
