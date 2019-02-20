@@ -6,6 +6,11 @@ Change Log
 v19.1.dev0 (unreleased)
 =======================
 
+* Add run description YAML file docs about ``land processor elimination`` option.
+
+* Add Bitbucket continuous integration pipeline to run unit tests and generate unit
+  tests coverage report; https://bitbucket.org/salishsea/nemo-cmd/addon/pipelines/home.
+
 * Drop support for Python 2.7; minimum version is now 3.5.
 
 * Change to use `black`_ for code style management.
