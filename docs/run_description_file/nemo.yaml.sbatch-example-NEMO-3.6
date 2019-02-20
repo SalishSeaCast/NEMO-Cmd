@@ -47,6 +47,11 @@ grid:
   coordinates: $PROJECT/$USER/GEOTRACES/runs/GYRE_OFF/dummy-coord.nc
   # Path to the bathymetry file
   bathymetry: $PROJECT/$USER/GEOTRACES/runs/GYRE_OFF/dummy-bathy.nc
+  # Optional path/filename for land processor elimination MPI-LPE mapping
+  # file that matches bathymetry;
+  # If "land processor elimination:" key is absent or has the value "False",
+  # land processor elimination is disabled
+  land processor elimination: False
 
 forcing:
   # The keys below are the names of symlinks that will be created.
