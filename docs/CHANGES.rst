@@ -3,8 +3,8 @@ Change Log
 **********
 
 
-v19.1.dev0 (unreleased)
-=======================
+v19.1 (2019-08-26)
+==================
 
 * Add run description YAML file docs about ``land processor elimination`` option.
 
