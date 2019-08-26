@@ -27,7 +27,7 @@ dependencies:
   - attrs
   - cliff!=2.9.0
   - pip
-  - python=3
+  - python=3.7
   - python-hglib
   - pyyaml
 
