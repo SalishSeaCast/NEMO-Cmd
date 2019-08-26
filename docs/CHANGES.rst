@@ -6,6 +6,10 @@ Change Log
 v19.2.dev0 (unreleased)
 =======================
 
+* Change to new `MOAD package layout`_.
+
+  .. _MOAD package layout: https://ubc-moad-docs.readthedocs.io/en/latest/python_packaging/pkg_structure.html
+
 
 v19.1 (2019-08-26)
 ==================

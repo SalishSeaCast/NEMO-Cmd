@@ -24,7 +24,7 @@ import sys
 import cliff.app
 import cliff.commandmanager
 
-from nemo_cmd import __pkg_metadata__
+import nemo_cmd
 
 
 class NEMO_App(cliff.app.App):
@@ -32,8 +32,8 @@ class NEMO_App(cliff.app.App):
 
     def __init__(self):
         super(NEMO_App, self).__init__(
-            description=__pkg_metadata__.DESCRIPTION,
-            version=__pkg_metadata__.VERSION,
+            description="NEMO Command Processor",
+            version=nemo_cmd.__version__,
             command_manager=cliff.commandmanager.CommandManager(
                 "nemo.app", convert_underscores=False
             ),
