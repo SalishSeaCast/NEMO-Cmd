@@ -101,7 +101,7 @@ and building the documentation with the commands:
 .. code-block:: bash
 
     $ cd NEMO-Cmd
-    $ conda env create -f environment-dev.yaml
+    $ conda env create -f env/environment-dev.yaml
     $ source activate nemo-cmd
     (nemo-cmd)$ pip install --editable .
 
