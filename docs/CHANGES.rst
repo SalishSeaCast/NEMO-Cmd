@@ -31,8 +31,8 @@ v19.1.dev0 (unreleased)
   .. _CalVer: https://calver.org/
 
 
-1.3
-===
+1.3 (2019-01-20)
+================
 
 * Change to use ``python/3.7.0` module for `slurm workload manager`_ systems due to
   deprecation of ``python27-scipy-stack`` module on ``cedar.computecanada.ca`` and
@@ -83,8 +83,8 @@ v19.1.dev0 (unreleased)
   .. _OpenStack bug #1719465: https://bugs.launchpad.net/python-cliff/+bug/1719465
 
 
-1.2
-===
+1.2 (2017-10-03)
+================
 
 * Add support for running on HPC systems that use the `slurm workload manager`_;
   e.g. ``cedar.computecanada.ca`` and ``graham.computecanada.ca``.
@@ -92,8 +92,8 @@ v19.1.dev0 (unreleased)
 .. _slurm workload manager: https://slurm.schedmd.com/
 
 
-1.1
-===
+1.1 (2017-09-30)
+================
 
 * Change from ``ncks`` to ``nccopy`` as tool underlying the ``deflate`` plug-in
   to reduce memory footprint.
@@ -114,8 +114,8 @@ v19.1.dev0 (unreleased)
 * Fix bug in atmospheric forcing file links checking function call.
 
 
-1.0
-===
+1.0 (2017-04-27)
+================
 
 * Enable ``namelist.namelist2dict()`` to handle Fortran boolean values ``true``
   and ``false`` (no leading/trailing dots).
@@ -207,8 +207,8 @@ v19.1.dev0 (unreleased)
   ``results/25dec16/restart/``.
 
 
-0.9
-===
+0.9 (2016-12-30)
+================
 
 * Use `tox`_ for unified Python 2.7 and 3.5 testing.
 
