@@ -537,7 +537,7 @@ class TestBuiltBatchScript:
             u"  - intel/14.0/nco-4.5.2\n"
             u"  - python\n"
         )
-        run_desc = yaml.load(desc_file)
+        run_desc = yaml.safe_load(desc_file)
         script = nemo_cmd.run._build_batch_script(
             run_desc,
             "NEMO.yaml",
@@ -638,7 +638,7 @@ class TestBuiltBatchScript:
             u"- netcdf-fortran-mpi/4.4.4\n"
             u"- python/3.7.0\n"
         )
-        run_desc = yaml.load(desc_file)
+        run_desc = yaml.safe_load(desc_file)
         script = nemo_cmd.run._build_batch_script(
             run_desc,
             "NEMO.yaml",

@@ -158,7 +158,7 @@ class TestPbsCommon:
         re: issue#16
         """
         desc_file = StringIO(u"run_id: foo\n" u"walltime: 01:02:03\n")
-        run_desc = yaml.load(desc_file)
+        run_desc = yaml.safe_load(desc_file)
         pbs_directives = nemo_cmd.api.pbs_common(run_desc, 42, "me@example.com", "foo/")
         assert "walltime=1:02:03" in pbs_directives
 
@@ -168,6 +168,6 @@ class TestPbsCommon:
         re: issue#16
         """
         desc_file = StringIO(u"run_id: foo\n" u"walltime: 1:02:03\n")
-        run_desc = yaml.load(desc_file)
+        run_desc = yaml.safe_load(desc_file)
         pbs_directives = nemo_cmd.api.pbs_common(run_desc, 42, "me@example.com", "foo/")
         assert "walltime=1:02:03" in pbs_directives
