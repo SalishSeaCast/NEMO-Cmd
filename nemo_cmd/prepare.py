@@ -408,9 +408,12 @@ def set_mpi_decomposition(namelist_filename, run_desc, run_dir):
     :raises: :py:exc:`SystemExit` with exit code 2
     """
     try:
-        jpni, jpnj = get_run_desc_value(
-            run_desc, ("MPI decomposition",), fatal=False
-        ).split("x")
+        jpni, jpnj = map(
+            int,
+            get_run_desc_value(run_desc, ("MPI decomposition",), fatal=False).split(
+                "x"
+            ),
+        )
     except KeyError:
         logger.error(
             "MPI decomposition value not found in YAML run description file. "
@@ -421,8 +424,13 @@ def set_mpi_decomposition(namelist_filename, run_desc, run_dir):
         )
         remove_run_dir(run_dir)
         raise SystemExit(2)
-    jpnij = str(get_n_processors(run_desc, run_dir))
-    patch = {"nammpp": {"jpni": jpni, "jpnj": jpnj, "jpnij": jpnij}}
+    patch = {
+        "nammpp": {
+            "jpni": jpni,
+            "jpnj": jpnj,
+            "jpnij": get_n_processors(run_desc, run_dir),
+        }
+    }
     _patch_namelist(run_dir / namelist_filename, patch)
 
 
