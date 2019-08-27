@@ -440,11 +440,11 @@ def _patch_namelist(namelist_path, patch):
     :param dict patch:
     """
     # f90nml insists on writing the patched namelist to a file,
-    # so we use an ephemeral temporary file
-    with tempfile.TemporaryFile("wt") as tmp_patched_namelist:
-        nml = f90nml.patch(namelist_path, patch, tmp_patched_namelist)
-    with namelist_path.open("wt") as patched_namelist:
-        nml.write(patched_namelist)
+    # so we use a temporary file and copy it on to the original namelist file
+    with tempfile.NamedTemporaryFile("wt", delete=False) as tmp_patched_namelist:
+        f90nml.patch(namelist_path, patch, tmp_patched_namelist)
+    shutil.copy2(tmp_patched_namelist.name, namelist_path)
+    Path(tmp_patched_namelist.name).unlink()
 
 
 def get_n_processors(run_desc, run_dir):
