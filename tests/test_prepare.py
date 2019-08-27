@@ -571,23 +571,22 @@ class TestSetMpiDesomposition:
         m_rm_run_dir.assert_called_once_with(Path("run_dir"))
 
     @patch("nemo_cmd.prepare.get_n_processors", spec=True)
-    @patch(
-        "nemo_cmd.prepare._read_namelist",
-        return_value=["jpni = 0\n", "jpnj = 0\n", "jpnij = 0\n"],
-        autospec=True,
-    )
-    @patch("nemo_cmd.prepare._write_namelist", autospec=True)
-    def test_set_mpi_decomposition(self, m_wr_nl, m_rd_nl, m_get_n_procs, m_logger):
+    @patch("nemo_cmd.prepare._patch_namelist", autospec=True)
+    def test_set_mpi_decomposition(self, m_patch_nml, m_get_n_procs, m_logger):
         run_desc = {"MPI decomposition": "8x18"}
         nemo_cmd.prepare.set_mpi_decomposition(
             "namelist_cfg", run_desc, Path("run_dir")
         )
         m_get_n_procs.assert_called_once_with(run_desc, Path("run_dir"))
-        m_rd_nl.assert_called_once_with("namelist_cfg", Path("run_dir"))
-        m_wr_nl.assert_called_once_with(
-            ["jpni = 8\n", "jpnj = 18\n", "jpnij = {}\n".format(m_get_n_procs())],
-            "namelist_cfg",
-            Path("run_dir"),
+        m_patch_nml.assert_called_once_with(
+            Path("run_dir") / "namelist_cfg",
+            {
+                "nammpp": {
+                    "jpni": "8",
+                    "jpnj": "18",
+                    "jpnij": "{}".format(m_get_n_procs()),
+                }
+            },
         )
 
 

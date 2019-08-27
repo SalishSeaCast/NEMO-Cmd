@@ -76,14 +76,6 @@ The :ref:`SalishSeaCmdProcessor` package :kbd:`SalishSeaCmd` is an example of su
 .. autofunction:: nemo_cmd.prepare.write_repo_rev_file
 
 
-Functions for Reading Fortran Namelists
-=======================================
-
-.. autofunction:: nemo_cmd.namelist.namelist2dict
-
-.. autofunction:: nemo_cmd.namelist.get_namelist_value
-
-
 .. _FileSystemPathFunctions:
 
 Functions for Working with File System Paths

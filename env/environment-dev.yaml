@@ -26,6 +26,7 @@ dependencies:
   - arrow
   - attrs
   - cliff!=2.9.0
+  - f90nml
   - pip
   - python=3.7
   - python-hglib

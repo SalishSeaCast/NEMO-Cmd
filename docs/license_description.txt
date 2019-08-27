@@ -9,6 +9,3 @@ http://www.apache.org/licenses/LICENSE-2.0
 Please see the LICENSE file for details of the license.
 
 .. _Salish Sea MEOPAR Project Contributors: https://bitbucket.org/salishsea/docs/src/tip/CONTRIBUTORS.rst
-
-The :py:mod:`nemo_cmd.namelist` and :py:mod:`nemo_cmd.tests.test_namelist` modules are based on https://gist.github.com/krischer/4943658.
-They are copyright 2013 by Lion Krischer <krischer@geophysik.uni-muenchen.de> and are licensed under the GNU Lesser General Public License, Version 3 (http://www.gnu.org/copyleft/lesser.html).
