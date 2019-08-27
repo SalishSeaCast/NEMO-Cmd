@@ -443,7 +443,9 @@ def _patch_namelist(namelist_path, patch):
     # so we use a temporary file and copy it on to the original namelist file
     with tempfile.NamedTemporaryFile("wt", delete=False) as tmp_patched_namelist:
         f90nml.patch(namelist_path, patch, tmp_patched_namelist)
+    mode_b4_copy = namelist_path.stat().st_mode
     shutil.copy2(tmp_patched_namelist.name, namelist_path)
+    namelist_path.chmod(mode_b4_copy)
     Path(tmp_patched_namelist.name).unlink()
 
 
