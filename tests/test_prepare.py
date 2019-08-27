@@ -580,13 +580,7 @@ class TestSetMpiDesomposition:
         m_get_n_procs.assert_called_once_with(run_desc, Path("run_dir"))
         m_patch_nml.assert_called_once_with(
             Path("run_dir") / "namelist_cfg",
-            {
-                "nammpp": {
-                    "jpni": "8",
-                    "jpnj": "18",
-                    "jpnij": "{}".format(m_get_n_procs()),
-                }
-            },
+            {"nammpp": {"jpni": 8, "jpnj": 18, "jpnij": m_get_n_procs()}},
         )
 
 
