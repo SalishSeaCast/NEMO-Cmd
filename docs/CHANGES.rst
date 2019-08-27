@@ -6,6 +6,10 @@ Change Log
 v19.2.dev0 (unreleased)
 =======================
 
+* Replace ``namelist.py`` module with `f90nml`_ package.
+
+  .. _f90nml: https://f90nml.readthedocs.io/en/latest/
+
 * Change to new `MOAD package layout`_.
 
   .. _MOAD package layout: https://ubc-moad-docs.readthedocs.io/en/latest/python_packaging/pkg_structure.html

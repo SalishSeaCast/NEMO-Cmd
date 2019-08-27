@@ -23,18 +23,19 @@ import logging
 import os
 from pathlib import Path
 import shutil
+import tempfile
 import time
 import xml.etree.ElementTree
 
 import arrow
 import cliff.command
 from dateutil import tz
+import f90nml
 import hglib
 import yaml
 
 from nemo_cmd import fspath, resolved_path, expanded_path
 from nemo_cmd.combine import find_rebuild_nemo_script
-from nemo_cmd.namelist import namelist2dict, get_namelist_value
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
@@ -265,7 +266,7 @@ def make_run_dir(run_desc):
     and its name is the run id combined with an ISO-format date/time stamp.
 
     :param dict run_desc: Run description dictionary.
-    
+
     :returns: Path of the temporary run directory
     :rtype: :py:class:`pathlib.Path`
     """
@@ -384,7 +385,7 @@ def make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
         set_mpi_decomposition("namelist_cfg", run_desc, run_dir)
     else:
         logger.error(
-            "No namelist_cfg key found in namelists section of run " "description"
+            "No namelist_cfg key found in namelists section of run description"
         )
         remove_run_dir(run_dir)
         raise SystemExit(2)
@@ -421,28 +422,21 @@ def set_mpi_decomposition(namelist_filename, run_desc, run_dir):
         remove_run_dir(run_dir)
         raise SystemExit(2)
     jpnij = str(get_n_processors(run_desc, run_dir))
-    lines = _read_namelist(namelist_filename, run_dir)
-    for key, new_value in {"jpni": jpni, "jpnj": jpnj, "jpnij": jpnij}.items():
-        value, i = get_namelist_value(key, lines)
-        lines[i] = lines[i].replace(value, new_value)
-    _write_namelist(lines, namelist_filename, run_dir)
+    patch = {"nammpp": {"jpni": jpni, "jpnj": jpnj, "jpnij": jpnij}}
+    _patch_namelist(run_dir / namelist_filename, patch)
 
 
-def _read_namelist(namelist_filename, run_dir):
-    """Encapsulate file access to facilitate testability of
-    set_mpi_decomposition().
+def _patch_namelist(namelist_path, patch):
     """
-    with (run_dir / namelist_filename).open("rt") as f:
-        lines = f.readlines()
-    return lines
-
-
-def _write_namelist(lines, namelist_filename, run_dir):
-    """Encapsulate file access to facilitate testability of
-    set_mpi_decomposition().
+    :param :py:class:`pathlib.Path` namelist_path:
+    :param dict patch:
     """
-    with (run_dir / namelist_filename).open("wt") as f:
-        f.writelines(lines)
+    # f90nml insists on writing the patched namelist to a file,
+    # so we use an ephemeral temporary file
+    with tempfile.TemporaryFile("wt") as tmp_patched_namelist:
+        nml = f90nml.patch(namelist_path, patch, tmp_patched_namelist)
+    with namelist_path.open("wt") as patched_namelist:
+        nml.write(patched_namelist)
 
 
 def get_n_processors(run_desc, run_dir):
@@ -682,7 +676,6 @@ def make_executable_links(nemo_bin_dir, run_dir, xios_bin_dir):
     """
     nemo_exec = nemo_bin_dir / "nemo.exe"
     (run_dir / "nemo.exe").symlink_to(nemo_exec)
-    iom_server_exec = nemo_bin_dir / "server.exe"
     xios_server_exec = xios_bin_dir / "xios_server.exe"
     (run_dir / "xios_server.exe").symlink_to(xios_server_exec)
 
@@ -832,34 +825,34 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
 
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
-    
+
     :param link_path: Path of the atmospheric forcing files collection.
     :type :py:class:`pathlib.Path`:
-    
+
     :param str namelist_filename: File name of the namelist to parse for
                                   atmospheric file names and date ranges.
 
     :raises: :py:exc:`SystemExit` with exit code 2 if an atmospheric forcing
              file does not exist
     """
-    namelist = namelist2dict(fspath(run_dir / namelist_filename))
-    if not namelist["namsbc"][0]["ln_blk_core"]:
+    namelist = f90nml.read(fspath(run_dir / namelist_filename))
+    if not namelist["namsbc"]["ln_blk_core"]:
         return
-    start_date = arrow.get(str(namelist["namrun"][0]["nn_date0"]), "YYYYMMDD")
-    it000 = namelist["namrun"][0]["nn_it000"]
-    itend = namelist["namrun"][0]["nn_itend"]
-    dt = namelist["namdom"][0]["rn_rdt"]
+    start_date = arrow.get(str(namelist["namrun"]["nn_date0"]), "YYYYMMDD")
+    it000 = namelist["namrun"]["nn_it000"]
+    itend = namelist["namrun"]["nn_itend"]
+    dt = namelist["namdom"]["rn_rdt"]
     end_date = start_date.replace(seconds=(itend - it000) * dt - 1)
     qtys = "sn_wndi sn_wndj sn_qsr sn_qlw sn_tair sn_humi sn_prec sn_snow".split()
-    core_dir = namelist["namsbc_core"][0]["cn_dir"]
+    core_dir = namelist["namsbc_core"]["cn_dir"]
     file_info = {"core": {"dir": core_dir, "params": []}}
     for qty in qtys:
-        flread_params = namelist["namsbc_core"][0][qty]
+        flread_params = namelist["namsbc_core"][qty]
         file_info["core"]["params"].append((flread_params[0], flread_params[5]))
-    if namelist["namsbc"][0]["ln_apr_dyn"]:
-        apr_dir = namelist["namsbc_apr"][0]["cn_dir"]
+    if namelist["namsbc"]["ln_apr_dyn"]:
+        apr_dir = namelist["namsbc_apr"]["cn_dir"]
         file_info["apr"] = {"dir": apr_dir, "params": []}
-        flread_params = namelist["namsbc_apr"][0]["sn_apr"]
+        flread_params = namelist["namsbc_apr"]["sn_apr"]
         file_info["apr"]["params"].append((flread_params[0], flread_params[5]))
     startm1 = start_date.replace(days=-1)
     for r in arrow.Arrow.range("day", startm1, end_date):
@@ -1001,8 +994,8 @@ def get_hg_revision(repo, run_dir):
     Effectively record the output of :command:`hg parents -v` and
     :param run_dir:
     :command:`hg status -mardC`.
-    
-    Files named :file:`CONFIG/cfg.txt` and 
+
+    Files named :file:`CONFIG/cfg.txt` and
     :file:`TOOLS/COMPILE/full_key_list.txt` are ignored because they change
     frequently but the changes generally of no consequence;
     see https://bitbucket.org/salishsea/nemo-cmd/issues/18.
