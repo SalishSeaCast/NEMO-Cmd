@@ -3,11 +3,12 @@
 alabaster==0.7.12
 appdirs==1.4.3
 arrow==0.14.5
+asn1crypto==0.24.0
 atomicwrites==1.3.0
 attrs==19.1.0
 Babel==2.7.0
 black==19.3b0
-certifi==2019.6.16
+certifi==2019.9.11
 cffi==1.12.3
 chardet==3.0.4
 Click==7.0
@@ -18,12 +19,15 @@ coverage==4.5.4
 cryptography==2.7
 docutils==0.15.2
 f90nml==1.1.2
+gitdb2==2.0.6
+GitPython==3.0.4
 idna==2.8
 imagesize==1.1.0
 importlib-metadata==0.18
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 more-itertools==7.2.0
+-e NEMO_Cmd==19.2.dev0
 packaging==19.0
 pbr==5.4.2
 pluggy==0.12.0
@@ -42,6 +46,7 @@ pytz==2019.2
 PyYAML==5.1.2
 requests==2.22.0
 six==1.12.0
+smmap2==2.0.5
 snowballstemmer==1.9.0
 Sphinx==2.2.0
 sphinx-rtd-theme==0.4.3
