@@ -17,7 +17,7 @@
 Sets up the necessary symbolic links for a NEMO run
 in a specified directory and changes the pwd to that directory.
 """
-from copy import copy
+from copy import copy, deepcopy
 import functools
 import logging
 import os
@@ -31,6 +31,7 @@ import arrow
 import cliff.command
 from dateutil import tz
 import f90nml
+import git
 import hglib
 import yaml
 
@@ -963,7 +964,7 @@ def _record_vcs_revisions(run_desc, run_dir):
     """
     if "vcs revisions" not in run_desc:
         return
-    vcs_funcs = {"hg": get_hg_revision}
+    vcs_funcs = {"git": get_git_revision, "hg": get_hg_revision}
     vcs_tools = get_run_desc_value(run_desc, ("vcs revisions",), run_dir=run_dir)
     for vcs_tool in vcs_tools:
         repos = get_run_desc_value(
@@ -998,11 +999,97 @@ def write_repo_rev_file(repo, run_dir, vcs_func):
             f.writelines(u"{}\n".format(line) for line in repo_rev_file_lines)
 
 
+def get_git_revision(git_repo, run_dir):
+    """Gather revision and status information from a Git repo.
+
+    Effectively record the output of :command:`git branch --show-current`,
+    :command:`git log -1`, :command:`git show --pretty="" --name-only`,
+    and :command:`git diff --name-status`.
+
+    Files named :file:`CONFIG/cfg.txt` and
+    :file:`TOOLS/COMPILE/full_key_list.txt` are ignored because they change
+    frequently but the changes generally of no consequence;
+    see https://bitbucket.org/salishsea/nemo-cmd/issues/18.
+
+    :param git_repo: Path of Git repository to get revision and status information from.
+    :type git_repo: :py:class:`pathlib.Path`
+
+    :param run_dir: Path of the temporary run directory.
+    :type run_dir: :py:class:`pathlib.Path`
+
+    :returns: Git repository revision and status information strings.
+    :rtype: list
+    """
+    if not git_repo.exists():
+        logger.warning(
+            "revision and status requested for non-existent repo: {repo}".format(
+                repo=git_repo
+            )
+        )
+        return []
+    repo_path = copy(git_repo)
+    while fspath(git_repo) != repo_path.root:
+        try:
+            repo = git.Repo(fspath(git_repo))
+            break
+        except git.exc.InvalidGitRepositoryError:
+            git_repo = git_repo.parent
+    else:
+        logger.error(
+            "unable to find Git repo root in or above {repo_path}".format(
+                repo_path=repo_path
+            )
+        )
+        remove_run_dir(run_dir)
+        raise SystemExit(2)
+    branch = repo.active_branch
+    commit = repo.commit(branch)
+    author_datetime = arrow.get(commit.authored_datetime)
+    repo_rev_file_lines = [
+        "branch: {branch}".format(branch=branch),
+        "commit: {hexsha}".format(hexsha=commit.hexsha),
+    ]
+    if repo.tags:
+        for tag in repo.tags:
+            if commit.hexsha == tag.commit:
+                repo_rev_file_lines.append("tag:    {name}".format(name=tag.name))
+    repo_rev_file_lines.extend(
+        [
+            "author: {author}".format(author=commit.author),
+            "date:   {date}".format(
+                date=author_datetime.format("ddd MMM DD HH:mm:ss YYYY ZZ")
+            ),
+            "files:  {files}".format(
+                files=" ".join(d.a_path for d in commit.diff("HEAD~1"))
+            ),
+            "message:",
+            "{message}".format(message=commit.message),
+        ]
+    )
+    if commit.diff(None):
+        ignore = ("CONFIG/cfg.txt", "TOOLS/COMPILE/full_key_list.txt")
+        diffs = deepcopy(commit.diff(None))
+        for d in deepcopy(diffs):
+            if d.a_path.endswith(ignore):
+                diffs.remove(d)
+        if diffs:
+            logger.warning(
+                "There are uncommitted changes in {repo_path}".format(
+                    repo_path=repo_path
+                )
+            )
+            repo_rev_file_lines.append("uncommitted changes:")
+            repo_rev_file_lines.extend(
+                "{change_type} {path}".format(change_type=d.change_type, path=d.a_path)
+                for d in diffs
+            )
+    return repo_rev_file_lines
+
+
 def get_hg_revision(repo, run_dir):
-    """Gather revision and status information from Mercurial repo.
+    """Gather revision and status information from a Mercurial repo.
 
     Effectively record the output of :command:`hg parents -v` and
-    :param run_dir:
     :command:`hg status -mardC`.
 
     Files named :file:`CONFIG/cfg.txt` and
@@ -1028,7 +1115,7 @@ def get_hg_revision(repo, run_dir):
         )
         return []
     repo_path = copy(repo)
-    while str(repo) != repo_path.root:
+    while fspath(repo) != repo_path.root:
         try:
             with hglib.open(fspath(repo)) as hg:
                 parents = hg.parents()

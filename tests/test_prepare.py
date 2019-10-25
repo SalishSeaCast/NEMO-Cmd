@@ -14,10 +14,14 @@
 # limitations under the License.
 """NEMO-Cmd prepare sub-command plug-in unit tests
 """
+from datetime import datetime
 from pathlib import Path
 from unittest.mock import call, Mock, patch
 
+import attr
 import cliff.app
+from dateutil import tz
+import git
 import pytest
 
 import nemo_cmd.prepare
@@ -1281,6 +1285,228 @@ class TestRecordVcsRevision:
             Path("tmp_run_dir"),
             nemo_cmd.prepare.get_hg_revision,
         )
+
+
+@attr.s
+class MockGitDiff:
+    a_path = attr.ib()
+    change_type = attr.ib()
+
+
+@attr.s
+class MockGitCommit:
+    branch = attr.ib()
+    hexsha = attr.ib(default="35fc362f3d77866df8c0a8b743aca81359295d59")
+    author = attr.ib(default="Doug Latornell <dlatornell@example.com>")
+    authored_datetime = attr.ib(
+        default=datetime(2019, 10, 23, 12, 30, 43, tzinfo=tz.gettz("Canada/Pacific"))
+    )
+    message = attr.ib(
+        default="Refactor the Frobnitzicator class\n\nImprove disambiguation\n"
+    )
+
+    def diff(self, other=git.diff.Diffable.Index):
+        return []
+
+
+@attr.s
+class MockGitTag:
+    commit = attr.ib()
+    name = attr.ib()
+
+
+@attr.s
+class MockGitRepo:
+    path = attr.ib()
+    active_branch = attr.ib(default="master")
+    commit = attr.ib(default=MockGitCommit)
+    tags = attr.ib(default=[])
+
+
+class TestGetGitRevision:
+    """Unit tests for `nemo prepare` _get_git_revision() function.
+    """
+
+    def test_non_existent_repo(self, caplog, tmp_path):
+        git_repo = tmp_path / "git-repo"
+        repo_rev_file_lines = nemo_cmd.prepare.get_git_revision(
+            git_repo, tmp_path / "tmp_run_dir"
+        )
+        assert repo_rev_file_lines == []
+        assert caplog.records[0].levelname == "WARNING"
+        expected = "revision and status requested for non-existent repo: {repo}".format(
+            repo=git_repo
+        )
+        assert caplog.messages[0] == expected
+
+    def test_repo_root_not_found(self, caplog, tmp_path):
+        git_repo = tmp_path / "git-repo"
+        git_repo.mkdir()
+        with pytest.raises(SystemExit):
+            nemo_cmd.prepare.get_git_revision(git_repo, tmp_path / "tmp_run_dir")
+        assert caplog.records[0].levelname == "ERROR"
+        expected = "unable to find Git repo root in or above {repo}".format(
+            repo=git_repo
+        )
+        assert caplog.messages[0] == expected
+
+    def test_repo_rev_file_lines(self, tmp_path, monkeypatch):
+        @attr.s
+        class MockGitCommit:
+            branch = attr.ib()
+            hexsha = attr.ib(default="35fc362f3d77866df8c0a8b743aca81359295d59")
+            author = attr.ib(default="Doug Latornell <dlatornell@example.com>")
+            authored_datetime = attr.ib(
+                default=datetime(
+                    2019, 10, 23, 12, 30, 43, tzinfo=tz.gettz("Canada/Pacific")
+                )
+            )
+            message = attr.ib(
+                default="Refactor the Frobnitzicator class\n\nImprove disambiguation\n"
+            )
+
+            def diff(self, other=git.diff.Diffable.Index):
+                return (
+                    [MockGitDiff("foo/bar.py", "M"), MockGitDiff("foo/baz.py", "A")]
+                    if other == "HEAD~1"
+                    else []
+                )
+
+        @attr.s
+        class MockGitRepo:
+            path = attr.ib()
+            active_branch = attr.ib(default="master")
+            commit = attr.ib(default=MockGitCommit)
+            tags = attr.ib(default=[])
+
+        monkeypatch.setattr(nemo_cmd.prepare.git, "Repo", MockGitRepo)
+
+        git_repo = tmp_path / "git-repo"
+        git_repo.mkdir()
+        repo_rev_file_lines = nemo_cmd.prepare.get_git_revision(
+            git_repo, tmp_path / "tmp_run_dir"
+        )
+        expected = [
+            "branch: master",
+            "commit: 35fc362f3d77866df8c0a8b743aca81359295d59",
+            "author: Doug Latornell <dlatornell@example.com>",
+            "date:   Wed Oct 23 12:30:43 2019 -07:00",
+            "files:  foo/bar.py foo/baz.py",
+            "message:",
+            "Refactor the Frobnitzicator class\n\nImprove disambiguation\n",
+        ]
+        assert repo_rev_file_lines == expected
+
+    def test_repo_rev_file_lines_w_tag(self, tmp_path, monkeypatch):
+        @attr.s
+        class MockGitRepo:
+            path = attr.ib()
+            active_branch = attr.ib(default="master")
+            commit = attr.ib(default=MockGitCommit)
+            tags = attr.ib(
+                default=[MockGitTag("35fc362f3d77866df8c0a8b743aca81359295d59", "tag1")]
+            )
+
+        monkeypatch.setattr(nemo_cmd.prepare.git, "Repo", MockGitRepo)
+
+        git_repo = tmp_path / "git-repo"
+        git_repo.mkdir()
+        repo_rev_file_lines = nemo_cmd.prepare.get_git_revision(
+            git_repo, tmp_path / "tmp_run_dir"
+        )
+        assert "tag:    tag1" in repo_rev_file_lines
+
+    def test_repo_rev_file_lines_w_uncommitted_chg(self, caplog, tmp_path, monkeypatch):
+        @attr.s
+        class MockGitCommit:
+            branch = attr.ib()
+            hexsha = attr.ib(default="35fc362f3d77866df8c0a8b743aca81359295d59")
+            author = attr.ib(default="Doug Latornell <dlatornell@example.com>")
+            authored_datetime = attr.ib(
+                default=datetime(
+                    2019, 10, 23, 12, 30, 43, tzinfo=tz.gettz("Canada/Pacific")
+                )
+            )
+            message = attr.ib(
+                default="Refactor the Frobnitzicator class\n\nImprove disambiguation\n"
+            )
+
+            def diff(self, other=git.diff.Diffable.Index):
+                return (
+                    [MockGitDiff("foo/uncommitted_bar.py", "M")]
+                    if other is None
+                    else []
+                )
+
+        @attr.s
+        class MockGitRepo:
+            path = attr.ib()
+            active_branch = attr.ib(default="master")
+            commit = attr.ib(default=MockGitCommit)
+            tags = attr.ib(default=[])
+
+        monkeypatch.setattr(nemo_cmd.prepare.git, "Repo", MockGitRepo)
+
+        git_repo = tmp_path / "git-repo"
+        git_repo.mkdir()
+        repo_rev_file_lines = nemo_cmd.prepare.get_git_revision(
+            git_repo, tmp_path / "tmp_run_dir"
+        )
+        assert caplog.records[0].levelname == "WARNING"
+        assert caplog.messages[
+            0
+        ] == "There are uncommitted changes in {repo_path}".format(repo_path=git_repo)
+        expected = ["uncommitted changes:", "M foo/uncommitted_bar.py"]
+        assert repo_rev_file_lines[-2:] == expected
+
+    def test_repo_rev_file_lines_ignore_cfg_txt_full_key_list_txt(
+        self, caplog, tmp_path, monkeypatch
+    ):
+        @attr.s
+        class MockGitCommit:
+            branch = attr.ib()
+            hexsha = attr.ib(default="35fc362f3d77866df8c0a8b743aca81359295d59")
+            author = attr.ib(default="Doug Latornell <dlatornell@example.com>")
+            authored_datetime = attr.ib(
+                default=datetime(
+                    2019, 10, 23, 12, 30, 43, tzinfo=tz.gettz("Canada/Pacific")
+                )
+            )
+            message = attr.ib(
+                default="Refactor the Frobnitzicator class\n\nImprove disambiguation\n"
+            )
+
+            def diff(self, other=git.diff.Diffable.Index):
+                return (
+                    [
+                        MockGitDiff("foo/uncommitted_baz.py", "M"),
+                        MockGitDiff("SalishSeaCast/CONFIG/cfg.txt", "M"),
+                        MockGitDiff("NEMOGCM/TOOLS/COMPILE/full_key_list.txt", "M"),
+                    ]
+                    if other is None
+                    else []
+                )
+
+        @attr.s
+        class MockGitRepo:
+            path = attr.ib()
+            active_branch = attr.ib(default="master")
+            commit = attr.ib(default=MockGitCommit)
+            tags = attr.ib(default=[])
+
+        monkeypatch.setattr(nemo_cmd.prepare.git, "Repo", MockGitRepo)
+
+        git_repo = tmp_path / "git-repo"
+        git_repo.mkdir()
+        repo_rev_file_lines = nemo_cmd.prepare.get_git_revision(
+            git_repo, tmp_path / "tmp_run_dir"
+        )
+        assert caplog.records[0].levelname == "WARNING"
+        assert caplog.messages[
+            0
+        ] == "There are uncommitted changes in {repo_path}".format(repo_path=git_repo)
+        expected = ["uncommitted changes:", "M foo/uncommitted_baz.py"]
+        assert repo_rev_file_lines[-2:] == expected
 
 
 @patch("nemo_cmd.prepare.logger", autospec=True)
