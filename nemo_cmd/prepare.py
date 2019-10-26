@@ -1086,7 +1086,7 @@ def get_git_revision(git_repo, run_dir):
     return repo_rev_file_lines
 
 
-def get_hg_revision(repo, run_dir):
+def get_hg_revision(hg_repo, run_dir):
     """Gather revision and status information from a Mercurial repo.
 
     Effectively record the output of :command:`hg parents -v` and
@@ -1097,9 +1097,9 @@ def get_hg_revision(repo, run_dir):
     frequently but the changes generally of no consequence;
     see https://bitbucket.org/salishsea/nemo-cmd/issues/18.
 
-    :param repo: Path of Mercurial repository to get revision and status
-                 information from.
-    :type repo: :py:class:`pathlib.Path`
+    :param hg_repo: Path of Mercurial repository to get revision and status
+                    information from.
+    :type hg_repo: :py:class:`pathlib.Path`
 
     :param run_dir: Path of the temporary run directory.
     :type run_dir: :py:class:`pathlib.Path`
@@ -1107,17 +1107,17 @@ def get_hg_revision(repo, run_dir):
     :returns: Mercurial repository revision and status information strings.
     :rtype: list
     """
-    if not repo.exists():
+    if not hg_repo.exists():
         logger.warning(
             "revision and status requested for non-existent repo: {repo}".format(
-                repo=repo
+                repo=hg_repo
             )
         )
         return []
-    repo_path = copy(repo)
-    while fspath(repo) != repo_path.root:
+    repo_path = copy(hg_repo)
+    while fspath(hg_repo) != repo_path.root:
         try:
-            with hglib.open(fspath(repo)) as hg:
+            with hglib.open(fspath(hg_repo)) as hg:
                 parents = hg.parents()
                 files = [f[1] for f in hg.status(change=[parents[0].rev])]
                 status = hg.status(
@@ -1125,11 +1125,12 @@ def get_hg_revision(repo, run_dir):
                 )
             break
         except hglib.error.ServerError:
-            repo = repo.parent
+            hg_repo = hg_repo.parent
     else:
         logger.error(
-            "unable to find Mercurial repo root in or above "
-            "{repo_path}".format(repo_path=repo_path)
+            "unable to find Mercurial repo root in or above {repo_path}".format(
+                repo_path=repo_path
+            )
         )
         remove_run_dir(run_dir)
         raise SystemExit(2)
@@ -1166,7 +1167,7 @@ def get_hg_revision(repo, run_dir):
             status.remove(s)
     if status:
         logger.warning(
-            "There are uncommitted changes in {}".format(resolved_path(repo))
+            "There are uncommitted changes in {repo_path}".format(repo_path=repo_path)
         )
         repo_rev_file_lines.append("uncommitted changes:")
         repo_rev_file_lines.extend(
