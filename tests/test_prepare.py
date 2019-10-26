@@ -18,6 +18,7 @@ from datetime import datetime
 from pathlib import Path
 from unittest.mock import call, Mock, patch
 
+import arrow
 import attr
 import cliff.app
 from dateutil import tz
@@ -1453,9 +1454,10 @@ class TestGetGitRevision:
             git_repo, tmp_path / "tmp_run_dir"
         )
         assert caplog.records[0].levelname == "WARNING"
-        assert caplog.messages[
-            0
-        ] == "There are uncommitted changes in {repo_path}".format(repo_path=git_repo)
+        expected = "There are uncommitted changes in {repo_path}".format(
+            repo_path=git_repo
+        )
+        assert caplog.messages[0] == expected
         expected = ["uncommitted changes:", "M foo/uncommitted_bar.py"]
         assert repo_rev_file_lines[-2:] == expected
 
@@ -1502,9 +1504,241 @@ class TestGetGitRevision:
             git_repo, tmp_path / "tmp_run_dir"
         )
         assert caplog.records[0].levelname == "WARNING"
-        assert caplog.messages[
-            0
-        ] == "There are uncommitted changes in {repo_path}".format(repo_path=git_repo)
+        expected = "There are uncommitted changes in {repo_path}".format(
+            repo_path=git_repo
+        )
+        assert caplog.messages[0] == expected
+        expected = ["uncommitted changes:", "M foo/uncommitted_baz.py"]
+        assert repo_rev_file_lines[-2:] == expected
+
+
+@attr.s
+class MockHgRevision:
+    rev = attr.ib(default=b"43")
+    node = attr.ib(default=b"f7d21a1dfad4")
+    tags = attr.ib(default=b"tip")
+    author = attr.ib(default=b"Doug Latornell <dlatornell@example.com>")
+    date = attr.ib(default=arrow.get("2019-10-25 19:30:43").naive)
+    files = attr.ib(default=[b"foo/bar.py", b"foo/baz.py"])
+    desc = attr.ib(
+        default=b"Refactor the Frobnitzicator class\n\nImprove disambiguation\n"
+    )
+
+
+class TestGetHgRevision:
+    """Unit tests for `nemo prepare` _get_hg_revision() function.
+    """
+
+    def test_non_existent_repo(self, caplog, tmp_path):
+        hg_repo = tmp_path / "hg-repo"
+        repo_rev_file_lines = nemo_cmd.prepare.get_hg_revision(
+            hg_repo, tmp_path / "tmp_run_dir"
+        )
+        assert repo_rev_file_lines == []
+        assert caplog.records[0].levelname == "WARNING"
+        expected = "revision and status requested for non-existent repo: {repo}".format(
+            repo=hg_repo
+        )
+        assert caplog.messages[0] == expected
+
+    def test_repo_root_not_found(self, caplog, tmp_path):
+        hg_repo = tmp_path / "hg-repo"
+        hg_repo.mkdir()
+        with pytest.raises(SystemExit):
+            nemo_cmd.prepare.get_hg_revision(hg_repo, tmp_path / "tmp_run_dir")
+        assert caplog.records[0].levelname == "ERROR"
+        expected = "unable to find Mercurial repo root in or above {repo}".format(
+            repo=hg_repo
+        )
+        assert caplog.messages[0] == expected
+
+    def test_repo_rev_file_lines(self, tmp_path, monkeypatch):
+        @attr.s
+        class MockHgRepo:
+            repo_path = attr.ib()
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                pass
+
+            def parents(self):
+                return [MockHgRevision()]
+
+            def status(
+                self,
+                rev=None,
+                change=None,
+                modified=None,
+                added=None,
+                removed=None,
+                deleted=None,
+                copies=None,
+            ):
+                return (
+                    [(b"M", b"foo/bar.py"), (b"M", b"foo/baz.py")]
+                    if change is not None
+                    else []
+                )
+
+        monkeypatch.setattr(nemo_cmd.prepare.hglib, "open", MockHgRepo)
+
+        hg_repo = tmp_path / "hg-repo"
+        hg_repo.mkdir()
+        repo_rev_file_lines = nemo_cmd.prepare.get_hg_revision(
+            hg_repo, tmp_path / "tmp_run_dir"
+        )
+        formatted_datetime = (
+            arrow.get("2019-10-25 19:30:43")
+            .replace(tzinfo=tz.tzlocal())
+            .format("ddd MMM DD HH:mm:ss YYYY ZZ")
+        )
+        expected = [
+            "changset:   43:f7d21a1dfad4",
+            "tag:        tip",
+            "user:       Doug Latornell <dlatornell@example.com>",
+            "date:       {datetime}".format(datetime=formatted_datetime),
+            "files:      foo/bar.py foo/baz.py",
+            "description:",
+            "Refactor the Frobnitzicator class",
+            "",
+            "Improve disambiguation",
+        ]
+        assert repo_rev_file_lines == expected
+
+    def test_repo_rev_file_lines_w_tag(self, tmp_path, monkeypatch):
+        @attr.s
+        class MockHgRepo:
+            repo_path = attr.ib()
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                pass
+
+            def parents(self):
+                return [MockHgRevision(tags=b"tip PROD-nowcast-green-201812")]
+
+            def status(
+                self,
+                rev=None,
+                change=None,
+                modified=None,
+                added=None,
+                removed=None,
+                deleted=None,
+                copies=None,
+            ):
+                return (
+                    [(b"M", b"foo/bar.py"), (b"M", b"foo/baz.py")]
+                    if change is not None
+                    else []
+                )
+
+        monkeypatch.setattr(nemo_cmd.prepare.hglib, "open", MockHgRepo)
+
+        hg_repo = tmp_path / "hg-repo"
+        hg_repo.mkdir()
+        repo_rev_file_lines = nemo_cmd.prepare.get_hg_revision(
+            hg_repo, tmp_path / "tmp_run_dir"
+        )
+        assert "tag:        tip PROD-nowcast-green-201812" in repo_rev_file_lines
+
+    def test_repo_rev_file_lines_w_uncommited_cng(self, caplog, tmp_path, monkeypatch):
+        @attr.s
+        class MockHgRepo:
+            repo_path = attr.ib()
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                pass
+
+            def parents(self):
+                return [MockHgRevision(tags=b"tip PROD-nowcast-green-201812")]
+
+            def status(
+                self,
+                rev=None,
+                change=None,
+                modified=None,
+                added=None,
+                removed=None,
+                deleted=None,
+                copies=None,
+            ):
+                return (
+                    [(b"M", b"foo/bar.py"), (b"M", b"foo/baz.py")]
+                    if change is not None
+                    else [(b"M", b"foo/uncommitted_bar.py")]
+                )
+
+        monkeypatch.setattr(nemo_cmd.prepare.hglib, "open", MockHgRepo)
+
+        hg_repo = tmp_path / "hg-repo"
+        hg_repo.mkdir()
+        repo_rev_file_lines = nemo_cmd.prepare.get_hg_revision(
+            hg_repo, tmp_path / "tmp_run_dir"
+        )
+        assert caplog.records[0].levelname == "WARNING"
+        expected = "There are uncommitted changes in {repo_path}".format(
+            repo_path=hg_repo
+        )
+        assert caplog.messages[0] == expected
+        expected = ["uncommitted changes:", "M foo/uncommitted_bar.py"]
+        assert repo_rev_file_lines[-2:] == expected
+
+    def test_repo_rev_file_lines_ignore_cfg_txt_full_key_list_txt(
+        self, caplog, tmp_path, monkeypatch
+    ):
+        @attr.s
+        class MockHgRepo:
+            repo_path = attr.ib()
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                pass
+
+            def parents(self):
+                return [MockHgRevision(tags=b"tip PROD-nowcast-green-201812")]
+
+            def status(
+                self,
+                rev=None,
+                change=None,
+                modified=None,
+                added=None,
+                removed=None,
+                deleted=None,
+                copies=None,
+            ):
+                return (
+                    [(b"M", b"foo/bar.py"), (b"M", b"foo/baz.py")]
+                    if change is not None
+                    else [
+                        (b"M", b"foo/uncommitted_baz.py"),
+                        (b"M", b"SalishSeaCast/CONFIG/cfg.txt"),
+                        (b"M", b"NEMOGCM/TOOLS/COMPILE/full_key_list.txt"),
+                    ]
+                )
+
+        monkeypatch.setattr(nemo_cmd.prepare.hglib, "open", MockHgRepo)
+
+        hg_repo = tmp_path / "hg-repo"
+        hg_repo.mkdir()
+        repo_rev_file_lines = nemo_cmd.prepare.get_hg_revision(
+            hg_repo, tmp_path / "tmp_run_dir"
+        )
+        assert caplog.records[0].levelname == "WARNING"
+        expected = "There are uncommitted changes in {repo_path}".format(
+            repo_path=hg_repo
+        )
+        assert caplog.messages[0] == expected
         expected = ["uncommitted changes:", "M foo/uncommitted_baz.py"]
         assert repo_rev_file_lines[-2:] == expected
 
