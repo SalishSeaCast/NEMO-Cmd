@@ -6,6 +6,9 @@ Change Log
 v19.2.dev0 (unreleased)
 =======================
 
+* Expose ``nemo_cmd.prepare.record_vcs_revisions()`` function for use by packages like
+  MOHID-Cmd that extend NEMO-Cmd.
+
 * Enable version control system (VCS) revision recording for Git repositories:
   https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#vcs-revisions-section
 

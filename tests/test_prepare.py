@@ -66,7 +66,7 @@ class TestParser:
 @patch("nemo_cmd.prepare.make_grid_links", autospec=True)
 @patch("nemo_cmd.prepare.make_forcing_links", autospec=True)
 @patch("nemo_cmd.prepare.make_restart_links", autospec=True)
-@patch("nemo_cmd.prepare._record_vcs_revisions", autospec=True)
+@patch("nemo_cmd.prepare.record_vcs_revisions", autospec=True)
 @patch("nemo_cmd.prepare.add_agrif_files", autospec=True)
 class TestPrepare:
     """Unit tests for `nemo prepare` prepare() function.
@@ -1265,12 +1265,12 @@ class TestMakeRestartLinks:
 
 
 class TestRecordVcsRevision:
-    """Unit tests for `nemo prepare` _record_vcs_revisions() function.
+    """Unit tests for `nemo prepare` record_vcs_revisions() function.
     """
 
     @patch("nemo_cmd.prepare.get_hg_revision", autospec=True)
     def test_no_vcs_revisions_stanza_in_run_desc(self, m_get_hg_rev):
-        nemo_cmd.prepare._record_vcs_revisions({}, Path("tmp_run_dir"))
+        nemo_cmd.prepare.record_vcs_revisions({}, Path("tmp_run_dir"))
         assert not m_get_hg_rev.called
 
     @patch("nemo_cmd.prepare.write_repo_rev_file", autospec=True)
@@ -1280,7 +1280,7 @@ class TestRecordVcsRevision:
             "paths": {"forcing": "NEMO-forcing/"},
             "vcs revisions": {"hg": [str(nemo_code_repo)]},
         }
-        nemo_cmd.prepare._record_vcs_revisions(run_desc, Path("tmp_run_dir"))
+        nemo_cmd.prepare.record_vcs_revisions(run_desc, Path("tmp_run_dir"))
         assert m_write.call_args_list[-1] == call(
             Path(str(nemo_code_repo)),
             Path("tmp_run_dir"),
