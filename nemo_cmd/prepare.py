@@ -119,7 +119,7 @@ def prepare(desc_file, nocheck_init):
     make_grid_links(run_desc, run_dir)
     make_forcing_links(run_desc, run_dir)
     make_restart_links(run_desc, run_dir, nocheck_init)
-    _record_vcs_revisions(run_desc, run_dir)
+    record_vcs_revisions(run_desc, run_dir)
     add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init)
     return run_dir
 
@@ -953,7 +953,7 @@ def make_restart_links(run_desc, run_dir, nocheck_init, agrif_n=None):
             (run_dir / link_name).symlink_to(source.resolve())
 
 
-def _record_vcs_revisions(run_desc, run_dir):
+def record_vcs_revisions(run_desc, run_dir):
     """Record revision and status information from version control system
     repositories in files in the temporary run directory.
 
