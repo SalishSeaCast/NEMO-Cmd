@@ -28,7 +28,7 @@ Jinja2==2.10.3
 MarkupSafe==1.1.1
 more-itertools==8.0.2
 mypy-extensions==0.4.3
--e NEMO_Cmd==19.2.dev0
+-e NEMO_Cmd==20.1.dev0
 packaging==19.2
 pathspec==0.6.0
 pbr==5.4.2
