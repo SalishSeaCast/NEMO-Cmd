@@ -3,7 +3,7 @@ Change Log
 **********
 
 
-v19.2.dev0 (unreleased)
+v20.1.dev0 (unreleased)
 =======================
 
 * Expose ``nemo_cmd.prepare.record_vcs_revisions()`` function for use by packages like
