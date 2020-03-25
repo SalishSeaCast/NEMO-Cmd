@@ -20,7 +20,6 @@ name: nemo-cmd
 channels:
   - conda-forge
   - defaults
-  - gomss-nowcast
 
 dependencies:
   - arrow
@@ -29,17 +28,22 @@ dependencies:
   - f90nml
   - gitpython
   - pip
-  - python=3.7
-  - python-hglib
+  - python=3.8
   - pyyaml
 
   # For coding style
   - black
 
   # For unit tests
-  - coverage
   - pytest
+  - pytest-cov
 
   # For documentation
   - sphinx
   - sphinx_rtd_theme
+
+  - pip:
+    - python-hglib
+
+    # For unit tests
+    - pytest-randomly
