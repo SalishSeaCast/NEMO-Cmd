@@ -25,11 +25,11 @@ The NEMO command processor,
 is a command-line tool for doing various operations associated with running the `NEMO`_ ocean model.
 It is provided by the `NEMO-Cmd package`_.
 
-.. _NEMO: http://www.nemo-ocean.eu/
-.. _NEMO-Cmd package: https://bitbucket.org/salishsea/nemo-cmd
+.. _NEMO: https://www.nemo-ocean.eu/
+.. _NEMO-Cmd package: https://github.com/SalishSeaCast/NEMO-Cmd
 
 The :kbd:`NEMO-Cmd` package is a Python 3 package.
-It is developed and tested under Python 3.7 and should work with Python 3.5 and later.
+It is developed and tested under Python 3.8 and should work with Python 3.5 and later.
 
 
 Contents

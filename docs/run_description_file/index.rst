@@ -23,7 +23,7 @@ Run Description File Structure
 :program:`nemo` run description files are written in YAML_.
 They contain key-value pairs that define the names and locations of files and directories that the :program:`nemo` command processor uses to manage NEMO runs and their results.
 
-.. _YAML: http://pyyaml.org/wiki/PyYAMLDocumentation
+.. _YAML: https://pyyaml.org/wiki/PyYAMLDocumentation
 
 Run description files are typically stored in a sub-directory of a version controlled directory tree in which you also store your model configuration elements such as coordinates,
 bathymetry,

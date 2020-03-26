@@ -607,7 +607,7 @@ being included in the :file:`NEMO.sh` script in the temporary run directory.
     so you should not include them in your :kbd:`PBS resources` section.
 
 Some HPC systems
-(`jasper.westgrid.ca`_ for example)
+(`orcinus.westgrid.ca`_ for example)
 may require or suggest that you use a :kbd:`nodes=n:ppn=p` resource request,
 where :kbd:`n` is the number of nodes,
 and :kbd:`p` is the number of processors per node.
@@ -632,7 +632,7 @@ the following run description file entries:
 
 will result in a :kbd:`#PBS -l nodes=2:ppn=12` directive being included in the :file:`NEMO.sh` script.
 
-.. _jasper.westgrid.ca: https://www.westgrid.ca/support/quickstart/jasper
+.. _orcinus.westgrid.ca: https://www.westgrid.ca/support/systems/orcinus
 
 
 .. _NEMO-3.6-ModulesToLoad:

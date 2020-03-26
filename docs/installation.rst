@@ -28,12 +28,12 @@ These instructions assume that:
 
 * You have an up to date clone of the `NEMO-Cmd package`_ repository.
 
-.. _NEMO-Cmd package: https://bitbucket.org/salishsea/nemo-cmd
+.. _NEMO-Cmd package: https://github.com/SalishSeaCast/NEMO-Cmd
 
-* You have the Python 3 version of the `Anaconda Python Distribution`_ or `Miniconda`_ installed
+* You have the `Anaconda Python Distribution`_ or `Miniconda3`_ installed
 
-.. _Anaconda Python Distribution: http://www.continuum.io/downloads
-.. _Miniconda: http://conda.pydata.org/miniconda.html
+.. _Anaconda Python Distribution: https://www.anaconda.com/distribution/
+.. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
 
 * :file:`$HOME/anaconda3/bin` is included in your :envvar:`PATH` environment variable if you are using the Anaconda,
   or :file:`$HOME/miniconda3/bin` is included in your :envvar:`PATH` environment variable if you are using Miniconda
@@ -77,4 +77,4 @@ You can do that with the compound command:
 
 Including that line in your :file:`~/.bashrc` file will ensure that completion for :program:`nemo` is available in every shell you launch.
 
-.. _command-line completion: http://en.wikipedia.org/wiki/Command-line_completion
+.. _command-line completion: https://en.wikipedia.org/wiki/Command-line_completion
