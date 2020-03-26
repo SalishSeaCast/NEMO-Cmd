@@ -6,6 +6,14 @@ Change Log
 v20.1.dev0 (unreleased)
 =======================
 
+* Change continuous integration from Bitbucket pipeline to GitHub Actions workflow.
+  CI reports are at https://github.com/SalishSeaCast/NEMO-Cmd/actions
+  Unit test coverage report visualization is at https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+
+* Migrate from Mercurial on Bitbucket to Git on GitHub due to Bitbucket's decision
+  to terminate support for Mercurial.
+  Repository is now at https://github.com/SalishSeaCast/NEMO-Cmd
+
 * Expose ``nemo_cmd.prepare.record_vcs_revisions()`` function for use by packages like
   MOHID-Cmd that extend NEMO-Cmd.
 

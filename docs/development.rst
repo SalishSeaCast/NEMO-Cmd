@@ -26,17 +26,23 @@
 .. image:: https://img.shields.io/badge/python-3.5+-blue.svg
     :target: https://docs.python.org/3.8/
     :alt: Python Version
-.. image:: https://img.shields.io/badge/version%20control-hg-blue.svg
-    :target: https://bitbucket.org/salishsea/nemo-cmd/
-    :alt: Mercurial on Bitbucket
+.. image:: https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd
+    :alt: Git on GitHub
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
     :target: https://black.readthedocs.io/en/stable/
     :alt: The uncompromising Python code formatter
 .. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
     :target: https://nemo-cmd.readthedocs.io/en/latest/
     :alt: Documentation Status
-.. image:: https://img.shields.io/bitbucket/issues/salishsea/nemo-cmd.svg
-    :target: https://bitbucket.org/salishsea/nemo-cmd/issues?status=new&status=open
+.. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
+    :alt: GitHub Workflow Status
+.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+    :alt: Codecov Testing Coverage Report
+.. image:: https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/issues
     :alt: Issue Tracker
 
 
@@ -49,9 +55,11 @@ Python Versions
     :target: https://docs.python.org/3.8/
     :alt: Python Version
 
-The :kbd:`NEMO-Cmd` package is developed and tested using `Python`_ 3.8.
+The :kbd:`NEMO-Cmd` package is developed using `Python`_ 3.8.
+It is recommended that the package be used under Python>=3.6.
 However,
 the package must also run under `Python`_ 3.5 for use on the Westgrid :kbd:`orcinus` HPC platform.
+The :ref:`NEMO-CmdContinuousIntegration` workflow on GitHub ensures that the package is tested for all versions of Python>=3.5.
 
 
 .. _NEMO-CmdGettingTheCode:
@@ -59,27 +67,27 @@ the package must also run under `Python`_ 3.5 for use on the Westgrid :kbd:`orci
 Getting the Code
 ================
 
-.. image:: https://img.shields.io/badge/version%20control-hg-blue.svg
-    :target: https://bitbucket.org/salishsea/nemo-cmd/
-    :alt: Mercurial on Bitbucket
+.. image:: https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd
+    :alt: Git on GitHub
 
-Clone the code and documentation `repository`_ from Bitbucket with:
+Clone the code and documentation `repository`_ from GitHub with:
 
-.. _repository: https://bitbucket.org/salishsea/nemo-cmd/
+.. _repository: https://github.com/SalishSeaCast/NEMO-Cmd
 
 .. code-block:: bash
 
-    $ hg clone ssh://hg@bitbucket.org/salishsea/nemo-cmd/
+    $ git clone git@github.com:SalishSeaCast/NEMO-Cmd.git
 
 or
 
 .. code-block:: bash
 
-    $ hg clone https://<your_userid>@bitbucket.org/salishsea/nemo-cmd/
+    $ git clone https://github.com/SalishSeaCast/NEMO-Cmd.git
 
-if you don't have `ssh key authentication`_ set up on Bitbucket.
+if you don't have `ssh key authentication`_ set up on GitHub.
 
-.. _ssh key authentication: https://confluence.atlassian.com/bitbucket/set-up-ssh-for-mercurial-728138122.html
+.. _ssh key authentication: https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
 
 
 .. _NEMO-CmdDevelopmentEnvironment:
@@ -94,15 +102,15 @@ testing,
 and building the documentation with the commands:
 
 .. _Python: https://www.python.org/
-.. _Conda: http://conda.pydata.org/docs/
-.. _Anaconda Python Distribution: http://www.continuum.io/downloads
-.. _Miniconda3: http://conda.pydata.org/docs/install/quick.html
+.. _Conda: https://conda.io/en/latest/
+.. _Anaconda Python Distribution: https://www.anaconda.com/distribution/
+.. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
 
 .. code-block:: bash
 
     $ cd NEMO-Cmd
     $ conda env create -f envs/environment-dev.yaml
-    $ source activate nemo-cmd
+    $ conda activate nemo-cmd
     (nemo-cmd)$ pip install --editable .
 
 The :kbd:`--editable` option in the :command:`pip install` commands above installs the :kbd:`NEMO-Cmd` package from the repository clone via symlinks so that :program:`nemo` command in the :kbd:`nemo-cmd` environment will be automatically updated as the repo evolves.
@@ -111,7 +119,7 @@ To deactivate the environment use:
 
 .. code-block:: bash
 
-    (nemo-cmd)$ source deactivate
+    (nemo-cmd)$ conda deactivate
 
 
 .. _NEMO-CmdCodingStyle:
@@ -161,17 +169,46 @@ Building the Documentation
     :alt: Documentation Status
 
 The documentation for the :kbd:`NEMO-Cmd` package is written in `reStructuredText`_ and converted to HTML using `Sphinx`_.
-Creating a :ref:`NEMO-CmdDevelopmentEnvironment` as described above includes the installation of Sphinx.
-Building the documentation is driven by :file:`tools/docs/Makefile`.
-With your :kbd:`nemo-cmd` development environment activated,
-use:
 
-.. _reStructuredText: http://sphinx-doc.org/rest.html
-.. _Sphinx: http://sphinx-doc.org/
+.. _reStructuredText: https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
+.. _Sphinx: https://www.sphinx-doc.org/en/master/
+
+If you have write access to the `repository`_ on GitHub,
+whenever you push changes to GitHub the documentation is automatically re-built and rendered at https://nemo-cmd.readthedocs.io/en/latest/.
+
+Additions,
+improvements,
+and corrections to these docs are *always* welcome.
+
+The quickest way to fix typos, etc. on existing pages is to use the :guilabel:`Edit on GitHub` link in the upper right corner of the page to get to the online editor for the page on `GitHub`_.
+
+.. _GitHub: https://github.com/SalishSeaCast/NEMO-Cmd
+
+For more substantial work,
+and to add new pages,
+follow the instructions in the :ref:`NEMO-CmdDevelopmentEnvironment` section above.
+In the development environment you can build the docs locally instead of having to push commits to GitHub to trigger a `build on readthedocs.org`_ and wait for it to complete.
+Below are instructions that explain how to:
+
+.. _build on readthedocs.org: https://readthedocs.org/projects/nemo-cmd/builds/
+
+* build the docs with your changes,
+  and preview them in Firefox
+
+* check the docs for broken links
+
+
+.. _NEMO-CmdBuildingAndPreviewingTheDocumentation:
+
+Building and Previewing the Documentation
+-----------------------------------------
+
+Building the documentation is driven by the :file:`docs/Makefile`.
+With your :kbd:`mohid-cmd` development environment activated,
+use:
 
 .. code-block:: bash
 
-    (nemo-cmd)$ cd tools
     (nemo-cmd)$ (cd docs && make clean html)
 
 to do a clean build of the documentation.
@@ -204,9 +241,142 @@ The output looks something like::
   Build finished. The HTML pages are in _build/html.
 
 The HTML rendering of the docs ends up in :file:`NEMO-Cmd/docs/_build/html/`.
-You can open the :file:`index.html` file in that directory tree in your browser to preview the results of the build before committing and pushing your changes to Bitbucket.
+You can open the :file:`index.html` file in that directory tree in your browser to preview the results of the build before committing and pushing your changes to GitHub.
 
-Whenever you push changes to the :kbd:`NEMO-Cmd` repository on Bitbucket the documentation is automatically re-built and rendered at https://nemo-cmd.readthedocs.io/en/latest/.
+Whenever you push changes to the :kbd:`NEMO-Cmd` repository on GitHub the documentation is automatically re-built and rendered at https://nemo-cmd.readthedocs.io/en/latest/.
+
+
+.. _NEMO-CmdLinkCheckingTheDocumentation:
+
+Link Checking the Documentation
+-------------------------------
+
+Sphinx also provides a link checker utility which can be run to find broken or redirected links in the docs.
+With your :kbd:`nemo-cmd` environment activated,
+use:
+
+.. code-block:: bash
+
+    (mohid-cmd)$ cd NEMO-Cmd/docs/
+    (mohid-cmd) docs$ make linkcheck
+
+The output looks something like::
+
+  Running Sphinx v2.4.4
+  loading pickled environment... done
+  building [mo]: targets for 0 po files that are out of date
+  building [linkcheck]: targets for 9 source files that are out of date
+  updating environment: 0 added, 5 changed, 0 removed
+  reading sources... [100%] run_description_file/index
+  looking for now-outdated files... none found
+  pickling environment... done
+  checking consistency... done
+  preparing documents... done
+  writing output... [ 11%] CHANGES
+  (line   23) ok        https://f90nml.readthedocs.io/en/latest/
+  (line   20) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#vcs-revisions-section
+  (line    9) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+  (line    9) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions
+  (line   27) ok        https://ubc-moad-docs.readthedocs.io/en/latest/python_packaging/pkg_structure.html
+  (line   13) ok        https://github.com/SalishSeaCast/NEMO-Cmd
+  (line   46) ok        https://calver.org/
+  (line   37) ok        https://bitbucket.org/salishsea/nemo-cmd/addon/pipelines/home
+  (line   42) ok        https://black.readthedocs.io/en/stable/
+  (line  115) ok        https://slurm.schedmd.com/
+  (line  157) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#restart-section
+  (line  149) ok        https://bitbucket.org/salishsea/nemo-cmd/issues/19
+  (line  154) ok        https://bitbucket.org/salishsea/nemo-cmd/issues/20
+  (line  177) ok        https://bitbucket.org/salishsea/nemo-cmd/issues/16
+  (line  181) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#pbs-resources-section
+  (line  107) ok        https://bugs.launchpad.net/python-cliff/+bug/1719465
+  (line  181) ok        https://bitbucket.org/salishsea/nemo-cmd/issues/10
+  (line  187) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#modules-to-load-section
+  (line  193) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#grid-section
+  (line  127) ok        https://www-ljk.imag.fr/MOISE/AGRIF/index.html
+  (line  187) ok        https://bitbucket.org/salishsea/nemo-cmd/issues/11
+  (line  198) ok        https://nemo-cmd.readthedocs.io/en/latest/api.html#functions-for-working-with-file-system-paths
+  (line  239) ok        https://tox.readthedocs.io/en/latest/
+  (line  193) ok        https://bitbucket.org/salishsea/nemo-cmd/issues/5
+  writing output... [ 22%] api
+  (line   21) ok        https://docs.python.org/3/library/pathlib.html#pathlib.Path
+  (line   21) ok        https://docs.python.org/3/library/pathlib.html#pathlib.Path
+  (line   21) ok        https://docs.python.org/3/library/functions.html#int
+  (line   21) ok        https://docs.python.org/3/library/stdtypes.html#str
+  (line   21) ok        https://docs.python.org/3/library/pathlib.html#pathlib.Path
+  (line   21) ok        https://docs.python.org/3/library/stdtypes.html#str
+  (line   21) ok        https://docs.python.org/3/library/stdtypes.html#str
+  (line   21) ok        https://docs.python.org/3/library/constants.html#None
+  (line   21) ok        https://docs.python.org/3/library/stdtypes.html#str
+  (line   21) ok        https://docs.python.org/3/library/constants.html#None
+  (line   21) ok        https://docs.python.org/3/library/stdtypes.html#dict
+  (line   21) ok        https://docs.python.org/3/library/stdtypes.html#dict
+  (line   21) ok        https://docs.python.org/3/library/stdtypes.html#dict
+  (line   20) ok        https://docs.python.org/3/library/exceptions.html#SystemExit
+  (line   21) ok        https://docs.python.org/3/library/stdtypes.html#dict
+  (line   11) ok        https://docs.python.org/3/library/exceptions.html#SystemExit
+  (line   11) ok        https://docs.python.org/3/library/exceptions.html#SystemExit
+  (line   43) ok        https://docs.python.org/3/library/stdtypes.html#list
+  (line   96) ok        https://docs.python.org/3/library/constants.html#True
+  (line   96) ok        https://docs.python.org/3/library/constants.html#True
+  (line   96) ok        https://docs.python.org/3/library/constants.html#True
+  (line   96) ok        https://docs.python.org/3/library/exceptions.html#KeyError
+  (line   29) ok        https://docs.python.org/3/library/exceptions.html#KeyError
+  (line   45) ok        https://salishseacmd.readthedocs.io/en/latest/index.html#salishseacmdprocessor
+  (line    6) ok        https://bitbucket.org/salishsea/nemo-cmd/issues/18
+  writing output... [ 33%] development
+  (line   21) ok        https://docs.python.org/3.8/
+  (line   58) ok        https://www.python.org/
+  (line   88) ok        https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
+  (line   21) ok        https://nemo-cmd.readthedocs.io/en/latest/
+  (line   98) ok        https://conda.io/en/latest/
+  (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
+  (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues
+  (line  134) ok        https://www.python.org/dev/peps/pep-0008/
+  (line   21) ok        https://www.apache.org/licenses/LICENSE-2.0
+  (line   98) ok        https://docs.conda.io/en/latest/miniconda.html
+  (line  187) ok        https://readthedocs.org/projects/nemo-cmd/builds/
+  (line   98) ok        https://www.anaconda.com/distribution/
+  (line  171) ok        https://www.sphinx-doc.org/en/master/
+  (line  171) ok        https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
+  (line  364) ok        https://coverage.readthedocs.io/en/latest/
+  (line  394) ok        https://bitbucket.org/salishsea/nemo-cmd/commits/all
+  (line  331) ok        https://docs.pytest.org/en/latest/
+  (line  394) ok        https://bitbucket.org/salishsea/nemo-cmd/
+  (line  428) ok        https://www.mercurial-scm.org/
+  (line   21) ok        https://img.shields.io/badge/python-3.5+-blue.svg
+  (line   21) ok        https://img.shields.io/badge/license-Apache%202-cb2533.svg
+  (line   21) ok        https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
+  (line   21) ok        https://img.shields.io/badge/code%20style-black-000000.svg
+  (line  428) ok        https://bitbucket.org/salishsea/nemo-cmd
+  (line   21) ok        https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
+  (line  452) ok        https://bitbucket.org/salishsea/docs/src/tip/CONTRIBUTORS.rst
+  (line   21) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/master/graph/badge.svg
+  (line  440) ok        https://bitbucket.org/salishsea/nemo-cmd/issues
+  (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
+  (line   21) ok        https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
+  (line  434) ok        https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
+  writing output... [ 44%] index
+  (line   58) ok        http://www.apache.org/licenses/LICENSE-2.0
+  (line   23) ok        https://www.nemo-ocean.eu/
+  writing output... [ 55%] installation
+  (line   67) ok        https://en.wikipedia.org/wiki/Command-line_completion
+  (line   23) redirect  http://www.nemo-ocean.eu/ - with Found to https://www.nemo-ocean.eu/
+  writing output... [ 66%] run_description_file/3.6_agrif_yaml_file
+  writing output... [ 77%] run_description_file/3.6_yaml_file
+  (line  458) ok        https://docs.python.org/3/library/constants.html#False
+  (line  195) ok        https://docs.python.org/3/library/constants.html#False
+  (line  643) ok        http://modules.sourceforge.net/
+  (line  609) ok        https://www.westgrid.ca/support/systems/orcinus
+  (line  195) ok        https://salishsea-meopar-docs.readthedocs.io/en/latest/code-notes/salishsea-nemo/land-processor-elimination/index.html#landprocessorelimination
+  (line  188) ok        https://salishsea-meopar-docs.readthedocs.io/en/latest/code-notes/salishsea-nemo/land-processor-elimination/index.html#landprocessorelimination
+  writing output... [ 88%] run_description_file/index
+  (line   23) ok        https://pyyaml.org/wiki/PyYAMLDocumentation
+  writing output... [100%] subcommands
+  (line  232) ok        https://en.wikipedia.org/wiki/Universally_unique_identifier
+
+  build succeeded.
+
+  Look for any errors in the above output or in _build/linkcheck/output.txt
 
 
 .. _NEMO-CmdRuningTheUnitTests:
@@ -247,57 +417,54 @@ The output looks something like::
 
   ======================== 166 passed in 1.68 seconds ========================
 
-You can monitor what lines of code the test suite exercises using the `coverage.py`_ tool with the command:
+You can monitor what lines of code the test suite exercises using the `coverage.py`_ and `pytest-cov`_ tools with the command:
 
 .. _coverage.py: https://coverage.readthedocs.io/en/latest/
+.. _pytest-cov: https://pytest-cov.readthedocs.io/en/latest/
 
 .. code-block:: bash
 
     (salishsea-cmd)$ cd NEMO-Cmd/
-    (salishsea-cmd)$ coverage run -m py.test
+    (salishsea-cmd)$ pytest --cov=./
 
-and generate a test coverage report with:
+The test coverage report will be displayed below the test suite run output.
 
-.. code-block:: bash
-
-    (salishsea-cmd)$ coverage report
-
-to produce a plain text report,
-or
+Alternatively,
+you can use
 
 .. code-block:: bash
 
-    (salishsea-cmd)$ coverage html
+    (salishsea-cmd)$ pytest --cov=./ --cov-report html
 
 to produce an HTML report that you can view in your browser by opening :file:`NEMO-Cmd/htmlcov/index.html`.
 
 
+.. _NEMO-CmdContinuousIntegration:
+
 Continuous Integration
 ----------------------
 
-The :kbd:`NEMO-Cmd` package unit test suite is run and a coverage report is generated whenever changes are pushed to Bitbucket.
-The results are visible on the `repo pipelines page`_,
-from the :guilabel:`Builds` column on the `repo commits page`_,
-or from a link in the build status area on the right side of the `repo summary page`_ .
+.. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
+    :alt: GitHub Workflow Status
+.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+    :alt: Codecov Testing Coverage Report
 
-.. _repo pipelines page: https://bitbucket.org/salishsea/nemo-cmd/addon/pipelines/home
-.. _repo commits page: https://bitbucket.org/salishsea/nemo-cmd/commits/all
-.. _repo summary page: https://bitbucket.org/salishsea/nemo-cmd/
+The :kbd:`NEMO-Cmd` package unit test suite is run and a coverage report is generated whenever changes are pushed to GitHub.
+The results are visible on the `repo actions page`_,
+from the green checkmarks beside commits on the `repo commits page`_,
+or from the green checkmark to the left of the "Latest commit" message on the `repo code overview page`_ .
+The testing coverage report is uploaded to `codecov.io`_
 
+.. _repo actions page: https://github.com/SalishSeaCast/NEMO-Cmd/actions
+.. _repo commits page: https://github.com/SalishSeaCast/NEMO-Cmd/commits/master
+.. _repo code overview page: https://github.com/SalishSeaCast/NEMO-Cmd
+.. _codecov.io: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
 
-Pipelines Container Image
-^^^^^^^^^^^^^^^^^^^^^^^^^
+The `GitHub Actions`_ workflow configuration that defines the continuous integration tasks is in the :file:`.github/workflows/pytest-coverage.yaml` file.
 
-The Bitbucket pipelines configuration in :file:`bitbucket-pipelines.yml` uses a custom image that includes a :command:`conda` environment for running the test wuite with coverage analysis.
-The image is defined and maintained using the :file:`Dockerfile` and :file:`environment-test.yaml` files in the :file:`pipelines-test-env/` directory.
-
-To build or update the image and push it to Docker Hub use:
-
-.. code-block:: bash
-
-    docker build -t nemo-cmd-test pipelines-test-env/
-    docker tag nemo-cmd-test:latest douglatornell/salishsea:nemo-cmd-test
-    docker push douglatornell/salishsea:nemo-cmd-test
+.. _GitHub Actions: https://help.github.com/en/actions
 
 
 .. _NEMO-CmdVersionControlRepository:
@@ -305,11 +472,13 @@ To build or update the image and push it to Docker Hub use:
 Version Control Repository
 ==========================
 
-.. image:: https://img.shields.io/badge/version%20control-hg-blue.svg
-    :target: https://bitbucket.org/salishsea/nemo-cmd/
-    :alt: Mercurial on Bitbucket
+.. image:: https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd
+    :alt: Git on GitHub
 
-The :kbd:`NEMO-Cmd` package code and documentation source files are available from the `Mercurial`_ repository at https://bitbucket.org/salishsea/nemo-cmd.
+The :kbd:`NEMO-Cmd` package code and documentation source files are available from the `Git`_ repository at https://github.com/SalishSeaCast/NEMO-Cmd.
+
+.. _Git: https://git-scm.com/
 
 
 .. _NEMO-CmdIssueTracker:
@@ -317,13 +486,13 @@ The :kbd:`NEMO-Cmd` package code and documentation source files are available fr
 Issue Tracker
 =============
 
-.. image:: https://img.shields.io/bitbucket/issues/salishsea/nemo-cmd.svg
-    :target: https://bitbucket.org/salishsea/nemo-cmd/issues?status=new&status=open
+.. image:: https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/issues
     :alt: Issue Tracker
 
 Development tasks,
 bug reports,
-and enhancement ideas are recorded and managed in the issue tracker at https://bitbucket.org/salishsea/nemo-cmd/issues.
+and enhancement ideas are recorded and managed in the issue tracker at https://github.com/SalishSeaCast/NEMO-Cmd/issues.
 
 
 License
@@ -333,7 +502,9 @@ License
     :target: https://www.apache.org/licenses/LICENSE-2.0
     :alt: Licensed under the Apache License, Version 2.0
 
-The NEMO command processor and documentation are copyright 2013-2020 by the Salish Sea MEOPAR Project Contributors and The University of British Columbia.
+The NEMO command processor and documentation are copyright 2013-2020 by the `Salish Sea MEOPAR Project Contributors`_ and The University of British Columbia.
+
+.. _Salish Sea MEOPAR Project Contributors: https://bitbucket.org/salishsea/docs/src/tip/CONTRIBUTORS.rst
 
 They are licensed under the Apache License, Version 2.0.
 https://www.apache.org/licenses/LICENSE-2.0
