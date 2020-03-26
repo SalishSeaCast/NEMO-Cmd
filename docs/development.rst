@@ -23,7 +23,7 @@
 .. image:: https://img.shields.io/badge/license-Apache%202-cb2533.svg
     :target: https://www.apache.org/licenses/LICENSE-2.0
     :alt: Licensed under the Apache License, Version 2.0
-.. image:: https://img.shields.io/badge/python-3.5+-blue.svg
+.. image:: https://img.shields.io/badge/python-3.6+-blue.svg
     :target: https://docs.python.org/3.8/
     :alt: Python Version
 .. image:: https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
@@ -51,15 +51,19 @@
 Python Versions
 ===============
 
-.. image:: https://img.shields.io/badge/python-3.5+-blue.svg
+.. image:: https://img.shields.io/badge/python-3.6+-blue.svg
     :target: https://docs.python.org/3.8/
     :alt: Python Version
 
 The :kbd:`NEMO-Cmd` package is developed using `Python`_ 3.8.
-It is recommended that the package be used under Python>=3.6.
+It is strongly recommended that the package be used under Python>=3.6.
+The :ref:`NEMO-CmdContinuousIntegration` workflow on GitHub ensures that the package is tested for all versions of Python>=3.6.
 However,
-the package must also run under `Python`_ 3.5 for use on the Westgrid :kbd:`orcinus` HPC platform.
-The :ref:`NEMO-CmdContinuousIntegration` workflow on GitHub ensures that the package is tested for all versions of Python>=3.5.
+the package must also run under Python 3.5 for use on the Westgrid :kbd:`orcinus` HPC platform.
+Python 3.5 is *not* covered by :ref:`NEMO-CmdContinuousIntegration` and support for it will be dropped as soon as we stop using :kbd:`orcinus`.
+So,
+seriously,
+*don't use this package under Python 3.5!*
 
 
 .. _NEMO-CmdGettingTheCode:
@@ -343,7 +347,7 @@ The output looks something like::
   (line  331) ok        https://docs.pytest.org/en/latest/
   (line  394) ok        https://bitbucket.org/salishsea/nemo-cmd/
   (line  428) ok        https://www.mercurial-scm.org/
-  (line   21) ok        https://img.shields.io/badge/python-3.5+-blue.svg
+  (line   21) ok        https://img.shields.io/badge/python-3.6+-blue.svg
   (line   21) ok        https://img.shields.io/badge/license-Apache%202-cb2533.svg
   (line   21) ok        https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
   (line   21) ok        https://img.shields.io/badge/code%20style-black-000000.svg

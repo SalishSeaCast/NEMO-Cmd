@@ -5,7 +5,7 @@ NEMO Command Processor
 .. image:: https://img.shields.io/badge/license-Apache%202-cb2533.svg
     :target: https://www.apache.org/licenses/LICENSE-2.0
     :alt: Licensed under the Apache License, Version 2.0
-.. image:: https://img.shields.io/badge/python-3.5+-blue.svg
+.. image:: https://img.shields.io/badge/python-3.6+-blue.svg
     :target: https://docs.python.org/3.8/
     :alt: Python Version
 .. image:: https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
