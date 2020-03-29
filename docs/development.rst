@@ -353,7 +353,7 @@ The output looks something like::
   (line   21) ok        https://img.shields.io/badge/code%20style-black-000000.svg
   (line  428) ok        https://bitbucket.org/salishsea/nemo-cmd
   (line   21) ok        https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
-  (line  452) ok        https://bitbucket.org/salishsea/docs/src/tip/CONTRIBUTORS.rst
+  (line  452) ok        https://github.com/SalishSeaCast/docs/blob/master/CONTRIBUTORS.rst
   (line   21) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/master/graph/badge.svg
   (line  440) ok        https://bitbucket.org/salishsea/nemo-cmd/issues
   (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
@@ -508,7 +508,7 @@ License
 
 The NEMO command processor and documentation are copyright 2013-2020 by the `Salish Sea MEOPAR Project Contributors`_ and The University of British Columbia.
 
-.. _Salish Sea MEOPAR Project Contributors: https://bitbucket.org/salishsea/docs/src/tip/CONTRIBUTORS.rst
+.. _Salish Sea MEOPAR Project Contributors: https://github.com/SalishSeaCast/docs/blob/master/CONTRIBUTORS.rst
 
 They are licensed under the Apache License, Version 2.0.
 https://www.apache.org/licenses/LICENSE-2.0
