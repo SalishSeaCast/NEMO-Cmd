@@ -478,13 +478,13 @@ example :kbd:`vcs revisions` section:
 .. code-block:: yaml
 
     vcs revisions:
-      hg:
+      git:
         - $HOME/CANYONS/NEMO-3.6-code/
         - $HOME/CANYONS/XIOS/
         - $HOME/CANYONS/XIOS-ARCH/
         - $HOME/CANYONS/mackenzie_canyon/
         - $HOME/CANYONS/NEMO-Cmd/
-      git:
+      hg:
         - $HOME/MEOPAR/FVCOM-VHFR-config
 
 The sub-section keys
@@ -515,29 +515,6 @@ the files created will be::
   NEMO-Cmd_rev.txt
   FVCOM-VHFR-config_rev.txt
 
-For Mercurial repositories,
-each :file:`_rev.txt` file will contain the output of the :command:`hg parents -v` command for the repository.
-That is a record of the last committed revision of the repository that will be in effect for the run.
-For example,
-:file:`NEMO-3.6-code_rev.txt` might contain::
-
-  changset:   501:20bcd3fda18ceec47b7d1998118f57b0a526b4d2
-  tag:        tip
-  user:       Michael Dunphy <mdunphy@eoas.ubc.ca>
-  date:       Mon Nov 14 09:49:40 2016 -08:00
-  files:      NEMOGCM/CONFIG/SalishSea/MY_SRC/bdyini.F90 NEMOGCM/CONFIG/SalishSea/MY_SRC/tideini.F90
-  description:
-  Fix uninitialized variables in bdyini.F90 and tideini.F90
-
-If any of the listed repositories contain uncommitted changes,
-the :command:`nemo prepare` command will generate a warning message like::
-
-  nemo_cmd.prepare WARNING: There are uncommitted changes in $HOME/CANYONS/mackenzie_canyon/
-
-and the list of uncommitted changes and their status codes,
-the output of the :command:`hg status -mardC` command,
-will be appended to the :file:`_rev.txt` file.
-
 For Git repositories,
 each :file:`_rev.txt` file will contain the output of the commands:
 
@@ -550,17 +527,38 @@ each :file:`_rev.txt` file will contain the output of the commands:
 for the repository.
 That is a record of the last committed revision of the repository that will be in effect for the run.
 For example,
-:file:`FVCOM-VHFR-config_rev.txt` might contain::
+:file:`NEMO-3.6-code_rev.txt` might contain::
 
   branch: master
-  commit: 35fc362f3d77866df8c0a8b743aca81359295d59
-  author: Doug Latornell
-  date:   Fri Mar 08 15:08:15 2019 -08:00
-  files:  namelists/namelist.numerics.template
+  commit: 4126141d62f22065eca9e95758c9b9fb850f4f6d
+  author: Michael Dunphy
+  date:   Mon Nov 14 09:49:40 2016 -0800
+  files:  NEMOGCM/CONFIG/SalishSea/MY_SRC/bdyini.F90 NEMOGCM/CONFIG/SalishSea/MY_SRC/tideini.F90
   message:
-  Change namelist.numerics to a template file.
+  Fix uninitialized variables in bdyini.F90 and tideini.F90
 
-  re: different time steps for x2 and r12 configuations.
+If any of the listed repositories contain uncommitted changes,
+the :command:`nemo prepare` command will generate a warning message like::
+
+  nemo_cmd.prepare WARNING: There are uncommitted changes in $HOME/MEOPAR/NEMO-3.6-code/
+
+and the list of uncommitted changes and their status codes,
+the output of the :command:`git diff --name-status` command,
+will be appended to the :file:`_rev.txt` file.
+
+For Mercurial repositories,
+each :file:`_rev.txt` file will contain the output of the :command:`hg parents -v` command for the repository.
+That is a record of the last committed revision of the repository that will be in effect for the run.
+For example,
+:file:`FVCOM-VHFR-config_rev.txt` might contain::
+
+  changset:   950:35fc362f3d77866df8c0a8b743aca81359295d59
+  tag:        tip
+  user:       Doug Latornell <djl@douglatornell.ca>
+  date:       Fri Mar 08 15:08:15 2019 -08:00
+  files:      namelists/namelist.numerics.template
+  description:
+  Change namelist.numerics to a template file.
 
 If any of the listed repositories contain uncommitted changes,
 the :command:`nemo prepare` command will generate a warning message like::
@@ -568,7 +566,7 @@ the :command:`nemo prepare` command will generate a warning message like::
   nemo_cmd.prepare WARNING: There are uncommitted changes in $HOME/MEOPAR/FVCOM-VHFR-config/
 
 and the list of uncommitted changes and their status codes,
-the output of the :command:`git diff --name-status` command,
+the output of the :command:`hg status -mardC` command,
 will be appended to the :file:`_rev.txt` file.
 
 
