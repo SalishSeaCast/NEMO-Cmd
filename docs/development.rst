@@ -107,7 +107,7 @@ and building the documentation with the commands:
 
 .. _Python: https://www.python.org/
 .. _Conda: https://conda.io/en/latest/
-.. _Anaconda Python Distribution: https://www.anaconda.com/distribution/
+.. _Anaconda Python Distribution: https://www.anaconda.com/products/individual
 .. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
 
 .. code-block:: bash

@@ -1009,7 +1009,7 @@ def get_git_revision(git_repo, run_dir):
     Files named :file:`CONFIG/cfg.txt` and
     :file:`TOOLS/COMPILE/full_key_list.txt` are ignored because they change
     frequently but the changes generally of no consequence;
-    see https://bitbucket.org/salishsea/nemo-cmd/issues/18.
+    see https://github.com/SalishSea/CastNEMO-Cmd/issues/18.
 
     :param git_repo: Path of Git repository to get revision and status information from.
     :type git_repo: :py:class:`pathlib.Path`
@@ -1095,7 +1095,7 @@ def get_hg_revision(hg_repo, run_dir):
     Files named :file:`CONFIG/cfg.txt` and
     :file:`TOOLS/COMPILE/full_key_list.txt` are ignored because they change
     frequently but the changes generally of no consequence;
-    see https://bitbucket.org/salishsea/nemo-cmd/issues/18.
+    see https://github.com/SalishSeaCast/NEMO-Cmd/issues/18.
 
     :param hg_repo: Path of Mercurial repository to get revision and status
                     information from.

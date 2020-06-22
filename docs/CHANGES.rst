@@ -149,10 +149,10 @@ v19.1 (2019-08-26)
 * Confirm that the ``rebuild_nemo.exe`` executable in the ``prepare`` plug-in
   so that a run is not executed without it only to fail when the ``combine``
   plug-in is run.
-  See https://bitbucket.org/salishsea/nemo-cmd/issues/19.
+  See https://github.com/SalishSeaCast/NEMO-Cmd/issues/19.
 
 * Add find_rebuild_nemo_script() to the API.
-  See https://bitbucket.org/salishsea/nemo-cmd/issues/20.
+  See https://github.com/SalishSeaCast/NEMO-Cmd/issues/20.
 
 * For NEMO-3.6 only,
   restart file paths/filenames are now specified in a new ``restart`` section
@@ -176,24 +176,24 @@ v19.1 (2019-08-26)
 
 * Fix Python 2.7 Unicode/str issue in Mercurial version control revision
   and status recording.
-  See https://bitbucket.org/salishsea/nemo-cmd/issues/16.
+  See https://github.com/SalishSeaCast/NEMO-Cmd/issues/16.
 
 * Add option to provide in the run description YAML file a list of
   PBS resource key-value pairs to produce ``#PBS -l`` directives for in the
   run shell script.
   See https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#pbs-resources-section,
-  and https://bitbucket.org/salishsea/nemo-cmd/issues/10.
+  and https://github.com/SalishSeaCast/NEMO-Cmd/issues/10.
 
 * Add option to provide in the run description YAML file a list of
   HPC environment modules to include ``module load`` commands for in the
   run shell script.
   See https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#modules-to-load-section,
-  and https://bitbucket.org/salishsea/nemo-cmd/issues/11.
+  and https://github.com/SalishSeaCast/NEMO-Cmd/issues/11.
 
 * Add the option to use absolute paths for coordinates and bathymetry files
   in the run description YAML file.
   See https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#grid-section,
-  and https://bitbucket.org/salishsea/nemo-cmd/issues/5.
+  and https://github.com/SalishSeaCast/NEMO-Cmd/issues/5.
 
 * Add ``nemo_cmd.fspath()``,
   ``nemo_cmd.expanded_path()``,
