@@ -33,8 +33,9 @@ jobs:
 
       - uses: goanpeca/setup-miniconda@v1
         with:
-           auto-update-conda: true
+           auto-update-conda: false
            auto-activate-base: false
+           use-only-tar-bz2: true # Required for caching to work properly!
            environment-file: envs/environment-test.yaml
            python-version: ${{ matrix.python-version }}
            activate-environment: nemo-cmd-test
