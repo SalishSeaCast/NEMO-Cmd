@@ -4,7 +4,7 @@
 # Create a conda environment in which the `nemo` command can be run
 # with:
 #
-#   $ conda envs create -f NEMO-Cmd/envs/environment.yaml
+#   $ conda env create -f NEMO-Cmd/envs/environment.yaml
 #   $ source activate nemo-cmd
 #   (nemo-cmd)$ pip install --editable NEMO-Cmd
 #
