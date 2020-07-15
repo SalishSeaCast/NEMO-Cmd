@@ -35,6 +35,9 @@
 .. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
     :target: https://nemo-cmd.readthedocs.io/en/latest/
     :alt: Documentation Status
+.. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/sphinx-linkcheck/badge.svg
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3A
+    :alt: Sphinx linkcheck
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
     :alt: GitHub Workflow Status
@@ -255,6 +258,10 @@ Whenever you push changes to the :kbd:`NEMO-Cmd` repository on GitHub the docume
 Link Checking the Documentation
 -------------------------------
 
+.. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/sphinx-linkcheck/badge.svg
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3A
+    :alt: Sphinx linkcheck
+
 Sphinx also provides a link checker utility which can be run to find broken or redirected links in the docs.
 With your :kbd:`nemo-cmd` environment activated,
 use:
@@ -381,6 +388,10 @@ The output looks something like::
   build succeeded.
 
   Look for any errors in the above output or in _build/linkcheck/output.txt
+
+:command:`make linkcheck` is run monthly via a `scheduled GitHub Actions workflow`_
+
+.. _scheduled GitHub Actions workflow: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3Asphinx-linkcheck
 
 
 .. _NEMO-CmdRuningTheUnitTests:

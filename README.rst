@@ -17,6 +17,9 @@ NEMO Command Processor
 .. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
     :target: https://nemo-cmd.readthedocs.io/en/latest/
     :alt: Documentation Status
+.. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/sphinx-linkcheck/badge.svg
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3A
+    :alt: Sphinx linkcheck
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
     :alt: GitHub Workflow Status
