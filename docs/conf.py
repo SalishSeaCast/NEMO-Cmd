@@ -83,6 +83,8 @@ autodoc_mock_imports = [
     "cliff.command",
     "cliff.commandmanager",
     "dateutil",
+    "f90nml",
+    "git",
     "hglib",
     "yaml",
 ]
