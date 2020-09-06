@@ -40,11 +40,6 @@ jobs:
            python-version: ${{ matrix.python-version }}
            activate-environment: nemo-cmd-test
 
-      - name: Install packages
-        shell: bash -l {0}
-        run: |
-          python3 -m pip install --editable $GITHUB_WORKSPACE
-
       - name: linkcheck docs
         shell: bash -l {0}
         run: |
