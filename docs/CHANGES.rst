@@ -35,7 +35,7 @@ v19.1 (2019-08-26)
 * Add run description YAML file docs about ``land processor elimination`` option.
 
 * Add Bitbucket continuous integration pipeline to run unit tests and generate unit
-  tests coverage report; https://bitbucket.org/salishsea/nemo-cmd/addon/pipelines/home.
+  tests coverage report.
 
 * Drop support for Python 2.7; minimum version is now 3.5.
 
