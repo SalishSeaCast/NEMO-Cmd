@@ -86,16 +86,6 @@ Clone the code and documentation `repository`_ from GitHub with:
 
     $ git clone git@github.com:SalishSeaCast/NEMO-Cmd.git
 
-or
-
-.. code-block:: bash
-
-    $ git clone https://github.com/SalishSeaCast/NEMO-Cmd.git
-
-if you don't have `ssh key authentication`_ set up on GitHub.
-
-.. _ssh key authentication: https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
-
 
 .. _NEMO-CmdDevelopmentEnvironment:
 
