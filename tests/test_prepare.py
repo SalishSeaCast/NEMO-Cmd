@@ -34,8 +34,7 @@ def prepare_cmd():
 
 
 class TestParser:
-    """Unit tests for `nemo prepare` sub-command command-line parser.
-    """
+    """Unit tests for `nemo prepare` sub-command command-line parser."""
 
     def test_get_parser(self, prepare_cmd):
         parser = prepare_cmd.get_parser("nemo prepare")
@@ -69,8 +68,7 @@ class TestParser:
 @patch("nemo_cmd.prepare.record_vcs_revisions", autospec=True)
 @patch("nemo_cmd.prepare.add_agrif_files", autospec=True)
 class TestPrepare:
-    """Unit tests for `nemo prepare` prepare() function.
-    """
+    """Unit tests for `nemo prepare` prepare() function."""
 
     def test_prepare(
         self,
@@ -116,8 +114,7 @@ class TestPrepare:
 @patch("nemo_cmd.prepare.logger", autospec=True)
 @patch("nemo_cmd.prepare.remove_run_dir", autospec=True)
 class TestGetRunDescValue:
-    """Unit tests for get_run_desc_value function.
-    """
+    """Unit tests for get_run_desc_value function."""
 
     def test_non_fatal_key_error(self, m_rm_run_dir, m_logger):
         run_desc = {}
@@ -176,8 +173,7 @@ class TestGetRunDescValue:
 
 
 class TestCheckNemoExec:
-    """Unit tests for `nemo prepare` check_nemo_exec() function.
-    """
+    """Unit tests for `nemo prepare` check_nemo_exec() function."""
 
     @pytest.mark.parametrize(
         "key, nemo_code_config, config_name",
@@ -226,8 +222,7 @@ class TestCheckNemoExec:
 
 
 class TestCheckXiosExec:
-    """Unit tests for `nemo prepare` check_xios_exec() function.
-    """
+    """Unit tests for `nemo prepare` check_xios_exec() function."""
 
     def test_xios_bin_dir_path(self, tmpdir):
         p_xios = tmpdir.ensure_dir("XIOS")
@@ -247,8 +242,7 @@ class TestCheckXiosExec:
 
 
 class TestMakeRunDir:
-    """Unit test for `nemo prepare` make_run_dir() function.
-    """
+    """Unit test for `nemo prepare` make_run_dir() function."""
 
     @patch(
         "nemo_cmd.prepare.arrow.now",
@@ -264,8 +258,7 @@ class TestMakeRunDir:
 
 
 class TestRemoveRunDir:
-    """Unit tests for `nemo prepare` remove_run_dir() function.
-    """
+    """Unit tests for `nemo prepare` remove_run_dir() function."""
 
     def test_remove_run_dir(self, tmpdir):
         p_run_dir = tmpdir.ensure_dir("run_dir")
@@ -286,8 +279,7 @@ class TestRemoveRunDir:
 
 
 class TestMakeNamelist:
-    """Unit tests for `nemo prepare` _make_namelist() function.
-    """
+    """Unit tests for `nemo prepare` _make_namelist() function."""
 
     @pytest.mark.parametrize(
         "config_name_key, nemo_code_config_key",
@@ -562,8 +554,7 @@ class TestMakeNamelist:
 
 @patch("nemo_cmd.prepare.logger", autospec=True)
 class TestSetMpiDesomposition:
-    """Unit tests for `nemo prepare` set_mpi_decomposition() function.
-    """
+    """Unit tests for `nemo prepare` set_mpi_decomposition() function."""
 
     @patch("nemo_cmd.prepare.remove_run_dir", autospec=True)
     def test_no_mpi_decomposition_systemexit_w_cleanup(self, m_rm_run_dir, m_logger):
@@ -591,8 +582,7 @@ class TestSetMpiDesomposition:
 
 @patch("nemo_cmd.prepare.logger", autospec=True)
 class TestGetNProcessors:
-    """Unit tests for `nemo prepare` get_n_processors() function.
-    """
+    """Unit tests for `nemo prepare` get_n_processors() function."""
 
     @pytest.mark.parametrize(
         "lpe_key",
@@ -675,8 +665,7 @@ class TestGetNProcessors:
 
 
 class TestCopyRunSetFiles:
-    """Unit tests for `nemo prepare` copy_run_set_files() function.
-    """
+    """Unit tests for `nemo prepare` copy_run_set_files() function."""
 
     @pytest.mark.parametrize(
         "iodefs_key, domains_key, fields_key",
@@ -910,8 +899,7 @@ class TestCopyRunSetFiles:
 
 
 class TestMakeExecutableLinks:
-    """Unit tests for `nemo prepare` make_executable_links() function.
-    """
+    """Unit tests for `nemo prepare` make_executable_links() function."""
 
     def test_nemo_exe_symlink(self, tmpdir):
         p_nemo_bin_dir = tmpdir.ensure_dir("NEMO-code/NEMOGCM/CONFIG/SalishSea/BLD/bin")
@@ -949,8 +937,7 @@ class TestMakeExecutableLinks:
 @patch("nemo_cmd.prepare.logger", autospec=True)
 @patch("nemo_cmd.prepare.remove_run_dir", autospec=True)
 class TestMakeGridLinks:
-    """Unit tests for `nemo prepare` make_grid_links() function.
-    """
+    """Unit tests for `nemo prepare` make_grid_links() function."""
 
     def test_no_grid_coordinates_key(self, m_rm_run_dir, m_logger):
         run_desc = {}
@@ -1040,8 +1027,7 @@ class TestMakeGridLinks:
 
 
 class TestMakeForcingLinks:
-    """Unit tests for `nemo prepare` make_forcing_links() function.
-    """
+    """Unit tests for `nemo prepare` make_forcing_links() function."""
 
     def test_abs_path_link(self, tmpdir):
         p_nemo_forcing = tmpdir.ensure_dir("NEMO-forcing")
@@ -1140,8 +1126,7 @@ class TestMakeForcingLinks:
 
 
 class TestResolveForcingPath:
-    """Unit tests for `salishsea prepare` _resolve_forcing_path() function.
-    """
+    """Unit tests for `salishsea prepare` _resolve_forcing_path() function."""
 
     @pytest.mark.parametrize(
         "keys, forcing_dict",
@@ -1171,8 +1156,7 @@ class TestResolveForcingPath:
 
 
 class TestMakeRestartLinks:
-    """Unit tests for `salishsea prepare` make_restart_links() function.
-    """
+    """Unit tests for `salishsea prepare` make_restart_links() function."""
 
     @patch("nemo_cmd.prepare.logger", autospec=True)
     def test_no_restart_key(self, m_logger):
@@ -1265,8 +1249,7 @@ class TestMakeRestartLinks:
 
 
 class TestRecordVcsRevision:
-    """Unit tests for `nemo prepare` record_vcs_revisions() function.
-    """
+    """Unit tests for `nemo prepare` record_vcs_revisions() function."""
 
     @patch("nemo_cmd.prepare.get_hg_revision", autospec=True)
     def test_no_vcs_revisions_stanza_in_run_desc(self, m_get_hg_rev):
@@ -1325,8 +1308,7 @@ class MockGitRepo:
 
 
 class TestGetGitRevision:
-    """Unit tests for `nemo prepare` _get_git_revision() function.
-    """
+    """Unit tests for `nemo prepare` _get_git_revision() function."""
 
     def test_non_existent_repo(self, caplog, tmp_path):
         git_repo = tmp_path / "git-repo"
@@ -1526,8 +1508,7 @@ class MockHgRevision:
 
 
 class TestGetHgRevision:
-    """Unit tests for `nemo prepare` _get_hg_revision() function.
-    """
+    """Unit tests for `nemo prepare` _get_hg_revision() function."""
 
     def test_non_existent_repo(self, caplog, tmp_path):
         hg_repo = tmp_path / "hg-repo"
@@ -1749,8 +1730,7 @@ class TestGetHgRevision:
 @patch("nemo_cmd.prepare.copy_run_set_files", autospec=True)
 @patch("nemo_cmd.prepare.make_namelists", autospec=True)
 class TestAddAgrifFiles:
-    """Unit tests for `nemo prepare` _add_agrid_files() function.
-    """
+    """Unit tests for `nemo prepare` _add_agrid_files() function."""
 
     @patch("nemo_cmd.prepare.get_run_desc_value", side_effect=KeyError, autospec=True)
     def test_no_agrif(

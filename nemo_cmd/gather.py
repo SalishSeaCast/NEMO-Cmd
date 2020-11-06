@@ -28,8 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 class Gather(cliff.command.Command):
-    """Gather results from a NEMO run.
-    """
+    """Gather results from a NEMO run."""
 
     def get_parser(self, prog_name):
         parser = super(Gather, self).get_parser(prog_name)

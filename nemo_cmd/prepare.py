@@ -43,8 +43,7 @@ logger.addHandler(logging.NullHandler())
 
 
 class Prepare(cliff.command.Command):
-    """Prepare a NEMO run
-    """
+    """Prepare a NEMO run"""
 
     def get_parser(self, prog_name):
         parser = super(Prepare, self).get_parser(prog_name)
@@ -518,8 +517,7 @@ def get_n_processors(run_desc, run_dir):
 
 
 def _lookup_lpe_n_processors(mpi_lpe_mapping, jpni, jpnj):
-    """Encapsulate file access to facilitate testability of get_n_processors().
-    """
+    """Encapsulate file access to facilitate testability of get_n_processors()."""
     with mpi_lpe_mapping.open("rt") as f:
         for line in f:
             cjpni, cjpnj, cnw = map(int, line.split(","))

@@ -31,8 +31,7 @@ logger = logging.getLogger(__name__)
 
 
 class Deflate(cliff.command.Command):
-    """Deflate variables in netCDF files using Lempel-Ziv compression.
-    """
+    """Deflate variables in netCDF files using Lempel-Ziv compression."""
 
     def get_parser(self, prog_name):
         parser = super(Deflate, self).get_parser(prog_name)
@@ -77,8 +76,7 @@ class Deflate(cliff.command.Command):
 
 @attr.s
 class DeflateJob(object):
-    """netCDF file deflation job.
-    """
+    """netCDF file deflation job."""
 
     #: Path/name of the netCDF file to deflate.
     filepath = attr.ib()

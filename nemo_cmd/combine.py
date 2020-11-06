@@ -33,8 +33,7 @@ logger = logging.getLogger(__name__)
 
 
 class Combine(cliff.command.Command):
-    """Combine per-processor files from an MPI NEMO run into single files
-    """
+    """Combine per-processor files from an MPI NEMO run into single files"""
 
     def get_parser(self, prog_name):
         parser = super(Combine, self).get_parser(prog_name)
@@ -88,7 +87,7 @@ def find_rebuild_nemo_script(run_desc):
 
     Confirm that the rebuild_nemo executable exists, raising a SystemExit
     exception if it does not.
-    
+
     :param dict run_desc: Run description dictionary.
 
     :return: Resolved path of :file:`rebuild_nemo` script.

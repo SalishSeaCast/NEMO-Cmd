@@ -34,8 +34,7 @@ def run_cmd():
 
 
 class TestParser:
-    """Unit tests for `nemo run` sub-command command-line parser.
-    """
+    """Unit tests for `nemo run` sub-command command-line parser."""
 
     def test_get_parser(self, run_cmd):
         parser = run_cmd.get_parser("nemo run")
@@ -81,8 +80,7 @@ class TestParser:
 
 @patch("nemo_cmd.run.logger", autospec=True)
 class TestTakeAction:
-    """Unit tests for `salishsea run` sub-command take_action() method.
-    """
+    """Unit tests for `salishsea run` sub-command take_action() method."""
 
     @patch("nemo_cmd.run.run", return_value="qsub message", autospec=True)
     def test_take_action(self, m_run, m_logger, run_cmd):
@@ -142,8 +140,7 @@ class TestTakeAction:
 @patch("nemo_cmd.run.load_run_desc", spec=True)
 @patch("nemo_cmd.run.api.prepare", spec=True)
 class TestRun:
-    """Unit tests for `salishsea run` run() function.
-    """
+    """Unit tests for `salishsea run` run() function."""
 
     @pytest.mark.parametrize(
         "sep_xios_server, xios_servers, queue_job_cmd",
@@ -460,8 +457,7 @@ class TestRun:
 
 
 class TestBuiltBatchScript:
-    """Unit tests for _build_batch_script() function.
-    """
+    """Unit tests for _build_batch_script() function."""
 
     @patch("nemo_cmd.run._cleanup", autospec=True)
     @patch("nemo_cmd.run._fix_permissions", autospec=True)
@@ -724,8 +720,7 @@ class TestBuiltBatchScript:
 
 
 class TestPbsDirectives:
-    """Unit tests for _pbs_directives() function.
-    """
+    """Unit tests for _pbs_directives() function."""
 
     run_desc = {
         "run_id": "test",
@@ -759,8 +754,7 @@ class TestPbsDirectives:
 
 
 class TestPBS_Resources:
-    """Unit tests for _pbs_resources() function.
-    """
+    """Unit tests for _pbs_resources() function."""
 
     @pytest.mark.parametrize(
         "resources, expected",
@@ -790,8 +784,7 @@ class TestPBS_Resources:
 
 
 class TestSbatchDirectives:
-    """Unit tests for _sbatch_directives() function.
-    """
+    """Unit tests for _sbatch_directives() function."""
 
     run_desc = {
         "run_id": "test",
@@ -831,8 +824,7 @@ class TestSbatchDirectives:
 
 
 class TestDefinitions:
-    """Unit tests for _definitions() function.
-    """
+    """Unit tests for _definitions() function."""
 
     @pytest.mark.parametrize(
         "queue_job_cmd, nemo_bin, no_deflate",
@@ -865,8 +857,7 @@ class TestDefinitions:
 
 
 class TestModules:
-    """Unit tests for _module() function.
-    """
+    """Unit tests for _module() function."""
 
     @pytest.mark.parametrize(
         "modules, expected",
@@ -882,8 +873,7 @@ class TestModules:
 
 
 class TestCleanup:
-    """Unit test for _cleanup() function.
-    """
+    """Unit test for _cleanup() function."""
 
     def test_cleanup(self):
         script = nemo_cmd.run._cleanup()

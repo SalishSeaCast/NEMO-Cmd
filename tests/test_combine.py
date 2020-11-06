@@ -34,8 +34,7 @@ def combine_cmd():
 
 
 class TestParser:
-    """Unit tests for `nemo combine` sub-command command-line parser.
-    """
+    """Unit tests for `nemo combine` sub-command command-line parser."""
 
     def test_get_parser(self, combine_cmd):
         parser = combine_cmd.get_parser("nemo combine")
@@ -48,8 +47,7 @@ class TestParser:
 
 
 class TestTakeAction:
-    """Unit test for `nemo combine` sub-command take_action() method.
-    """
+    """Unit test for `nemo combine` sub-command take_action() method."""
 
     @patch("nemo_cmd.combine.combine", autospec=True)
     def test_take_action(self, m_combine, combine_cmd):
@@ -76,8 +74,7 @@ class TestGetResultsFiles:
 
 @patch("nemo_cmd.combine.logger", autospec=True)
 class TestFindRebuildNemoScript:
-    """Unit tests for _find_rebuild_nemo_script function.
-    """
+    """Unit tests for _find_rebuild_nemo_script function."""
 
     @pytest.mark.parametrize(
         "nemo_code_config", ["NEMO-3.6-code/NEMOGCM/CONFIG/", "NEMO-3.6/CONFIG/"]
@@ -104,8 +101,7 @@ class TestFindRebuildNemoScript:
 @patch("nemo_cmd.combine.logger", autospec=True)
 @patch("nemo_cmd.combine.Path", autospec=True)
 class TestCombineResultsFiles:
-    """Unit tests for _combine_results_files function.
-    """
+    """Unit tests for _combine_results_files function."""
 
     @patch("nemo_cmd.combine.shutil.move", autospec=True)
     def test_single_processor_result(self, m_move, m_path, m_logger):
@@ -127,8 +123,7 @@ class TestCombineResultsFiles:
 
 @patch("nemo_cmd.combine.Path", autospec=True)
 class TestDeleteResultsFiles:
-    """Unit tests for _delete_results_files function.
-    """
+    """Unit tests for _delete_results_files function."""
 
     def test_delete_results_files(self, m_path):
         m_path.cwd().glob.return_value = [Mock(spec=Path)]

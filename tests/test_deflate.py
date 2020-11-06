@@ -32,8 +32,7 @@ def deflate_cmd():
 
 
 class TestParser:
-    """Unit tests for `nemo deflate` sub-command command-line parser.
-    """
+    """Unit tests for `nemo deflate` sub-command command-line parser."""
 
     def test_get_parser(self, deflate_cmd):
         parser = deflate_cmd.get_parser("nemo deflate")
@@ -76,8 +75,7 @@ class TestParser:
 
 
 class TestTakeAction:
-    """Unit test for `nemo deflate` sub-command take_action() method.
-    """
+    """Unit test for `nemo deflate` sub-command take_action() method."""
 
     def test_take_action(self, deflate_cmd, caplog, monkeypatch):
 

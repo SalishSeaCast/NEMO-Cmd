@@ -149,8 +149,7 @@ class TestRunSubcommand(object):
 
 
 class TestPbsCommon:
-    """Unit tests for `salishsea run` pbs_common() function.
-    """
+    """Unit tests for `salishsea run` pbs_common() function."""
 
     def test_walltime_leading_zero(self):
         """Ensure correct handling of walltime w/ leading zero in YAML desc file

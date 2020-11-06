@@ -29,8 +29,7 @@ def gather_cmd():
 
 
 class TestGetParser:
-    """Unit tests for `nemo gather` sub-command command-line parser.
-    """
+    """Unit tests for `nemo gather` sub-command command-line parser."""
 
     def test_get_parser(self, gather_cmd):
         parser = gather_cmd.get_parser("nemo gather")
@@ -56,8 +55,7 @@ class TestGetParser:
 
 
 class TestTakeAction:
-    """Unit test for `nemo gather` sub-command take_action() method.
-    """
+    """Unit test for `nemo gather` sub-command take_action() method."""
 
     def test_take_action(self, gather_cmd, tmp_path, monkeypatch):
         def mock_move_results(*args):
