@@ -3,7 +3,7 @@ Change Log
 **********
 
 
-v20.1.dev0 (unreleased)
+v21.1.dev0 (unreleased)
 =======================
 
 * Change continuous integration from Bitbucket pipeline to GitHub Actions workflow.
