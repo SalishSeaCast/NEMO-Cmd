@@ -3,8 +3,10 @@ Change Log
 **********
 
 
-v21.1.dev0 (unreleased)
-=======================
+v21.1 (2021-04-01)
+==================
+
+* Update example HPC module versions re: Compute Canada change to StdEnv/2020.
 
 * Rename Git default branch from `master` to `main`.
 
