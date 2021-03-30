@@ -8,7 +8,7 @@ name: nemo-cmd-test
 
 channels:
   - conda-forge
-  - defaults
+  - nodefaults
 
 dependencies:
   - arrow

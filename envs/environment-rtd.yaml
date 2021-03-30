@@ -3,7 +3,8 @@
 name: nemo-cmd-rtd
 
 channels:
-  - defaults
+  - conda-forge
+  - nodefaults
 
 dependencies:
   - python>=3.8
