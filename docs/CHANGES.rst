@@ -6,6 +6,8 @@ Change Log
 v21.1.dev0 (unreleased)
 =======================
 
+* Rename Git default branch from `master` to `main`.
+
 * Change continuous integration from Bitbucket pipeline to GitHub Actions workflow.
   CI reports are at https://github.com/SalishSeaCast/NEMO-Cmd/actions
   Unit test coverage report visualization is at https://codecov.io/gh/SalishSeaCast/NEMO-Cmd

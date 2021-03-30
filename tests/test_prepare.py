@@ -1302,7 +1302,7 @@ class MockGitTag:
 @attr.s
 class MockGitRepo:
     path = attr.ib()
-    active_branch = attr.ib(default="master")
+    active_branch = attr.ib(default="main")
     commit = attr.ib(default=MockGitCommit)
     tags = attr.ib(default=[])
 
@@ -1358,7 +1358,7 @@ class TestGetGitRevision:
         @attr.s
         class MockGitRepo:
             path = attr.ib()
-            active_branch = attr.ib(default="master")
+            active_branch = attr.ib(default="main")
             commit = attr.ib(default=MockGitCommit)
             tags = attr.ib(default=[])
 
@@ -1370,7 +1370,7 @@ class TestGetGitRevision:
             git_repo, tmp_path / "tmp_run_dir"
         )
         expected = [
-            "branch: master",
+            "branch: main",
             "commit: 35fc362f3d77866df8c0a8b743aca81359295d59",
             "author: Doug Latornell <dlatornell@example.com>",
             "date:   Wed Oct 23 12:30:43 2019 -07:00",
@@ -1384,7 +1384,7 @@ class TestGetGitRevision:
         @attr.s
         class MockGitRepo:
             path = attr.ib()
-            active_branch = attr.ib(default="master")
+            active_branch = attr.ib(default="main")
             commit = attr.ib(default=MockGitCommit)
             tags = attr.ib(
                 default=[MockGitTag("35fc362f3d77866df8c0a8b743aca81359295d59", "tag1")]
@@ -1424,7 +1424,7 @@ class TestGetGitRevision:
         @attr.s
         class MockGitRepo:
             path = attr.ib()
-            active_branch = attr.ib(default="master")
+            active_branch = attr.ib(default="main")
             commit = attr.ib(default=MockGitCommit)
             tags = attr.ib(default=[])
 
@@ -1474,7 +1474,7 @@ class TestGetGitRevision:
         @attr.s
         class MockGitRepo:
             path = attr.ib()
-            active_branch = attr.ib(default="master")
+            active_branch = attr.ib(default="main")
             commit = attr.ib(default=MockGitCommit)
             tags = attr.ib(default=[])
 

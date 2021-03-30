@@ -41,7 +41,7 @@
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
     :alt: GitHub Workflow Status
-.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
     :alt: Codecov Testing Coverage Report
 .. image:: https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
@@ -357,9 +357,9 @@ The output looks something like::
   (line   21) ok        https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
   (line  510) ok        https://github.com/SalishSeaCast/docs/blob/master/CONTRIBUTORS.rst
   (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
-  (line   21) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/master/graph/badge.svg
-  (line  450) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/master/graph/badge.svg
-  (line  459) ok        https://github.com/SalishSeaCast/NEMO-Cmd/commits/master
+  (line   21) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
+  (line  450) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
+  (line  459) ok        https://github.com/SalishSeaCast/NEMO-Cmd/commits/main
   (line  450) ok        https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
   (line   21) ok        https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
   (line  492) ok        https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
@@ -458,7 +458,7 @@ Continuous Integration
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
     :alt: GitHub Workflow Status
-.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
     :target: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
     :alt: Codecov Testing Coverage Report
 
@@ -469,7 +469,7 @@ or from the green checkmark to the left of the "Latest commit" message on the `r
 The testing coverage report is uploaded to `codecov.io`_
 
 .. _repo actions page: https://github.com/SalishSeaCast/NEMO-Cmd/actions
-.. _repo commits page: https://github.com/SalishSeaCast/NEMO-Cmd/commits/master
+.. _repo commits page: https://github.com/SalishSeaCast/NEMO-Cmd/commits/main
 .. _repo code overview page: https://github.com/SalishSeaCast/NEMO-Cmd
 .. _codecov.io: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
 
