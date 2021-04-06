@@ -284,7 +284,7 @@ The output looks something like::
   (line    9) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
   (line  115) ok        https://slurm.schedmd.com/
   (line   46) ok        https://calver.org/
-  (line  127) ok        https://www-ljk.imag.fr/MOISE/AGRIF/index.html
+  (line  127) ok        http://agrif.imag.fr/
   (line  107) ok        https://bugs.launchpad.net/python-cliff/+bug/1719465
   (line  157) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#restart-section
   (line    9) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions
