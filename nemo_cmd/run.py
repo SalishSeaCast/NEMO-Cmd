@@ -394,7 +394,7 @@ def _pbs_resources(resources, n_processors):
 
 
 def _sbatch_directives(
-    run_desc, n_processors, results_dir, max_tasks_per_node=32, memory_per_node="125G"
+    run_desc, n_processors, results_dir, max_tasks_per_node=32, memory_per_node=0
 ):
     """Return the SBATCH directives used to run NEMO on a cluster that uses the
     Slurm Workload Manager for job scheduling.
