@@ -2,17 +2,16 @@
 Change Log
 **********
 
+v21.1 (2021-10-21)
+==================
 
-v21.1.dev0 (unreleased)
-=======================
-
-* Change memory per node for `sbatch` runs to 0 to ensure that jobs go on to the "by-node"
-  queue on `graham`.
-  The queue selection algorithm in the scheduler on `graham` appears to have changed
+* Change memory per node for ``sbatch`` runs to 0 to ensure that jobs go on to the "by-node"
+  queue on ``graham``.
+  The queue selection algorithm in the scheduler on ``graham`` appears to have changed
   (without announcement) on 13-Jul-2021 so that the previous memory per node of 125G
   now sends jobs to the "by-core" queue which is generally more crowded.
 
-* Rename Git default branch from `master` to `main`.
+* Rename Git default branch from ``master`` to ``main``.
 
 * Change continuous integration from Bitbucket pipeline to GitHub Actions workflow.
   CI reports are at https://github.com/SalishSeaCast/NEMO-Cmd/actions
