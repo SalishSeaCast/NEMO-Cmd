@@ -5,6 +5,8 @@ Change Log
 v21.2.dev0 (unreleased)
 =======================
 
+* Update example HPC module versions re: Compute Canada change to StdEnv/2020.
+
 
 v21.1 (2021-10-21)
 ==================
@@ -138,7 +140,7 @@ v19.1 (2019-08-26)
 * Add support for the use of `AGRIF`_ (Adaptive Grid Refinement in Fortran)
   in NEMO-3.6 runs.
 
-.. _AGRIF: http://agrif.imag.fr/
+.. _AGRIF: https://forge.ipsl.jussieu.fr/nemo/wiki/Users/ModelInterfacing/AGRIF
 
 * Expand shell and user variables in namelist file paths.
 

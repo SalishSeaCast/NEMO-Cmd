@@ -630,9 +630,9 @@ class TestBuiltBatchScript:
             u"email: me@example.com\n"
             u"account: rrg-allen\n"
             u"modules to load:\n"
-            u"- netcdf-mpi/4.4.1.1\n"
-            u"- netcdf-fortran-mpi/4.4.4\n"
-            u"- python/3.7.0\n"
+            u"  - StdEnv/2020\n"
+            u"  - netcdf-fortran-mpi/4.5.2\n"
+            u"  - python/3.9.6\n"
         )
         run_desc = yaml.safe_load(desc_file)
         script = nemo_cmd.run._build_batch_script(
@@ -673,9 +673,9 @@ class TestBuiltBatchScript:
             u'GATHER="${HOME}/.local/bin/nemo gather"\n'
             u"\n"
             u"\n"
-            u"module load netcdf-mpi/4.4.1.1\n"
-            u"module load netcdf-fortran-mpi/4.4.4\n"
-            u"module load python/3.7.0\n"
+            u"module load StdEnv/2020\n"
+            u"module load netcdf-fortran-mpi/4.5.2\n"
+            u"module load python/3.9.6\n"
             u"\n"
             u"\n"
             u"mkdir -p ${RESULTS_DIR}\n"
