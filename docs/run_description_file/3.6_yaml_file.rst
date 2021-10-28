@@ -650,8 +650,9 @@ An example of a :kbd:`modules to load` section is:
 .. code-block:: yaml
 
     modules to load:
+      - StdEnv/2020
       - netcdf-fortran-mpi/4.5.2
-      - python/3.8.2
+      - python/3.9.6
       - nco/4.9.5
 
 You will need to determine the specific list of modules to load and how to spell them for the HPC system that you are running on.
