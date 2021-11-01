@@ -5,6 +5,9 @@ Change Log
 v21.2.dev0 (unreleased)
 =======================
 
+* Move entry points from setup.py to setup.cfg.
+  Supported by setuptools>=51.0.0 since 6-Dec-2020.
+
 * Update example HPC module versions re: Compute Canada change to StdEnv/2020.
 
 

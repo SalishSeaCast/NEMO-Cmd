@@ -17,17 +17,4 @@
 import setuptools
 
 
-setuptools.setup(
-    entry_points={
-        # The nemo command:
-        "console_scripts": ["nemo = nemo_cmd.main:main"],
-        # Sub-command plug-ins:
-        "nemo.app": [
-            "combine = nemo_cmd.combine:Combine",
-            "deflate = nemo_cmd.deflate:Deflate",
-            "gather = nemo_cmd.gather:Gather",
-            "prepare = nemo_cmd.prepare:Prepare",
-            "run = nemo_cmd.run:Run",
-        ],
-    }
-)
+setuptools.setup()
