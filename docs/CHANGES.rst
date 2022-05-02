@@ -2,7 +2,7 @@
 Change Log
 **********
 
-v21.2.dev0 (unreleased)
+v22.1.dev0 (unreleased)
 =======================
 
 * Move entry points from setup.py to setup.cfg.
