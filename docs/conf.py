@@ -27,20 +27,10 @@ setup_cfg = configparser.ConfigParser()
 setup_cfg.read(os.path.abspath("../setup.cfg"))
 project = setup_cfg["metadata"]["name"]
 
-author = "Salish Sea MEOPAR Project Contributors and The University of British Columbia"
-
-import datetime
-
+author = "SalishSeaCast Project Contributors and The University of British Columbia"
 pkg_creation_year = 2013
-copyright_years = (
-    "{pkg_creation_year}".format(pkg_creation_year=pkg_creation_year)
-    if datetime.date.today().year == pkg_creation_year
-    else "{pkg_creation_year}-{today:%Y}".format(
-        pkg_creation_year=pkg_creation_year, today=datetime.date.today()
-    )
-)
-copyright = "{copyright_years}, {author}".format(
-    copyright_years=copyright_years, author=author
+copyright = "{pkg_creation_year} – present, {author}".format(
+    copyright_years=pkg_creation_year, author=author
 )
 
 # The short X.Y version
