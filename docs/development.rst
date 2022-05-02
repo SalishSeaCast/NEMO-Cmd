@@ -1,4 +1,4 @@
-.. Copyright 2013-2021 The Salish Sea MEOPAR contributors
+.. Copyright 2013 – present by the SalishSeaCast contributors
 .. and The University of British Columbia
 ..
 .. Licensed under the Apache License, Version 2.0 (the "License");
@@ -355,7 +355,7 @@ The output looks something like::
   (line  382) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3Asphinx-linkcheck
   (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/workflows/sphinx-linkcheck/badge.svg
   (line   21) ok        https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
-  (line  510) ok        https://github.com/SalishSeaCast/docs/blob/master/CONTRIBUTORS.rst
+  (line  510) ok        https://github.com/SalishSeaCast/docs/blob/main/CONTRIBUTORS.rst
   (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
   (line   21) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
   (line  450) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
@@ -473,7 +473,8 @@ The testing coverage report is uploaded to `codecov.io`_
 .. _repo code overview page: https://github.com/SalishSeaCast/NEMO-Cmd
 .. _codecov.io: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
 
-The `GitHub Actions`_ workflow configuration that defines the continuous integration tasks is in the :file:`.github/workflows/pytest-coverage.yaml` file.
+The `GitHub Actions`_ workflow configuration that defines the continuous integration
+tasks is in the :file:`.github/workflows/pytest-coverage.yaml` file.
 
 .. _GitHub Actions: https://docs.github.com/en/free-pro-team@latest/actions
 
@@ -487,7 +488,8 @@ Version Control Repository
     :target: https://github.com/SalishSeaCast/NEMO-Cmd
     :alt: Git on GitHub
 
-The :kbd:`NEMO-Cmd` package code and documentation source files are available from the `Git`_ repository at https://github.com/SalishSeaCast/NEMO-Cmd.
+The :kbd:`NEMO-Cmd` package code and documentation source files are available from
+the `Git`_ repository at https://github.com/SalishSeaCast/NEMO-Cmd.
 
 .. _Git: https://git-scm.com/
 
@@ -503,7 +505,8 @@ Issue Tracker
 
 Development tasks,
 bug reports,
-and enhancement ideas are recorded and managed in the issue tracker at https://github.com/SalishSeaCast/NEMO-Cmd/issues.
+and enhancement ideas are recorded and managed in the issue tracker
+at https://github.com/SalishSeaCast/NEMO-Cmd/issues.
 
 
 License
@@ -513,9 +516,10 @@ License
     :target: https://www.apache.org/licenses/LICENSE-2.0
     :alt: Licensed under the Apache License, Version 2.0
 
-The NEMO command processor and documentation are copyright 2013-2021 by the `Salish Sea MEOPAR Project Contributors`_ and The University of British Columbia.
+The NEMO command processor and documentation are copyright 2013 – present
+by the `SalishCast Project Contributors`_ and The University of British Columbia.
 
-.. _Salish Sea MEOPAR Project Contributors: https://github.com/SalishSeaCast/docs/blob/master/CONTRIBUTORS.rst
+.. _SalishSeaCast Project Contributors: https://github.com/SalishSeaCast/docs/blob/main/CONTRIBUTORS.rst
 
 They are licensed under the Apache License, Version 2.0.
 https://www.apache.org/licenses/LICENSE-2.0
