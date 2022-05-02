@@ -30,7 +30,7 @@ project = setup_cfg["metadata"]["name"]
 author = "SalishSeaCast Project Contributors and The University of British Columbia"
 pkg_creation_year = 2013
 copyright = "{pkg_creation_year} – present, {author}".format(
-    copyright_years=pkg_creation_year, author=author
+    pkg_creation_year=pkg_creation_year, author=author
 )
 
 # The short X.Y version
