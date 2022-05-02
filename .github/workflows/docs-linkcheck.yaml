@@ -48,12 +48,3 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_SALISHSEACAST_WEBHOOK_URL }}
         if: always()
-
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          author_name: Sphinx linkcheck
-          fields: repo,eventName,ref,workflow
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_MIDOSS_WEBHOOK_URL }}
-        if: always()
