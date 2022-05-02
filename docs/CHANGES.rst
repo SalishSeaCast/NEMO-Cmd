@@ -2,8 +2,8 @@
 Change Log
 **********
 
-v22.1.dev0 (unreleased)
-=======================
+v22.1 (2022-05-02)
+==================
 
 * Move entry points from setup.py to setup.cfg.
   Supported by setuptools>=51.0.0 since 6-Dec-2020.

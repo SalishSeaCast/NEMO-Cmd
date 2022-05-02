@@ -16,7 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-__version__ = "22.1.dev0"
+__version__ = "22.1"
 
 
 # Make fspath.fspath() and fspath.resolved_path() available in the nemo_cmd
