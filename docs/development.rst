@@ -5,7 +5,7 @@
 .. you may not use this file except in compliance with the License.
 .. You may obtain a copy of the License at
 ..
-..    http://www.apache.org/licenses/LICENSE-2.0
+..    https://www.apache.org/licenses/LICENSE-2.0
 ..
 .. Unless required by applicable law or agreed to in writing, software
 .. distributed under the License is distributed on an "AS IS" BASIS,
@@ -369,7 +369,7 @@ The output looks something like::
   (line   21) ok        https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
   (line  492) ok        https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
   writing output... [ 44%] index
-  (line   58) ok        http://www.apache.org/licenses/LICENSE-2.0
+  (line   58) ok        https://www.apache.org/licenses/LICENSE-2.0
   (line   23) ok        https://www.nemo-ocean.eu/
   writing output... [ 55%] installation
   (line   67) ok        https://en.wikipedia.org/wiki/Command-line_completion
