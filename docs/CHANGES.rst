@@ -260,7 +260,7 @@ v19.1 (2019-08-26)
 
 * Use `tox`_ for unified Python 2.7 and 3.5 testing.
 
-  .. _tox: https://tox.readthedocs.io/en/latest/
+  .. _tox: https://tox.wiki/en/latest/
 
 * Refactor the ``gather`` plug-in in a minimal form sufficient for use by the
   ``GoMSS_Nowcast`` package.

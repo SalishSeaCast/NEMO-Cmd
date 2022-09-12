@@ -300,7 +300,7 @@ The output looks something like::
   (line  193) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#grid-section
   (line  149) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/19
   (line  198) ok        https://nemo-cmd.readthedocs.io/en/latest/api.html#functions-for-working-with-file-system-paths
-  (line  239) ok        https://tox.readthedocs.io/en/latest/
+  (line  239) ok        https://tox.wiki/en/latest/
   (line  154) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/20
   (line  187) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/11
   (line  181) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/10
