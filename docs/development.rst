@@ -522,7 +522,7 @@ License
     :alt: Licensed under the Apache License, Version 2.0
 
 The NEMO command processor and documentation are copyright 2013 – present
-by the `SalishCast Project Contributors`_ and The University of British Columbia.
+by the `SalishSeaCast Project Contributors`_ and The University of British Columbia.
 
 .. _SalishSeaCast Project Contributors: https://github.com/SalishSeaCast/docs/blob/main/CONTRIBUTORS.rst
 
