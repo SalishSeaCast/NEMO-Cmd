@@ -23,8 +23,8 @@ NEMO Command Processor
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
     :alt: GitHub Workflow Status
-.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
-    :target: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+.. image:: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
+    :target: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
     :alt: Codecov Testing Coverage Report
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CodeQL/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:CodeQL

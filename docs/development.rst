@@ -43,8 +43,8 @@
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
     :alt: GitHub Workflow Status
-.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
-    :target: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+.. image:: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
+    :target: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
     :alt: Codecov Testing Coverage Report
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CodeQL/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:CodeQL
@@ -105,7 +105,7 @@ and building the documentation with the commands:
 
 .. _Python: https://www.python.org/
 .. _Conda: https://conda.io/en/latest/
-.. _Anaconda Python Distribution: https://www.anaconda.com/products/individual
+.. _Anaconda Python Distribution: https://www.anaconda.com/products/distribution
 .. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
 
 .. code-block:: bash
@@ -136,7 +136,7 @@ Coding Style
 The :kbd:`NEMO-Cmd` package uses the `black`_ code formatting tool to maintain a coding style that is very close to `PEP 8`_.
 
 .. _black: https://black.readthedocs.io/en/stable/
-.. _PEP 8: https://www.python.org/dev/peps/pep-0008/
+.. _PEP 8: https://peps.python.org/pep-0008/
 
 :command:`black` is installed as part of the :ref:`NEMO-CmdDevelopmentEnvironment` setup.
 
@@ -286,7 +286,7 @@ The output looks something like::
   (line   20) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#vcs-revisions-section
   (line   27) ok        https://ubc-moad-docs.readthedocs.io/en/latest/python_packaging/pkg_structure.html
   (line   42) ok        https://black.readthedocs.io/en/stable/
-  (line    9) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+  (line    9) ok        https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
   (line  115) ok        https://slurm.schedmd.com/
   (line   46) ok        https://calver.org/
   (line  127) ok        http://agrif.imag.fr/
@@ -340,7 +340,7 @@ The output looks something like::
   (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues
   (line   21) ok        https://www.apache.org/licenses/LICENSE-2.0
   (line   95) ok        https://docs.conda.io/en/latest/miniconda.html
-  (line  131) ok        https://www.python.org/dev/peps/pep-0008/
+  (line  131) ok        https://peps.python.org/pep-0008/
   (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
   (line  168) ok        https://www.sphinx-doc.org/en/master/
   (line  168) ok        https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
@@ -349,9 +349,9 @@ The output looks something like::
   (line  425) ok        https://coverage.readthedocs.io/en/latest/
   (line  425) ok        https://pytest-cov.readthedocs.io/en/latest/
   (line  184) ok        https://readthedocs.org/projects/nemo-cmd/builds/
-  (line  470) ok        https://docs.github.com/en/free-pro-team@latest/actions
+  (line  470) ok        https://docs.github.com/en/actions
   (line  249) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3A
-  (line   95) ok        https://www.anaconda.com/products/individual
+  (line   95) ok        https://www.anaconda.com/products/distribution
   (line  484) ok        https://git-scm.com/
   (line   21) ok        https://img.shields.io/badge/license-Apache%202-cb2533.svg
   (line   21) ok        https://img.shields.io/badge/python-3.6+-blue.svg
@@ -362,8 +362,8 @@ The output looks something like::
   (line   21) ok        https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
   (line  510) ok        https://github.com/SalishSeaCast/docs/blob/main/CONTRIBUTORS.rst
   (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
-  (line   21) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
-  (line  450) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
+  (line   21) ok        https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
+  (line  450) ok        https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
   (line  459) ok        https://github.com/SalishSeaCast/NEMO-Cmd/commits/main
   (line  450) ok        https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
   (line   21) ok        https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
@@ -463,8 +463,8 @@ Continuous Integration
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
     :alt: GitHub Workflow Status
-.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
-    :target: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+.. image:: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
+    :target: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
     :alt: Codecov Testing Coverage Report
 
 The :kbd:`NEMO-Cmd` package unit test suite is run and a coverage report is generated whenever changes are pushed to GitHub.
@@ -476,12 +476,12 @@ The testing coverage report is uploaded to `codecov.io`_
 .. _repo actions page: https://github.com/SalishSeaCast/NEMO-Cmd/actions
 .. _repo commits page: https://github.com/SalishSeaCast/NEMO-Cmd/commits/main
 .. _repo code overview page: https://github.com/SalishSeaCast/NEMO-Cmd
-.. _codecov.io: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+.. _codecov.io: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
 
 The `GitHub Actions`_ workflow configuration that defines the continuous integration
 tasks is in the :file:`.github/workflows/pytest-coverage.yaml` file.
 
-.. _GitHub Actions: https://docs.github.com/en/free-pro-team@latest/actions
+.. _GitHub Actions: https://docs.github.com/en/actions
 
 
 .. _NEMO-CmdVersionControlRepository:

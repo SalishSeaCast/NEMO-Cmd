@@ -30,7 +30,7 @@ v21.1 (2021-10-21)
 
 * Change continuous integration from Bitbucket pipeline to GitHub Actions workflow.
   CI reports are at https://github.com/SalishSeaCast/NEMO-Cmd/actions
-  Unit test coverage report visualization is at https://codecov.io/gh/SalishSeaCast/NEMO-Cmd
+  Unit test coverage report visualization is at https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
 
 * Migrate from Mercurial on Bitbucket to Git on GitHub due to Bitbucket's decision
   to terminate support for Mercurial.
