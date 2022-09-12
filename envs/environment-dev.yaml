@@ -47,3 +47,6 @@ dependencies:
 
     # For unit tests
     - pytest-randomly
+
+    # editable install of NEMO-Cmd package
+    - --editable ../

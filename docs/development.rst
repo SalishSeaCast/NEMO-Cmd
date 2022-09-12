@@ -114,9 +114,13 @@ and building the documentation with the commands below.
     $ cd NEMO-Cmd
     $ conda env create -f envs/environment-dev.yaml
     $ conda activate nemo-cmd
-    (nemo-cmd)$ pip install --editable .
 
-The :kbd:`--editable` option in the :command:`pip install` commands above installs the :kbd:`NEMO-Cmd` package from the repository clone via symlinks so that :program:`nemo` command in the :kbd:`nemo-cmd` environment will be automatically updated as the repo evolves.
+:kbd:`NEMO-Cmd` is installed in `editable install mode`_ as part of the conda environment
+creation process.
+That means that the package is installed from the cloned repo via symlinks so that
+it will be automatically updated as the repo evolves.
+
+.. _editable install mode: https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
 
 To deactivate the environment use:
 

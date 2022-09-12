@@ -45,7 +45,7 @@ To install the :kbd:`NEMO-Cmd` package in your :kbd:`base` Conda environment use
 .. code-block:: bash
 
     $ cd NEMO-Cmd
-    $ pip install --user --editable .
+    $ python3 -m pip install --user --editable .
 
 The :kbd:`--editable` option in the :command:`pip install` commands installs the packages via symlinks so that :program:`nemo` will be automatically updated as the repo evolves.
 
