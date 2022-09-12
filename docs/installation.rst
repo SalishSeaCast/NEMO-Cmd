@@ -32,15 +32,15 @@ These instructions assume that:
 
 .. _NEMO-Cmd package: https://github.com/SalishSeaCast/NEMO-Cmd
 
-* You have the `Anaconda Python Distribution`_ or `Miniconda3`_ installed
+* You have a `Conda`_ Python environment and package manager
+  (`Miniforge`_ or `Miniconda3`_)
+  installed
 
-.. _Anaconda Python Distribution: https://www.anaconda.com/products/distribution
-.. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
+  .. _Conda: https://conda.io/en/latest/
+  .. _Miniforge: https://github.com/conda-forge/miniforge
+  .. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
 
-* :file:`$HOME/anaconda3/bin` is included in your :envvar:`PATH` environment variable if you are using the Anaconda,
-  or :file:`$HOME/miniconda3/bin` is included in your :envvar:`PATH` environment variable if you are using Miniconda
-
-To install the :kbd:`NEMO-Cmd` package in your :kbd:`root` Anaconda or Miniconda environment use:
+To install the :kbd:`NEMO-Cmd` package in your :kbd:`base` Conda environment use:
 
 .. code-block:: bash
 

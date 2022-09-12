@@ -73,6 +73,8 @@ So,
 seriously,
 *don't use this package under Python 3.5!*
 
+.. _Python: https://www.python.org/
+
 
 .. _NEMO-CmdGettingTheCode:
 
@@ -98,14 +100,13 @@ Development Environment
 =======================
 
 Setting up an isolated development environment using `Conda`_ is recommended.
-Assuming that you have `Anaconda Python Distribution`_ or `Miniconda3`_ installed,
-you can create and activate an environment called :kbd:`nemo-cmd` that will have all of the Python packages necessary for development,
+Assuming that you have `Miniconda3`_ installed,
+you can create and activate an environment called ``nemo-cmd`` that will have
+all of the Python packages necessary for development,
 testing,
-and building the documentation with the commands:
+and building the documentation with the commands below.
 
-.. _Python: https://www.python.org/
 .. _Conda: https://conda.io/en/latest/
-.. _Anaconda Python Distribution: https://www.anaconda.com/products/distribution
 .. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
 
 .. code-block:: bash
@@ -351,7 +352,6 @@ The output looks something like::
   (line  184) ok        https://readthedocs.org/projects/nemo-cmd/builds/
   (line  470) ok        https://docs.github.com/en/actions
   (line  249) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3A
-  (line   95) ok        https://www.anaconda.com/products/distribution
   (line  484) ok        https://git-scm.com/
   (line   21) ok        https://img.shields.io/badge/license-Apache%202-cb2533.svg
   (line   21) ok        https://img.shields.io/badge/python-3.6+-blue.svg
