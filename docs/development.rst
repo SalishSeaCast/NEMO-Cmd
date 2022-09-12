@@ -375,7 +375,6 @@ The output looks something like::
   (line   67) ok        https://en.wikipedia.org/wiki/Command-line_completion
   writing output... [ 66%] run_description_file/3.6_agrif_yaml_file
   writing output... [ 77%] run_description_file/3.6_yaml_file
-  (line  607) ok        https://www.westgrid.ca/support/systems/orcinus
   (line  195) ok        https://docs.python.org/3/library/constants.html#False
   (line  458) ok        https://docs.python.org/3/library/constants.html#False
   (line  195) ok        https://salishsea-meopar-docs.readthedocs.io/en/latest/code-notes/salishsea-nemo/land-processor-elimination/index.html#landprocessorelimination
