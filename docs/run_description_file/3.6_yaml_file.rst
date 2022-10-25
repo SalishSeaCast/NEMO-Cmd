@@ -642,7 +642,7 @@ You will need to use this section if you are running on an HPC system that uses 
 otherwise,
 you can omit the :kbd:`modules to load` section.
 
-.. _environment modules: http://modules.sourceforge.net/
+.. _environment modules: https://modules.sourceforge.net/
 
 An example of a :kbd:`modules to load` section is:
 
