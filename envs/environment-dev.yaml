@@ -6,7 +6,6 @@
 #
 #   $ conda env create -f NEMO-Cmd/envs/environment.yaml
 #   $ source activate nemo-cmd
-#   (nemo-cmd)$ pip install --editable NEMO-Cmd
 #
 # The environment will also include all of the tools used to develop,
 # test, and document the NEMO-Cmd package.
@@ -41,7 +40,8 @@ dependencies:
   # For documentation
   - sphinx
   - sphinx_rtd_theme
-
+  - sphinx-notfound-page
+  -
   - pip:
     - python-hglib
 
