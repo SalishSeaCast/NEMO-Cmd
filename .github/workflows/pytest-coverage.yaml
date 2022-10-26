@@ -2,7 +2,9 @@ name: CI
 
 on:
   push:
-    branches: ['*']
+   branches: ['*']
+  # Enable workflow to be triggered from GitHub CLI, browser, or via API
+  workflow_dispatch:
 
 jobs:
   test-coverage:
