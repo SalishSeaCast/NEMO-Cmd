@@ -26,7 +26,7 @@
     :target: https://www.apache.org/licenses/LICENSE-2.0
     :alt: Licensed under the Apache License, Version 2.0
 .. image:: https://img.shields.io/badge/python-3.6+-blue.svg
-    :target: https://docs.python.org/3.10/
+    :target: https://docs.python.org/3.11/
     :alt: Python Version
 .. image:: https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
     :target: https://github.com/SalishSeaCast/NEMO-Cmd
@@ -60,10 +60,10 @@ Python Versions
 ===============
 
 .. image:: https://img.shields.io/badge/python-3.6+-blue.svg
-    :target: https://docs.python.org/3.10/
+    :target: https://docs.python.org/3.11/
     :alt: Python Version
 
-The :kbd:`NEMO-Cmd` package is developed using `Python`_ 3.10.
+The :kbd:`NEMO-Cmd` package is developed using `Python`_ 3.11.
 It is strongly recommended that the package be used under Python>=3.8.
 The :ref:`NEMO-CmdContinuousIntegration` workflow on GitHub ensures that the package is tested for all versions of Python>=3.6.
 However,
@@ -338,7 +338,7 @@ The output looks something like::
   (line   96) ok        https://docs.python.org/3/library/exceptions.html#KeyError
   (line    6) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/18
   writing output... [ 33%] development
-  (line   21) ok        https://docs.python.org/3.10/
+  (line   21) ok        https://docs.python.org/3.11/
   (line   21) ok        https://nemo-cmd.readthedocs.io/en/latest/
   (line   61) ok        https://www.python.org/
   (line   95) ok        https://conda.io/en/latest/
