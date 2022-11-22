@@ -5,7 +5,7 @@ Change Log
 v22.2.dev0 (unreleased)
 =======================
 
-*
+* Change to Python 3.11 for package development.
 
 
 v22.1 (2022-05-02)
