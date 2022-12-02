@@ -5,6 +5,8 @@ Change Log
 v22.2.dev0 (unreleased)
 =======================
 
+* Add pre-commit to manage code style and repo QA.
+
 * Change to use reusable GitHub Actions workflows from
   https://github.com/UBC-MOAD/gha-workflows.
 
