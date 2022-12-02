@@ -23,4 +23,3 @@ jobs:
       conda-env-name: nemo-cmd-test
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_SALISHSEACAST_WEBHOOK_URL }}
-
