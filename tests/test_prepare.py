@@ -983,9 +983,9 @@ class TestMakeGridLinks:
         with pytest.raises(SystemExit):
             nemo_cmd.prepare.make_grid_links(run_desc, Path(str(run_dir)))
         m_logger.error.assert_called_once_with(
-            "{}/coords.nc not found; cannot create symlink - "
-            "please check the forcing path and grid file names "
-            "in your run description file".format(grid_dir)
+            f"{grid_dir}/coords.nc not found; cannot create symlink - "
+            f"please check the forcing path and grid file names "
+            f"in your run description file"
         )
         m_rm_run_dir.assert_called_once_with(Path(str(run_dir)))
 
@@ -1074,9 +1074,9 @@ class TestMakeForcingLinks:
         with pytest.raises(SystemExit):
             nemo_cmd.prepare.make_forcing_links(run_desc, Path("run_dir"))
         m_log.error.assert_called_once_with(
-            "{} not found; cannot create symlink - "
-            "please check the forcing paths and file names "
-            "in your run description file".format(p_nemo_forcing.join("rivers"))
+            f"{p_nemo_forcing.join('rivers')} not found; cannot create symlink - "
+            f"please check the forcing paths and file names "
+            f"in your run description file"
         )
         m_rm_run_dir.assert_called_once_with(Path("run_dir"))
 
@@ -1229,11 +1229,8 @@ class TestMakeRestartLinks:
                 run_desc, Path("run_dir"), nocheck_init=False
             )
         m_logger.error.assert_called_once_with(
-            "{} not found; cannot create symlink - "
-            "please check the restart file paths and file names "
-            "in your run description file".format(
-                "SalishSea/nowcast/SalishSea_00475200_restart.nc"
-            )
+            "SalishSea/nowcast/SalishSea_00475200_restart.nc not found; cannot create symlink - "
+            "please check the restart file paths and file names in your run description file"
         )
         m_rm_run_dir.assert_called_once_with(Path("run_dir"))
 
@@ -1321,9 +1318,7 @@ class TestGetGitRevision:
         )
         assert repo_rev_file_lines == []
         assert caplog.records[0].levelname == "WARNING"
-        expected = "revision and status requested for non-existent repo: {repo}".format(
-            repo=git_repo
-        )
+        expected = f"revision and status requested for non-existent repo: {git_repo}"
         assert caplog.messages[0] == expected
 
     def test_repo_root_not_found(self, caplog, tmp_path):
@@ -1332,9 +1327,7 @@ class TestGetGitRevision:
         with pytest.raises(SystemExit):
             nemo_cmd.prepare.get_git_revision(git_repo, tmp_path / "tmp_run_dir")
         assert caplog.records[0].levelname == "ERROR"
-        expected = "unable to find Git repo root in or above {repo}".format(
-            repo=git_repo
-        )
+        expected = f"unable to find Git repo root in or above {git_repo}"
         assert caplog.messages[0] == expected
 
     def test_repo_rev_file_lines(self, tmp_path, monkeypatch):
@@ -1440,9 +1433,7 @@ class TestGetGitRevision:
             git_repo, tmp_path / "tmp_run_dir"
         )
         assert caplog.records[0].levelname == "WARNING"
-        expected = "There are uncommitted changes in {repo_path}".format(
-            repo_path=git_repo
-        )
+        expected = f"There are uncommitted changes in {git_repo}"
         assert caplog.messages[0] == expected
         expected = ["uncommitted changes:", "M foo/uncommitted_bar.py"]
         assert repo_rev_file_lines[-2:] == expected
@@ -1490,9 +1481,7 @@ class TestGetGitRevision:
             git_repo, tmp_path / "tmp_run_dir"
         )
         assert caplog.records[0].levelname == "WARNING"
-        expected = "There are uncommitted changes in {repo_path}".format(
-            repo_path=git_repo
-        )
+        expected = f"There are uncommitted changes in {git_repo}"
         assert caplog.messages[0] == expected
         expected = ["uncommitted changes:", "M foo/uncommitted_baz.py"]
         assert repo_rev_file_lines[-2:] == expected
@@ -1521,9 +1510,7 @@ class TestGetHgRevision:
         )
         assert repo_rev_file_lines == []
         assert caplog.records[0].levelname == "WARNING"
-        expected = "revision and status requested for non-existent repo: {repo}".format(
-            repo=hg_repo
-        )
+        expected = f"revision and status requested for non-existent repo: {hg_repo}"
         assert caplog.messages[0] == expected
 
     def test_repo_root_not_found(self, caplog, tmp_path):
@@ -1532,9 +1519,7 @@ class TestGetHgRevision:
         with pytest.raises(SystemExit):
             nemo_cmd.prepare.get_hg_revision(hg_repo, tmp_path / "tmp_run_dir")
         assert caplog.records[0].levelname == "ERROR"
-        expected = "unable to find Mercurial repo root in or above {repo}".format(
-            repo=hg_repo
-        )
+        expected = f"unable to find Mercurial repo root in or above {hg_repo}"
         assert caplog.messages[0] == expected
 
     def test_repo_rev_file_lines(self, tmp_path, monkeypatch):
@@ -1580,15 +1565,15 @@ class TestGetHgRevision:
             .format("ddd MMM DD HH:mm:ss YYYY ZZ")
         )
         expected = [
-            "changset:   43:f7d21a1dfad4",
-            "tag:        tip",
-            "user:       Doug Latornell <dlatornell@example.com>",
-            "date:       {datetime}".format(datetime=formatted_datetime),
-            "files:      foo/bar.py foo/baz.py",
-            "description:",
-            "Refactor the Frobnitzicator class",
-            "",
-            "Improve disambiguation",
+            f"changset:   43:f7d21a1dfad4",
+            f"tag:        tip",
+            f"user:       Doug Latornell <dlatornell@example.com>",
+            f"date:       {formatted_datetime}",
+            f"files:      foo/bar.py foo/baz.py",
+            f"description:",
+            f"Refactor the Frobnitzicator class",
+            f"",
+            f"Improve disambiguation",
         ]
         assert repo_rev_file_lines == expected
 
@@ -1669,9 +1654,7 @@ class TestGetHgRevision:
             hg_repo, tmp_path / "tmp_run_dir"
         )
         assert caplog.records[0].levelname == "WARNING"
-        expected = "There are uncommitted changes in {repo_path}".format(
-            repo_path=hg_repo
-        )
+        expected = f"There are uncommitted changes in {hg_repo}"
         assert caplog.messages[0] == expected
         expected = ["uncommitted changes:", "M foo/uncommitted_bar.py"]
         assert repo_rev_file_lines[-2:] == expected
@@ -1720,9 +1703,7 @@ class TestGetHgRevision:
             hg_repo, tmp_path / "tmp_run_dir"
         )
         assert caplog.records[0].levelname == "WARNING"
-        expected = "There are uncommitted changes in {repo_path}".format(
-            repo_path=hg_repo
-        )
+        expected = f"There are uncommitted changes in {hg_repo}"
         assert caplog.messages[0] == expected
         expected = ["uncommitted changes:", "M foo/uncommitted_baz.py"]
         assert repo_rev_file_lines[-2:] == expected

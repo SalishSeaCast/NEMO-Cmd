@@ -740,20 +740,20 @@ class TestPbsDirectives:
             self.run_desc, n_processors, results_dir
         )
         expected = (
-            "#PBS -N test\n"
-            "#PBS -S /bin/bash\n"
-            "#PBS -l procs={n_processors}\n"
-            "# memory per processor\n"
-            "#PBS -l pmem=2000mb\n"
-            "#PBS -l walltime=1:24:42\n"
-            "# email when the job [b]egins and [e]nds, or is [a]borted\n"
-            "#PBS -m bea\n"
-            "#PBS -M {email}\n"
-            "# stdout and stderr file paths/names\n"
-            "#PBS -o ./stdout\n"
-            "#PBS -e ./stderr\n"
-            "\n"
-        ).format(n_processors=n_processors, email=self.run_desc["email"])
+            f"#PBS -N test\n"
+            f"#PBS -S /bin/bash\n"
+            f"#PBS -l procs={n_processors}\n"
+            f"# memory per processor\n"
+            f"#PBS -l pmem=2000mb\n"
+            f"#PBS -l walltime=1:24:42\n"
+            f"# email when the job [b]egins and [e]nds, or is [a]borted\n"
+            f"#PBS -m bea\n"
+            f"#PBS -M {self.run_desc['email']}\n"
+            f"# stdout and stderr file paths/names\n"
+            f"#PBS -o ./stdout\n"
+            f"#PBS -e ./stderr\n"
+            f"\n"
+        )
         assert directives == expected
 
 
@@ -804,17 +804,17 @@ class TestSbatchDirectives:
             self.run_desc, n_processors, results_dir
         )
         expected = (
-            "#SBATCH --job-name=test\n"
-            "#SBATCH --nodes={n_nodes}\n"
-            "#SBATCH --ntasks-per-node=32\n"
-            "#SBATCH --mem=0\n"
-            "#SBATCH --time=1:24:42\n"
-            "#SBATCH --mail-user={email}\n"
-            "#SBATCH --mail-type=ALL\n"
-            "# stdout and stderr file paths/names\n"
-            "#SBATCH --output=stdout\n"
-            "#SBATCH --error=stderr\n"
-        ).format(n_nodes=n_nodes, email=self.run_desc["email"])
+            f"#SBATCH --job-name=test\n"
+            f"#SBATCH --nodes={n_nodes}\n"
+            f"#SBATCH --ntasks-per-node=32\n"
+            f"#SBATCH --mem=0\n"
+            f"#SBATCH --time=1:24:42\n"
+            f"#SBATCH --mail-user={self.run_desc['email']}\n"
+            f"#SBATCH --mail-type=ALL\n"
+            f"# stdout and stderr file paths/names\n"
+            f"#SBATCH --output=stdout\n"
+            f"#SBATCH --error=stderr\n"
+        )
         assert directives == expected
         assert m_logger.warning.called
 
@@ -848,15 +848,15 @@ class TestDefinitions:
             no_deflate,
         )
         expected = (
-            'RUN_ID="test"\n'
-            'RUN_DESC="NEMO.yaml"\n'
-            'WORK_DIR="run_dir"\n'
-            'RESULTS_DIR="results_dir"\n'
-            'COMBINE="{nemo_bin} combine"\n'
-        ).format(nemo_bin=nemo_bin)
+            f'RUN_ID="test"\n'
+            f'RUN_DESC="NEMO.yaml"\n'
+            f'WORK_DIR="run_dir"\n'
+            f'RESULTS_DIR="results_dir"\n'
+            f'COMBINE="{nemo_bin} combine"\n'
+        )
         if not no_deflate:
-            expected += 'DEFLATE="{nemo_bin} deflate"\n'.format(nemo_bin=nemo_bin)
-        expected += 'GATHER="{nemo_bin} gather"\n'.format(nemo_bin=nemo_bin)
+            expected += f'DEFLATE="{nemo_bin} deflate"\n'
+        expected += f'GATHER="{nemo_bin} gather"\n'
         assert defns == expected
 
 

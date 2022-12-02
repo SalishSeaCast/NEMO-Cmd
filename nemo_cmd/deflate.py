@@ -98,8 +98,8 @@ class DeflateJob(object):
 
         Cache the subprocess object and its process id as job attributes.
         """
-        cmd = "nccopy -s -4 -d{0.dfl_lvl} {0.filepath} {0.filepath}.nccopy.tmp".format(
-            self
+        cmd = (
+            f"nccopy -s -4 -d{self.dfl_lvl} {self.filepath} {self.filepath}.nccopy.tmp"
         )
         self.process = subprocess.Popen(
             shlex.split(cmd),
@@ -108,11 +108,11 @@ class DeflateJob(object):
             universal_newlines=True,
         )
         self.pid = self.process.pid
-        logger.debug("deflating {0.filepath} in process {0.pid}".format(self))
+        logger.debug(f"deflating {self.filepath} in process {self.pid}")
 
     @property
     def done(self):
-        """Return a boolean indicating whether or not the job has finished.
+        """Return a boolean indicating whether the job has finished.
 
         Cache the subprocess return code as a job attribute.
         """
@@ -120,11 +120,10 @@ class DeflateJob(object):
         self.returncode = self.process.poll()
         if self.returncode is not None:
             if self.returncode == 0:
-                Path("{0.filepath}.nccopy.tmp".format(self)).rename(self.filepath)
+                Path(f"{self.filepath}.nccopy.tmp").rename(self.filepath)
             finished = True
             logger.debug(
-                "deflating {0.filepath} finished "
-                "with return code {0.returncode}".format(self)
+                f"deflating {self.filepath} finished with return code {self.returncode}"
             )
         return finished
 
@@ -133,7 +132,7 @@ def deflate(filepaths, max_concurrent_jobs):
     """Deflate variables in each of the netCDF files in filepaths using
     Lempel-Ziv compression.
 
-    Converts files to netCDF-4 format.
+    Converts file to netCDF-4 format.
     The deflated file replaces the original file.
 
     :param sequence filepaths: Paths/names of files to be deflated.
@@ -142,9 +141,7 @@ def deflate(filepaths, max_concurrent_jobs):
     processes allowed.
     """
     logger.info(
-        "Deflating in up to {} concurrent sub-processes".format(
-            int(max_concurrent_jobs)
-        )
+        f"Deflating in up to {int(max_concurrent_jobs)} concurrent sub-processes"
     )
     jobs = [DeflateJob(fp) for fp in filepaths if fp.exists()]
     jobs_in_progress = _launch_initial_jobs(jobs, max_concurrent_jobs)
@@ -171,7 +168,7 @@ def _poll_and_launch(jobs, jobs_in_progress):
         if running_job.done:
             result, _ = running_job.process.communicate()
             logger.error(result) if result else logger.info(
-                "netCDF4 deflated {.filepath}".format(running_job)
+                f"netCDF4 deflated {running_job.filepath}"
             )
             jobs_in_progress.pop(running_job.pid)
             try:

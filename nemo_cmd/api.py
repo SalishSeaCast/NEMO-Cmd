@@ -278,7 +278,7 @@ def run_in_subprocess(run_id, run_desc, results_dir):
     :arg results_dir: Directory to store results into.
     :type results_dir: str
     """
-    yaml_file = "{}_subprocess_run.yaml".format(run_id)
+    yaml_file = f"{run_id}_subprocess_run.yaml"
     with open(yaml_file, "wt") as f:
         yaml.dump(run_desc, f, default_flow_style=False)
     cmd = ["salishsea", "run"]
@@ -291,11 +291,7 @@ def run_in_subprocess(run_id, run_desc, results_dir):
             if line:
                 log.info(line)
     except subprocess.CalledProcessError as e:
-        log.error(
-            "subprocess {cmd} failed with return code {status}".format(
-                cmd=cmd, status=e.returncode
-            )
-        )
+        log.error(f"subprocess {cmd} failed with return code {e.returncode}")
         for line in e.output.splitlines():
             if line:
                 log.error(line)
@@ -376,25 +372,18 @@ def pbs_common(run_description, n_processors, email, results_dir, pmem="2000mb")
         td = datetime.timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
     walltime = td2hms(td)
     pbs_directives = (
-        "#PBS -N {run_id}\n"
-        "#PBS -S /bin/bash\n"
-        "#PBS -l procs={procs}\n"
-        "# memory per processor\n"
-        "#PBS -l pmem={pmem}\n"
-        "#PBS -l walltime={walltime}\n"
-        "# email when the job [b]egins and [e]nds, or is [a]borted\n"
-        "#PBS -m bea\n"
-        "#PBS -M {email}\n"
-        "# stdout and stderr file paths/names\n"
-        "#PBS -o {results_dir}/stdout\n"
-        "#PBS -e {results_dir}/stderr\n"
-    ).format(
-        run_id=run_description["run_id"],
-        procs=n_processors,
-        pmem=pmem,
-        walltime=walltime,
-        email=email,
-        results_dir=results_dir,
+        f"#PBS -N {run_description['run_id']}\n"
+        f"#PBS -S /bin/bash\n"
+        f"#PBS -l procs={n_processors}\n"
+        f"# memory per processor\n"
+        f"#PBS -l pmem={pmem}\n"
+        f"#PBS -l walltime={walltime}\n"
+        f"# email when the job [b]egins and [e]nds, or is [a]borted\n"
+        f"#PBS -m bea\n"
+        f"#PBS -M {email}\n"
+        f"# stdout and stderr file paths/names\n"
+        f"#PBS -o {results_dir}/stdout\n"
+        f"#PBS -e {results_dir}/stderr\n"
     )
     return pbs_directives
 
@@ -416,4 +405,4 @@ def td2hms(timedelta):
     for period_name, period_seconds in periods:
         period_value, seconds = divmod(seconds, period_seconds)
         hms.append(period_value)
-    return "{0[0]}:{0[1]:02d}:{0[2]:02d}".format(hms)
+    return f"{hms[0]}:{hms[1]:02d}:{hms[2]:02d}"

@@ -208,7 +208,7 @@ def run(
     """
     run_dir = api.prepare(desc_file, nocheck_init)
     if not quiet:
-        logger.info("Created run directory {}".format(run_dir))
+        logger.info(f"Created run directory {run_dir}")
     run_desc = load_run_desc(desc_file)
     nemo_processors = get_n_processors(run_desc, run_dir)
     separate_xios_server = get_run_desc_value(
@@ -240,19 +240,16 @@ def run(
     os.chdir(fspath(run_dir))
     if waitjob:
         depend_opt = "-W depend=afterok" if queue_job_cmd == "qsub" else "-d afterok"
-        cmd = "{submit_job} {depend_opt}:{waitjob} NEMO.sh".format(
-            submit_job=queue_job_cmd, depend_opt=depend_opt, waitjob=waitjob
-        )
+        cmd = f"{queue_job_cmd} {depend_opt}:{waitjob} NEMO.sh"
     else:
-        cmd = "{submit_job} NEMO.sh".format(submit_job=queue_job_cmd)
+        cmd = f"{queue_job_cmd} NEMO.sh"
     results_dir.mkdir(parents=True, exist_ok=True)
     try:
         submit_job_msg = subprocess.check_output(cmd.split(), universal_newlines=True)
     except OSError:
         logger.error(
-            "{submit_job} not found. Please confirm the correct job submission "
-            "command (qsub or sbatch) for this platform and use the "
-            "--job-queue-cmd command-line option.".format(submit_job=queue_job_cmd)
+            f"{queue_job_cmd} not found. Please confirm the correct job submission command "
+            f"(qsub or sbatch) for this platform and use the --job-queue-cmd command-line option."
         )
         # Remove the temporary run directory
         time.sleep(0.1)
@@ -321,36 +318,17 @@ def _build_batch_script(
             ),
         )
     )
-    script = "\n".join(
-        (
-            script,
-            "{defns}\n".format(
-                defns=_definitions(
-                    run_desc, desc_file, run_dir, results_dir, queue_job_cmd, no_deflate
-                )
-            ),
-        )
+    script = (
+        f"{script}\n"
+        f"{_definitions(run_desc, desc_file, run_dir, results_dir, queue_job_cmd, no_deflate)}\n"
     )
     if "modules to load" in run_desc:
-        script = "\n".join(
-            (
-                script,
-                "{modules}\n".format(modules=_modules(run_desc["modules to load"])),
-            )
-        )
-    script = "\n".join(
-        (
-            script,
-            "{execute}\n"
-            "{fix_permissions}\n"
-            "{cleanup}".format(
-                execute=_execute(
-                    nemo_processors, xios_processors, no_deflate, max_deflate_jobs
-                ),
-                fix_permissions=_fix_permissions(),
-                cleanup=_cleanup(),
-            ),
-        )
+        script = f"{script}\n" f"{_modules(run_desc['modules to load'])}\n"
+    script = (
+        f"{script}\n"
+        f"{_execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs)}\n"
+        f"{_fix_permissions()}\n"
+        f"{_cleanup()}"
     )
     return script
 
@@ -358,11 +336,7 @@ def _build_batch_script(
 def _pbs_directives(run_desc, n_processors, results_dir):
     email = get_run_desc_value(run_desc, ("email",))
     pbs_directives = "".join(
-        (
-            "{pbs_common}\n".format(
-                pbs_common=api.pbs_common(run_desc, n_processors, email, results_dir)
-            )
-        )
+        (f"{api.pbs_common(run_desc, n_processors, email, results_dir)}\n")
     )
     if "PBS resources" in run_desc:
         pbs_directives = "".join(
@@ -374,11 +348,7 @@ def _pbs_directives(run_desc, n_processors, results_dir):
         pbs_directives = "".join(
             (
                 pbs_directives,
-                "{pbs_resources}\n".format(
-                    pbs_resources=_pbs_resources(
-                        run_desc["PBS resources"], n_processors
-                    )
-                ),
+                f"{_pbs_resources(run_desc['PBS resources'], n_processors)}\n",
             )
         )
     return pbs_directives
@@ -390,10 +360,8 @@ def _pbs_resources(resources, n_processors):
         if "nodes=" in resource and ":ppn=" in resource:
             _, ppn = resource.rsplit("=", 1)
             nodes = math.ceil(n_processors / int(ppn))
-            resource = "nodes={nodes}:ppn={ppn}".format(nodes=int(nodes), ppn=ppn)
-        pbs_directives = "".join(
-            (pbs_directives, "#PBS -l {resource}\n".format(resource=resource))
-        )
+            resource = f"nodes={int(nodes)}:ppn={ppn}"
+        pbs_directives = "".join((pbs_directives, f"#PBS -l {resource}\n"))
     return pbs_directives
 
 
@@ -448,34 +416,27 @@ def _sbatch_directives(
     walltime = _td2hms(td)
     email = get_run_desc_value(run_desc, ("email",))
     sbatch_directives = (
-        "#SBATCH --job-name={run_id}\n"
-        "#SBATCH --nodes={nodes}\n"
-        "#SBATCH --ntasks-per-node={processors_per_node}\n"
-        "#SBATCH --mem={memory_per_node}\n"
-        "#SBATCH --time={walltime}\n"
-        "#SBATCH --mail-user={email}\n"
-        "#SBATCH --mail-type=ALL\n"
-    ).format(
-        run_id=run_id,
-        nodes=int(nodes),
-        processors_per_node=max_tasks_per_node,
-        memory_per_node=memory_per_node,
-        walltime=walltime,
-        email=email,
+        f"#SBATCH --job-name={run_id}\n"
+        f"#SBATCH --nodes={nodes}\n"
+        f"#SBATCH --ntasks-per-node={max_tasks_per_node}\n"
+        f"#SBATCH --mem={memory_per_node}\n"
+        f"#SBATCH --time={walltime}\n"
+        f"#SBATCH --mail-user={email}\n"
+        f"#SBATCH --mail-type=ALL\n"
     )
     try:
         account = get_run_desc_value(run_desc, ("account",), fatal=False)
-        sbatch_directives += "#SBATCH --account={account}\n".format(account=account)
+        sbatch_directives += f"#SBATCH --account={account}\n"
     except KeyError:
         logger.warning(
             "No account found in run description YAML file. "
             "If sbatch complains you can add one like account: def-allen"
         )
     sbatch_directives += (
-        "# stdout and stderr file paths/names\n"
-        "#SBATCH --output={stdout}\n"
-        "#SBATCH --error={stderr}\n"
-    ).format(stdout=results_dir / "stdout", stderr=results_dir / "stderr")
+        f"# stdout and stderr file paths/names\n"
+        f"#SBATCH --output={results_dir / 'stdout'}\n"
+        f"#SBATCH --error={results_dir / 'stderr'}\n"
+    )
     return sbatch_directives
 
 
@@ -495,7 +456,7 @@ def _td2hms(timedelta):
     for period_name, period_seconds in periods:
         period_value, seconds = divmod(seconds, period_seconds)
         hms.append(period_value)
-    return "{0[0]}:{0[1]:02d}:{0[2]:02d}".format(hms)
+    return f"{hms[0]}:{hms[1]:02d}:{hms[2]:02d}"
 
 
 def _definitions(
@@ -504,33 +465,27 @@ def _definitions(
     home = "${PBS_O_HOME}" if queue_job_cmd == "qsub" else "${HOME}"
     nemo_cmd = Path(home) / ".local/bin/nemo"
     defns = (
-        'RUN_ID="{run_id}"\n'
-        'RUN_DESC="{run_desc_file}"\n'
-        'WORK_DIR="{run_dir}"\n'
-        'RESULTS_DIR="{results_dir}"\n'
-        'COMBINE="{nemo_cmd} combine"\n'
-    ).format(
-        run_id=get_run_desc_value(run_desc, ("run_id",)),
-        run_desc_file=run_desc_file,
-        run_dir=run_dir,
-        results_dir=results_dir,
-        nemo_cmd=nemo_cmd,
+        f'RUN_ID="{get_run_desc_value(run_desc, ("run_id",))}"\n'
+        f'RUN_DESC="{run_desc_file}"\n'
+        f'WORK_DIR="{run_dir}"\n'
+        f'RESULTS_DIR="{results_dir}"\n'
+        f'COMBINE="{nemo_cmd} combine"\n'
     )
     if not no_deflate:
-        defns += 'DEFLATE="{nemo_cmd} deflate"\n'.format(nemo_cmd=nemo_cmd)
-    defns += 'GATHER="{nemo_cmd} gather"\n'.format(nemo_cmd=nemo_cmd)
+        defns += f'DEFLATE="{nemo_cmd} deflate"\n'
+    defns += f'GATHER="{nemo_cmd} gather"\n'
     return defns
 
 
 def _modules(modules_to_load):
     modules = ""
     for module in modules_to_load:
-        modules = "".join((modules, "module load {module}\n".format(module=module)))
+        modules = "".join((modules, f"module load {module}\n"))
     return modules
 
 
 def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
-    mpirun = "mpirun -np {procs} ./nemo.exe".format(procs=nemo_processors)
+    mpirun = f"mpirun -np {nemo_processors} ./nemo.exe"
     if xios_processors:
         mpirun = " ".join(
             (mpirun, ":", "-np", str(xios_processors), "./xios_server.exe")
@@ -543,7 +498,7 @@ def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
         "\n"
         'echo "Starting run at $(date)"\n'
     )
-    script += u"{mpirun}\n".format(mpirun=mpirun)
+    script += f"{mpirun}\n"
     script += (
         "MPIRUN_EXIT_CODE=$?\n"
         'echo "Ended run at $(date)"\n'
@@ -554,13 +509,13 @@ def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
     )
     if not no_deflate:
         script += (
-            u"\n"
-            'echo "Results deflation started at $(date)"\n'
-            u"module load nco/4.6.6\n"
-            u"${{DEFLATE}} *_grid_[TUVW]*.nc *_ptrc_T*.nc "
-            u"--jobs {max_deflate_jobs} --debug\n"
-            'echo "Results deflation ended at $(date)"\n'
-        ).format(max_deflate_jobs=max_deflate_jobs)
+            f"\n"
+            f'echo "Results deflation started at $(date)"\n'
+            f"module load nco/4.6.6\n"
+            f"${{DEFLATE}} *_grid_[TUVW]*.nc *_ptrc_T*.nc "
+            f"--jobs {max_deflate_jobs} --debug\n"
+            f'echo "Results deflation ended at $(date)"\n'
+        )
     script += (
         "\n"
         'echo "Results gathering started at $(date)"\n'
