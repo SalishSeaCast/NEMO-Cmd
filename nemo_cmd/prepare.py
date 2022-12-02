@@ -372,7 +372,7 @@ def make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
                 try:
                     with nl_path.open("rt") as f:
                         namelist.writelines(f.readlines())
-                        namelist.write(u"\n\n")
+                        namelist.write("\n\n")
                 except IOError as e:
                     logger.error(e)
                     namelist.close()
@@ -998,7 +998,7 @@ def write_repo_rev_file(repo, run_dir, vcs_func):
     if repo_rev_file_lines:
         rev_file = run_dir / "{repo.name}_rev.txt".format(repo=repo_path)
         with rev_file.open("wt") as f:
-            f.writelines(u"{}\n".format(line) for line in repo_rev_file_lines)
+            f.writelines("{}\n".format(line) for line in repo_rev_file_lines)
 
 
 def get_git_revision(git_repo, run_dir):
@@ -1163,7 +1163,7 @@ def get_hg_revision(hg_repo, run_dir):
         ]
     )
     repo_rev_file_lines.extend(line.decode() for line in revision.desc.splitlines())
-    ignore = (u"CONFIG/cfg.txt", u"TOOLS/COMPILE/full_key_list.txt")
+    ignore = ("CONFIG/cfg.txt", u"TOOLS/COMPILE/full_key_list.txt")
     for s in copy(status):
         if s[1].decode().endswith(ignore):
             status.remove(s)

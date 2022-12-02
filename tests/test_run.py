@@ -139,7 +139,7 @@ class TestTakeAction:
 
 
 @patch("nemo_cmd.run.subprocess.check_output", return_value="msg", autospec=True)
-@patch("nemo_cmd.run._build_batch_script", return_value=u"script", autospec=True)
+@patch("nemo_cmd.run._build_batch_script", return_value="script", autospec=True)
 @patch("nemo_cmd.run.get_n_processors", return_value=144, autospec=True)
 @patch("nemo_cmd.run.load_run_desc", spec=True)
 @patch("nemo_cmd.run.api.prepare", spec=True)
@@ -526,16 +526,16 @@ class TestBuiltBatchScript:
     @pytest.mark.parametrize("no_deflate", [True, False])
     def test_qsub(self, no_deflate):
         desc_file = StringIO(
-            u"run_id: foo\n"
-            u"walltime: 01:02:03\n"
-            u"email: me@example.com\n"
-            u"modules to load:\n"
-            u"  - intel\n"
-            u"  - intel/14.0/netcdf-4.3.3.1_mpi\n"
-            u"  - intel/14.0/netcdf-fortran-4.4.0_mpi\n"
-            u"  - intel/14.0/hdf5-1.8.15p1_mpi\n"
-            u"  - intel/14.0/nco-4.5.2\n"
-            u"  - python\n"
+            "run_id: foo\n"
+            "walltime: 01:02:03\n"
+            "email: me@example.com\n"
+            "modules to load:\n"
+            "  - intel\n"
+            "  - intel/14.0/netcdf-4.3.3.1_mpi\n"
+            "  - intel/14.0/netcdf-fortran-4.4.0_mpi\n"
+            "  - intel/14.0/hdf5-1.8.15p1_mpi\n"
+            "  - intel/14.0/nco-4.5.2\n"
+            "  - python\n"
         )
         run_desc = yaml.safe_load(desc_file)
         script = nemo_cmd.run._build_batch_script(
@@ -550,78 +550,78 @@ class TestBuiltBatchScript:
             queue_job_cmd="qsub",
         )
         expected = (
-            u"#!/bin/bash\n"
-            u"\n"
-            u"#PBS -N foo\n"
-            u"#PBS -S /bin/bash\n"
-            u"#PBS -l procs=43\n"
-            u"# memory per processor\n"
-            u"#PBS -l pmem=2000mb\n"
-            u"#PBS -l walltime=1:02:03\n"
-            u"# email when the job [b]egins and [e]nds, or is [a]borted\n"
-            u"#PBS -m bea\n"
-            u"#PBS -M me@example.com\n"
-            u"# stdout and stderr file paths/names\n"
-            u"#PBS -o results_dir/stdout\n"
-            u"#PBS -e results_dir/stderr\n"
-            u"\n"
-            u"\n"
-            u'RUN_ID="foo"\n'
-            u'RUN_DESC="NEMO.yaml"\n'
-            u'WORK_DIR="."\n'
-            u'RESULTS_DIR="results_dir"\n'
-            u'COMBINE="${PBS_O_HOME}/.local/bin/nemo combine"\n'
+            "#!/bin/bash\n"
+            "\n"
+            "#PBS -N foo\n"
+            "#PBS -S /bin/bash\n"
+            "#PBS -l procs=43\n"
+            "# memory per processor\n"
+            "#PBS -l pmem=2000mb\n"
+            "#PBS -l walltime=1:02:03\n"
+            "# email when the job [b]egins and [e]nds, or is [a]borted\n"
+            "#PBS -m bea\n"
+            "#PBS -M me@example.com\n"
+            "# stdout and stderr file paths/names\n"
+            "#PBS -o results_dir/stdout\n"
+            "#PBS -e results_dir/stderr\n"
+            "\n"
+            "\n"
+            'RUN_ID="foo"\n'
+            'RUN_DESC="NEMO.yaml"\n'
+            'WORK_DIR="."\n'
+            'RESULTS_DIR="results_dir"\n'
+            'COMBINE="${PBS_O_HOME}/.local/bin/nemo combine"\n'
         )
         if not no_deflate:
-            expected += u'DEFLATE="${PBS_O_HOME}/.local/bin/nemo deflate"\n'
+            expected += 'DEFLATE="${PBS_O_HOME}/.local/bin/nemo deflate"\n'
         expected += (
-            u'GATHER="${PBS_O_HOME}/.local/bin/nemo gather"\n'
-            u"\n"
-            u"\n"
-            u"module load intel\n"
-            u"module load intel/14.0/netcdf-4.3.3.1_mpi\n"
-            u"module load intel/14.0/netcdf-fortran-4.4.0_mpi\n"
-            u"module load intel/14.0/hdf5-1.8.15p1_mpi\n"
-            u"module load intel/14.0/nco-4.5.2\n"
-            u"module load python\n"
-            u"\n"
-            u"\n"
-            u"mkdir -p ${RESULTS_DIR}\n"
-            u"\n"
-            u"cd ${WORK_DIR}\n"
-            u'echo "working dir: $(pwd)"\n'
-            u"\n"
-            u'echo "Starting run at $(date)"\n'
-            u"mpirun -np 42 ./nemo.exe : -np 1 ./xios_server.exe\n"
-            u"MPIRUN_EXIT_CODE=$?\n"
-            u'echo "Ended run at $(date)"\n'
-            u"\n"
-            u'echo "Results combining started at $(date)"\n'
-            u"${COMBINE} ${RUN_DESC} --debug\n"
-            u'echo "Results combining ended at $(date)"\n'
+            'GATHER="${PBS_O_HOME}/.local/bin/nemo gather"\n'
+            "\n"
+            "\n"
+            "module load intel\n"
+            "module load intel/14.0/netcdf-4.3.3.1_mpi\n"
+            "module load intel/14.0/netcdf-fortran-4.4.0_mpi\n"
+            "module load intel/14.0/hdf5-1.8.15p1_mpi\n"
+            "module load intel/14.0/nco-4.5.2\n"
+            "module load python\n"
+            "\n"
+            "\n"
+            "mkdir -p ${RESULTS_DIR}\n"
+            "\n"
+            "cd ${WORK_DIR}\n"
+            'echo "working dir: $(pwd)"\n'
+            "\n"
+            'echo "Starting run at $(date)"\n'
+            "mpirun -np 42 ./nemo.exe : -np 1 ./xios_server.exe\n"
+            "MPIRUN_EXIT_CODE=$?\n"
+            'echo "Ended run at $(date)"\n'
+            "\n"
+            'echo "Results combining started at $(date)"\n'
+            "${COMBINE} ${RUN_DESC} --debug\n"
+            'echo "Results combining ended at $(date)"\n'
         )
         if not no_deflate:
             expected += (
-                u"\n"
-                u'echo "Results deflation started at $(date)"\n'
+                "\n"
+                'echo "Results deflation started at $(date)"\n'
                 u"module load nco/4.6.6\n"
                 u"${DEFLATE} *_grid_[TUVW]*.nc *_ptrc_T*.nc "
                 u"--jobs 4 --debug\n"
-                u'echo "Results deflation ended at $(date)"\n'
+                'echo "Results deflation ended at $(date)"\n'
             )
         expected += (
             u"\n"
-            u'echo "Results gathering started at $(date)"\n'
+            'echo "Results gathering started at $(date)"\n'
             u"${GATHER} ${RESULTS_DIR} --debug\n"
-            u'echo "Results gathering ended at $(date)"\n'
+            'echo "Results gathering ended at $(date)"\n'
             u"\n"
             u"chmod go+rx ${RESULTS_DIR}\n"
             u"chmod g+rw ${RESULTS_DIR}/*\n"
             u"chmod o+r ${RESULTS_DIR}/*\n"
             u"\n"
-            u'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
+            'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
             u"rmdir $(pwd)\n"
-            u'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
+            'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
             u"exit ${MPIRUN_EXIT_CODE}\n"
         )
         assert script == expected
@@ -665,16 +665,16 @@ class TestBuiltBatchScript:
             u"#SBATCH --output=results_dir/stdout\n"
             u"#SBATCH --error=results_dir/stderr\n"
             u"\n"
-            u'RUN_ID="foo"\n'
-            u'RUN_DESC="NEMO.yaml"\n'
-            u'WORK_DIR="."\n'
-            u'RESULTS_DIR="results_dir"\n'
-            u'COMBINE="${HOME}/.local/bin/nemo combine"\n'
+            'RUN_ID="foo"\n'
+            'RUN_DESC="NEMO.yaml"\n'
+            'WORK_DIR="."\n'
+            'RESULTS_DIR="results_dir"\n'
+            'COMBINE="${HOME}/.local/bin/nemo combine"\n'
         )
         if not no_deflate:
-            expected += u'DEFLATE="${HOME}/.local/bin/nemo deflate"\n'
+            expected += 'DEFLATE="${HOME}/.local/bin/nemo deflate"\n'
         expected += (
-            u'GATHER="${HOME}/.local/bin/nemo gather"\n'
+            'GATHER="${HOME}/.local/bin/nemo gather"\n'
             u"\n"
             u"\n"
             u"module load StdEnv/2020\n"
@@ -685,39 +685,39 @@ class TestBuiltBatchScript:
             u"mkdir -p ${RESULTS_DIR}\n"
             u"\n"
             u"cd ${WORK_DIR}\n"
-            u'echo "working dir: $(pwd)"\n'
+            'echo "working dir: $(pwd)"\n'
             u"\n"
-            u'echo "Starting run at $(date)"\n'
+            'echo "Starting run at $(date)"\n'
             u"mpirun -np 42 ./nemo.exe : -np 1 ./xios_server.exe\n"
             u"MPIRUN_EXIT_CODE=$?\n"
-            u'echo "Ended run at $(date)"\n'
+            'echo "Ended run at $(date)"\n'
             u"\n"
-            u'echo "Results combining started at $(date)"\n'
+            'echo "Results combining started at $(date)"\n'
             u"${COMBINE} ${RUN_DESC} --debug\n"
-            u'echo "Results combining ended at $(date)"\n'
+            'echo "Results combining ended at $(date)"\n'
         )
         if not no_deflate:
             expected += (
                 u"\n"
-                u'echo "Results deflation started at $(date)"\n'
+                'echo "Results deflation started at $(date)"\n'
                 u"module load nco/4.6.6\n"
                 u"${DEFLATE} *_grid_[TUVW]*.nc *_ptrc_T*.nc "
                 u"--jobs 4 --debug\n"
-                u'echo "Results deflation ended at $(date)"\n'
+                'echo "Results deflation ended at $(date)"\n'
             )
         expected += (
             u"\n"
-            u'echo "Results gathering started at $(date)"\n'
+            'echo "Results gathering started at $(date)"\n'
             u"${GATHER} ${RESULTS_DIR} --debug\n"
-            u'echo "Results gathering ended at $(date)"\n'
+            'echo "Results gathering ended at $(date)"\n'
             u"\n"
             u"chmod go+rx ${RESULTS_DIR}\n"
             u"chmod g+rw ${RESULTS_DIR}/*\n"
             u"chmod o+r ${RESULTS_DIR}/*\n"
             u"\n"
-            u'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
+            'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
             u"rmdir $(pwd)\n"
-            u'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
+            'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
             u"exit ${MPIRUN_EXIT_CODE}\n"
         )
         assert script == expected
@@ -848,15 +848,15 @@ class TestDefinitions:
             no_deflate,
         )
         expected = (
-            u'RUN_ID="test"\n'
-            u'RUN_DESC="NEMO.yaml"\n'
-            u'WORK_DIR="run_dir"\n'
-            u'RESULTS_DIR="results_dir"\n'
-            u'COMBINE="{nemo_bin} combine"\n'
+            'RUN_ID="test"\n'
+            'RUN_DESC="NEMO.yaml"\n'
+            'WORK_DIR="run_dir"\n'
+            'RESULTS_DIR="results_dir"\n'
+            'COMBINE="{nemo_bin} combine"\n'
         ).format(nemo_bin=nemo_bin)
         if not no_deflate:
-            expected += u'DEFLATE="{nemo_bin} deflate"\n'.format(nemo_bin=nemo_bin)
-        expected += u'GATHER="{nemo_bin} gather"\n'.format(nemo_bin=nemo_bin)
+            expected += 'DEFLATE="{nemo_bin} deflate"\n'.format(nemo_bin=nemo_bin)
+        expected += 'GATHER="{nemo_bin} gather"\n'.format(nemo_bin=nemo_bin)
         assert defns == expected
 
 
