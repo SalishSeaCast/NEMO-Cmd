@@ -21,8 +21,8 @@ NEMO Command Processor
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:sphinx-linkcheck
     :alt: Sphinx linkcheck
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
-    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
-    :alt: GitHub Workflow Status
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:pytest-with-coverage
+    :alt: Pytest with Coverage Status
 .. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
     :target: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
     :alt: Codecov Testing Coverage Report

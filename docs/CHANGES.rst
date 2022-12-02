@@ -5,6 +5,9 @@ Change Log
 v22.2.dev0 (unreleased)
 =======================
 
+* Change to use reusable GitHub Actions workflows from
+  https://github.com/UBC-MOAD/gha-workflows.
+
 * Change ``str.format()`` calls to f-string literals.
 
 * Drop no longer needed unicode literal string markers.
