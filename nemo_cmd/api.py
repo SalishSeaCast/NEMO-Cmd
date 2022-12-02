@@ -376,18 +376,18 @@ def pbs_common(run_description, n_processors, email, results_dir, pmem="2000mb")
         td = datetime.timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
     walltime = td2hms(td)
     pbs_directives = (
-        u"#PBS -N {run_id}\n"
-        u"#PBS -S /bin/bash\n"
-        u"#PBS -l procs={procs}\n"
-        u"# memory per processor\n"
-        u"#PBS -l pmem={pmem}\n"
-        u"#PBS -l walltime={walltime}\n"
-        u"# email when the job [b]egins and [e]nds, or is [a]borted\n"
-        u"#PBS -m bea\n"
-        u"#PBS -M {email}\n"
-        u"# stdout and stderr file paths/names\n"
-        u"#PBS -o {results_dir}/stdout\n"
-        u"#PBS -e {results_dir}/stderr\n"
+        "#PBS -N {run_id}\n"
+        "#PBS -S /bin/bash\n"
+        "#PBS -l procs={procs}\n"
+        "# memory per processor\n"
+        "#PBS -l pmem={pmem}\n"
+        "#PBS -l walltime={walltime}\n"
+        "# email when the job [b]egins and [e]nds, or is [a]borted\n"
+        "#PBS -m bea\n"
+        "#PBS -M {email}\n"
+        "# stdout and stderr file paths/names\n"
+        "#PBS -o {results_dir}/stdout\n"
+        "#PBS -e {results_dir}/stderr\n"
     ).format(
         run_id=run_description["run_id"],
         procs=n_processors,
@@ -416,4 +416,4 @@ def td2hms(timedelta):
     for period_name, period_seconds in periods:
         period_value, seconds = divmod(seconds, period_seconds)
         hms.append(period_value)
-    return u"{0[0]}:{0[1]:02d}:{0[2]:02d}".format(hms)
+    return "{0[0]}:{0[1]:02d}:{0[2]:02d}".format(hms)

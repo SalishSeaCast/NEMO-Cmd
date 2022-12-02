@@ -311,9 +311,9 @@ def _build_batch_script(
     :returns: Bash script to execute the run.
     :rtype: str
     """
-    script = u"#!/bin/bash\n"
+    script = "#!/bin/bash\n"
     scheduler_directives = {"qsub": _pbs_directives, "sbatch": _sbatch_directives}
-    script = u"\n".join(
+    script = "\n".join(
         (
             script,
             scheduler_directives[queue_job_cmd](
@@ -321,10 +321,10 @@ def _build_batch_script(
             ),
         )
     )
-    script = u"\n".join(
+    script = "\n".join(
         (
             script,
-            u"{defns}\n".format(
+            "{defns}\n".format(
                 defns=_definitions(
                     run_desc, desc_file, run_dir, results_dir, queue_job_cmd, no_deflate
                 )
@@ -332,18 +332,18 @@ def _build_batch_script(
         )
     )
     if "modules to load" in run_desc:
-        script = u"\n".join(
+        script = "\n".join(
             (
                 script,
-                u"{modules}\n".format(modules=_modules(run_desc["modules to load"])),
+                "{modules}\n".format(modules=_modules(run_desc["modules to load"])),
             )
         )
-    script = u"\n".join(
+    script = "\n".join(
         (
             script,
-            u"{execute}\n"
-            u"{fix_permissions}\n"
-            u"{cleanup}".format(
+            "{execute}\n"
+            "{fix_permissions}\n"
+            "{cleanup}".format(
                 execute=_execute(
                     nemo_processors, xios_processors, no_deflate, max_deflate_jobs
                 ),
@@ -357,24 +357,24 @@ def _build_batch_script(
 
 def _pbs_directives(run_desc, n_processors, results_dir):
     email = get_run_desc_value(run_desc, ("email",))
-    pbs_directives = u"".join(
+    pbs_directives = "".join(
         (
-            u"{pbs_common}\n".format(
+            "{pbs_common}\n".format(
                 pbs_common=api.pbs_common(run_desc, n_processors, email, results_dir)
             )
         )
     )
     if "PBS resources" in run_desc:
-        pbs_directives = u"".join(
+        pbs_directives = "".join(
             (
                 pbs_directives[:-1],
                 "# resource(s) requested in run description YAML file\n",
             )
         )
-        pbs_directives = u"".join(
+        pbs_directives = "".join(
             (
                 pbs_directives,
-                u"{pbs_resources}\n".format(
+                "{pbs_resources}\n".format(
                     pbs_resources=_pbs_resources(
                         run_desc["PBS resources"], n_processors
                     )
@@ -385,14 +385,14 @@ def _pbs_directives(run_desc, n_processors, results_dir):
 
 
 def _pbs_resources(resources, n_processors):
-    pbs_directives = u""
+    pbs_directives = ""
     for resource in resources:
         if "nodes=" in resource and ":ppn=" in resource:
             _, ppn = resource.rsplit("=", 1)
             nodes = math.ceil(n_processors / int(ppn))
             resource = "nodes={nodes}:ppn={ppn}".format(nodes=int(nodes), ppn=ppn)
-        pbs_directives = u"".join(
-            (pbs_directives, u"#PBS -l {resource}\n".format(resource=resource))
+        pbs_directives = "".join(
+            (pbs_directives, "#PBS -l {resource}\n".format(resource=resource))
         )
     return pbs_directives
 
@@ -448,13 +448,13 @@ def _sbatch_directives(
     walltime = _td2hms(td)
     email = get_run_desc_value(run_desc, ("email",))
     sbatch_directives = (
-        u"#SBATCH --job-name={run_id}\n"
-        u"#SBATCH --nodes={nodes}\n"
-        u"#SBATCH --ntasks-per-node={processors_per_node}\n"
-        u"#SBATCH --mem={memory_per_node}\n"
-        u"#SBATCH --time={walltime}\n"
-        u"#SBATCH --mail-user={email}\n"
-        u"#SBATCH --mail-type=ALL\n"
+        "#SBATCH --job-name={run_id}\n"
+        "#SBATCH --nodes={nodes}\n"
+        "#SBATCH --ntasks-per-node={processors_per_node}\n"
+        "#SBATCH --mem={memory_per_node}\n"
+        "#SBATCH --time={walltime}\n"
+        "#SBATCH --mail-user={email}\n"
+        "#SBATCH --mail-type=ALL\n"
     ).format(
         run_id=run_id,
         nodes=int(nodes),
@@ -465,16 +465,16 @@ def _sbatch_directives(
     )
     try:
         account = get_run_desc_value(run_desc, ("account",), fatal=False)
-        sbatch_directives += u"#SBATCH --account={account}\n".format(account=account)
+        sbatch_directives += "#SBATCH --account={account}\n".format(account=account)
     except KeyError:
         logger.warning(
             "No account found in run description YAML file. "
             "If sbatch complains you can add one like account: def-allen"
         )
     sbatch_directives += (
-        u"# stdout and stderr file paths/names\n"
-        u"#SBATCH --output={stdout}\n"
-        u"#SBATCH --error={stderr}\n"
+        "# stdout and stderr file paths/names\n"
+        "#SBATCH --output={stdout}\n"
+        "#SBATCH --error={stderr}\n"
     ).format(stdout=results_dir / "stdout", stderr=results_dir / "stderr")
     return sbatch_directives
 
@@ -495,7 +495,7 @@ def _td2hms(timedelta):
     for period_name, period_seconds in periods:
         period_value, seconds = divmod(seconds, period_seconds)
         hms.append(period_value)
-    return u"{0[0]}:{0[1]:02d}:{0[2]:02d}".format(hms)
+    return "{0[0]}:{0[1]:02d}:{0[2]:02d}".format(hms)
 
 
 def _definitions(
@@ -504,11 +504,11 @@ def _definitions(
     home = "${PBS_O_HOME}" if queue_job_cmd == "qsub" else "${HOME}"
     nemo_cmd = Path(home) / ".local/bin/nemo"
     defns = (
-        u'RUN_ID="{run_id}"\n'
-        u'RUN_DESC="{run_desc_file}"\n'
-        u'WORK_DIR="{run_dir}"\n'
-        u'RESULTS_DIR="{results_dir}"\n'
-        u'COMBINE="{nemo_cmd} combine"\n'
+        'RUN_ID="{run_id}"\n'
+        'RUN_DESC="{run_desc_file}"\n'
+        'WORK_DIR="{run_dir}"\n'
+        'RESULTS_DIR="{results_dir}"\n'
+        'COMBINE="{nemo_cmd} combine"\n'
     ).format(
         run_id=get_run_desc_value(run_desc, ("run_id",)),
         run_desc_file=run_desc_file,
@@ -517,20 +517,20 @@ def _definitions(
         nemo_cmd=nemo_cmd,
     )
     if not no_deflate:
-        defns += u'DEFLATE="{nemo_cmd} deflate"\n'.format(nemo_cmd=nemo_cmd)
-    defns += u'GATHER="{nemo_cmd} gather"\n'.format(nemo_cmd=nemo_cmd)
+        defns += 'DEFLATE="{nemo_cmd} deflate"\n'.format(nemo_cmd=nemo_cmd)
+    defns += 'GATHER="{nemo_cmd} gather"\n'.format(nemo_cmd=nemo_cmd)
     return defns
 
 
 def _modules(modules_to_load):
-    modules = u""
+    modules = ""
     for module in modules_to_load:
-        modules = u"".join((modules, u"module load {module}\n".format(module=module)))
+        modules = "".join((modules, "module load {module}\n".format(module=module)))
     return modules
 
 
 def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
-    mpirun = u"mpirun -np {procs} ./nemo.exe".format(procs=nemo_processors)
+    mpirun = "mpirun -np {procs} ./nemo.exe".format(procs=nemo_processors)
     if xios_processors:
         mpirun = u" ".join(
             (mpirun, ":", "-np", str(xios_processors), "./xios_server.exe")
@@ -539,33 +539,33 @@ def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
         u"mkdir -p ${RESULTS_DIR}\n"
         u"\n"
         u"cd ${WORK_DIR}\n"
-        u'echo "working dir: $(pwd)"\n'
+        'echo "working dir: $(pwd)"\n'
         u"\n"
-        u'echo "Starting run at $(date)"\n'
+        'echo "Starting run at $(date)"\n'
     )
     script += u"{mpirun}\n".format(mpirun=mpirun)
     script += (
         u"MPIRUN_EXIT_CODE=$?\n"
-        u'echo "Ended run at $(date)"\n'
+        'echo "Ended run at $(date)"\n'
         u"\n"
-        u'echo "Results combining started at $(date)"\n'
+        'echo "Results combining started at $(date)"\n'
         u"${COMBINE} ${RUN_DESC} --debug\n"
-        u'echo "Results combining ended at $(date)"\n'
+        'echo "Results combining ended at $(date)"\n'
     )
     if not no_deflate:
         script += (
             u"\n"
-            u'echo "Results deflation started at $(date)"\n'
+            'echo "Results deflation started at $(date)"\n'
             u"module load nco/4.6.6\n"
             u"${{DEFLATE}} *_grid_[TUVW]*.nc *_ptrc_T*.nc "
             u"--jobs {max_deflate_jobs} --debug\n"
-            u'echo "Results deflation ended at $(date)"\n'
+            'echo "Results deflation ended at $(date)"\n'
         ).format(max_deflate_jobs=max_deflate_jobs)
     script += (
         u"\n"
-        u'echo "Results gathering started at $(date)"\n'
+        'echo "Results gathering started at $(date)"\n'
         u"${GATHER} ${RESULTS_DIR} --debug\n"
-        u'echo "Results gathering ended at $(date)"\n'
+        'echo "Results gathering ended at $(date)"\n'
     )
     return script
 
@@ -581,9 +581,9 @@ def _fix_permissions():
 
 def _cleanup():
     script = (
-        u'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
+        'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
         u"rmdir $(pwd)\n"
-        u'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
+        'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
         u"exit ${MPIRUN_EXIT_CODE}\n"
     )
     return script
