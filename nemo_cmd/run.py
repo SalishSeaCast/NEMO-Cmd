@@ -83,9 +83,9 @@ class Run(cliff.command.Command):
             help="""
             Do not include "nemo deflate" command in the bash script.
             Use this option if you are using on-the-fly deflation in XIOS-2;
-            i.e. you are using 1 XIOS-2 process and have the 
+            i.e. you are using 1 XIOS-2 process and have the
             compression_level="4" attribute set in all of the file_group
-            definitions in your file_def.xml file.            
+            definitions in your file_def.xml file.
             """,
         )
         parser.add_argument(
