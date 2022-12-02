@@ -5,6 +5,10 @@ Change Log
 v22.2.dev0 (unreleased)
 =======================
 
+* Change ``str.format()`` calls to f-string literals.
+
+* Drop no longer needed unicode literal string markers.
+
 * Change to Python 3.11 for package development.
 
 * Drop support for Python 3.5, 3.6, and 3.7.
