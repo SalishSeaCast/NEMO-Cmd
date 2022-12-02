@@ -38,7 +38,7 @@
     :target: https://nemo-cmd.readthedocs.io/en/latest/
     :alt: Documentation Status
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/sphinx-linkcheck/badge.svg
-    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3A
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:sphinx-linkcheck
     :alt: Sphinx linkcheck
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3ACI
@@ -257,7 +257,7 @@ Link Checking the Documentation
 -------------------------------
 
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/sphinx-linkcheck/badge.svg
-    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3A
+    :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:sphinx-linkcheck
     :alt: Sphinx linkcheck
 
 Sphinx also provides a link checker utility which can be run to find broken or redirected links in the docs.
@@ -359,7 +359,7 @@ The output looks something like::
   (line   21) ok        https://img.shields.io/badge/python-3.8+-blue.svg
   (line   21) ok        https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
   (line   21) ok        https://img.shields.io/badge/code%20style-black-000000.svg
-  (line  382) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3Asphinx-linkcheck
+  (line  382) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:sphinx-linkcheck
   (line   21) ok        https://github.com/SalishSeaCast/NEMO-Cmd/workflows/sphinx-linkcheck/badge.svg
   (line   21) ok        https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
   (line  510) ok        https://github.com/SalishSeaCast/docs/blob/main/CONTRIBUTORS.rst
@@ -393,7 +393,7 @@ The output looks something like::
 
 :command:`make linkcheck` is run monthly via a `scheduled GitHub Actions workflow`_
 
-.. _scheduled GitHub Actions workflow: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow%3Asphinx-linkcheck
+.. _scheduled GitHub Actions workflow: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:sphinx-linkcheck
 
 
 .. _NEMO-CmdRuningTheUnitTests:
