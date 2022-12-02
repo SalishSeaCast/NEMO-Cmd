@@ -40,7 +40,7 @@
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/sphinx-linkcheck/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:sphinx-linkcheck
     :alt: Sphinx linkcheck
-.. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
+.. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/pytest-with-coverage/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:pytest-with-coverage
     :alt: Pytest with Coverage Status
 .. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
@@ -461,7 +461,7 @@ to produce an HTML report that you can view in your browser by opening :file:`NE
 Continuous Integration
 ----------------------
 
-.. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/CI/badge.svg
+.. image:: https://github.com/SalishSeaCast/NEMO-Cmd/workflows/pytest-with-coverage/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:pytest-with-coverage
     :alt: Pytest with Coverage Status
 .. image:: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
