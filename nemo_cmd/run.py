@@ -483,11 +483,11 @@ def _td2hms(timedelta):
     """Return a string that is the timedelta value formated as H:M:S
     with leading zeros on the minutes and seconds values.
 
-    :param :py:obj:datetime.timedelta timedelta: Time interval to format.
+    :param :py:obj:`datetime.timedelta` timedelta: Time interval to format.
 
     :returns: H:M:S string with leading zeros on the minutes and seconds
               values.
-    :rtype: unicode
+    :rtype: str
     """
     seconds = int(timedelta.total_seconds())
     periods = (("hour", 60 * 60), ("minute", 60), ("second", 1))

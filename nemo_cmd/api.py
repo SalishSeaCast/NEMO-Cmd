@@ -408,7 +408,7 @@ def td2hms(timedelta):
 
     :returns: H:M:S string with leading zeros on the minutes and seconds
               values.
-    :rtype: unicode
+    :rtype: str
     """
     seconds = int(timedelta.total_seconds())
     periods = (("hour", 60 * 60), ("minute", 60), ("second", 1))
