@@ -98,7 +98,7 @@ def _move_results(results_dir, symlinks):
         if p not in symlinks:
             src = p.relative_to(cwd)
             suffix = "/" if src.is_dir() else ""
-            logger.info("Moving {}{} to {}/".format(src, suffix, abs_results_dir))
+            logger.info(f"Moving {src}{suffix} to {abs_results_dir}/")
             if src.is_dir():
                 shutil.move(fspath(src), fspath(abs_results_dir))
             else:

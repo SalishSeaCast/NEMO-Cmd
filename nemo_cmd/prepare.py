@@ -89,7 +89,7 @@ class Prepare(cliff.command.Command):
         """
         run_dir = prepare(parsed_args.desc_file, parsed_args.nocheck_init)
         if not parsed_args.quiet:
-            logger.info("Created run directory {}".format(run_dir))
+            logger.info(f"Created run directory {run_dir}")
         return run_dir
 
 
@@ -184,9 +184,7 @@ def get_run_desc_value(
         if not fatal:
             raise
         logger.error(
-            '"{}" key not found - please check your run description YAML file'.format(
-                ": ".join(keys)
-            )
+            f'"{": ".join(keys)}" key not found - please check your run description YAML file'
         )
         if run_dir:
             remove_run_dir(run_dir)
@@ -197,8 +195,8 @@ def get_run_desc_value(
         value = resolved_path(value)
         if not value.exists():
             logger.error(
-                '{path} path from "{keys}" key not found - please check your '
-                "run description YAML file".format(path=value, keys=": ".join(keys))
+                f'{value} path from "{": ".join(keys)}" key not found - please check your '
+                f"run description YAML file"
             )
             if run_dir:
                 remove_run_dir(run_dir)
@@ -236,7 +234,7 @@ def check_nemo_exec(run_desc):
     nemo_bin_dir = nemo_config_dir / config_name / "BLD" / "bin"
     nemo_exec = nemo_bin_dir / "nemo.exe"
     if not nemo_exec.exists():
-        logger.error("{} not found - did you forget to build it?".format(nemo_exec))
+        logger.error(f"{nemo_exec} not found - did you forget to build it?")
         raise SystemExit(2)
     return nemo_bin_dir
 
@@ -258,7 +256,7 @@ def check_xios_exec(run_desc):
     xios_bin_dir = xios_code_path / "bin"
     xios_exec = xios_bin_dir / "xios_server.exe"
     if not xios_exec.exists():
-        logger.error("{} not found - did you forget to build it?".format(xios_exec))
+        logger.error(f"{xios_exec} not found - did you forget to build it?")
         raise SystemExit(2)
     return xios_bin_dir
 
@@ -278,9 +276,7 @@ def make_run_dir(run_desc):
     runs_dir = get_run_desc_value(
         run_desc, ("paths", "runs directory"), resolve_path=True
     )
-    run_dir = runs_dir / "{run_id}_{timestamp}".format(
-        run_id=run_id, timestamp=arrow.now().format("YYYY-MM-DDTHHmmss.SSSSSSZ")
-    )
+    run_dir = runs_dir / f"{run_id}_{arrow.now().format('YYYY-MM-DDTHHmmss.SSSSSSZ')}"
     run_dir.mkdir()
     return run_dir
 
@@ -347,7 +343,7 @@ def make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
         config_name = get_run_desc_value(run_desc, ("config_name",), run_dir=run_dir)
     keys = ("namelists",)
     if agrif_n is not None:
-        keys = ("namelists", "AGRIF_{agrif_n}".format(agrif_n=agrif_n))
+        keys = ("namelists", f"AGRIF_{agrif_n}")
     namelists = get_run_desc_value(run_desc, keys, run_dir=run_dir)
     for namelist_filename in namelists:
         if namelist_filename.startswith("AGRIF"):
@@ -355,12 +351,10 @@ def make_namelists(run_set_dir, run_desc, run_dir, agrif_n=None):
         namelist_dest = namelist_filename
         keys = ("namelists", namelist_filename)
         if agrif_n is not None:
-            namelist_dest = "{agrif_n}_{namelist_filename}".format(
-                agrif_n=agrif_n, namelist_filename=namelist_filename
-            )
+            namelist_dest = f"{agrif_n}_{namelist_filename}"
             keys = (
-                "namelists",
-                "AGRIF_{agrif_n}".format(agrif_n=agrif_n),
+                f"namelists",
+                f"AGRIF_{agrif_n}",
                 namelist_filename,
             )
         with (run_dir / namelist_dest).open("wt") as namelist:
@@ -511,10 +505,7 @@ def get_n_processors(run_desc, run_dir):
         mpi_lpe_mapping = nemo_forcing_dir / "grid" / mpi_lpe_mapping
     n_processors = _lookup_lpe_n_processors(mpi_lpe_mapping, jpni, jpnj)
     if n_processors is None:
-        msg = (
-            "No land processor elimination choice found for {jpni}x{jpnj} "
-            "MPI decomposition".format(jpni=jpni, jpnj=jpnj)
-        )
+        msg = f"No land processor elimination choice found for {jpni}x{jpnj} MPI decomposition"
         logger.error(msg)
         raise ValueError(msg)
     return n_processors
@@ -585,8 +576,8 @@ def copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir, agrif_n=None):
         keys = ("output", "domaindefs")
         domain_def_filename = "domain_def.xml"
         if agrif_n is not None:
-            keys = ("output", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "domaindefs")
-            domain_def_filename = "{agrif_n}_domain_def.xml".format(agrif_n=agrif_n)
+            keys = ("output", f"AGRIF_{agrif_n}", "domaindefs")
+            domain_def_filename = f"{agrif_n}_domain_def.xml"
         domains_def = get_run_desc_value(
             run_desc, keys, resolve_path=True, run_dir=run_dir, fatal=False
         )
@@ -594,7 +585,7 @@ def copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir, agrif_n=None):
         # Alternate key spelling for backward compatibility
         keys = ("output", "domain")
         if agrif_n is not None:
-            keys = ("output", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "domain")
+            keys = ("output", f"AGRIF_{agrif_n}", "domain")
         domains_def = get_run_desc_value(
             run_desc, keys, resolve_path=True, run_dir=run_dir
         )
@@ -618,8 +609,8 @@ def copy_run_set_files(run_desc, desc_file, run_set_dir, run_dir, agrif_n=None):
         keys = ("output", "filedefs")
         file_def_filename = "file_def.xml"
         if agrif_n is not None:
-            keys = ("output", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "filedefs")
-            file_def_filename = "{agrif_n}_file_def.xml".format(agrif_n=agrif_n)
+            keys = ("output", f"AGRIF_{agrif_n}", "filedefs")
+            file_def_filename = f"{agrif_n}_file_def.xml"
         files_def = get_run_desc_value(
             run_desc, keys, resolve_path=True, run_dir=run_dir, fatal=False
         )
@@ -714,10 +705,10 @@ def make_grid_links(run_desc, run_dir, agrif_n=None):
     bathy_keys = ("grid", "bathymetry")
     bathy_filename = "bathy_meter.nc"
     if agrif_n is not None:
-        coords_keys = ("grid", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "coordinates")
-        coords_filename = "{agrif_n}_coordinates.nc".format(agrif_n=agrif_n)
-        bathy_keys = ("grid", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), "bathymetry")
-        bathy_filename = "{agrif_n}_bathy_meter.nc".format(agrif_n=agrif_n)
+        coords_keys = ("grid", f"AGRIF_{agrif_n}", "coordinates")
+        coords_filename = f"{agrif_n}_coordinates.nc"
+        bathy_keys = ("grid", f"AGRIF_{agrif_n}", "bathymetry")
+        bathy_filename = f"{agrif_n}_bathy_meter.nc"
     coords_path = get_run_desc_value(
         run_desc, coords_keys, expand_path=True, run_dir=run_dir
     )
@@ -738,9 +729,8 @@ def make_grid_links(run_desc, run_dir, agrif_n=None):
     for source, link_name in grid_paths:
         if not source.exists():
             logger.error(
-                "{} not found; cannot create symlink - "
-                "please check the forcing path and grid file names "
-                "in your run description file".format(source)
+                f"{source} not found; cannot create symlink - "
+                f"please check the forcing path and grid file names in your run description file"
             )
             remove_run_dir(run_dir)
             raise SystemExit(2)
@@ -765,9 +755,8 @@ def make_forcing_links(run_desc, run_dir):
         source = _resolve_forcing_path(run_desc, (link_name, "link to"), run_dir)
         if not source.exists():
             logger.error(
-                "{} not found; cannot create symlink - "
-                "please check the forcing paths and file names "
-                "in your run description file".format(source)
+                f"{source} not found; cannot create symlink - "
+                f"please check the forcing paths and file names in your run description file"
             )
             remove_run_dir(run_dir)
             raise SystemExit(2)
@@ -788,9 +777,7 @@ def make_forcing_links(run_desc, run_dir):
                 pass
             else:
                 if link_checker is not None:
-                    logger.error(
-                        "unknown forcing link checker: {}".format(link_checker)
-                    )
+                    logger.error(f"unknown forcing link checker: {link_checker}")
                     remove_run_dir(run_dir)
                     raise SystemExit(2)
 
@@ -874,29 +861,17 @@ def _check_atmospheric_forcing_link(run_dir, link_path, namelist_filename):
                 if period == "daily":
                     file_path = os.path.join(
                         v["dir"],
-                        "{basename}_"
-                        "y{date.year}m{date.month:02d}d{date.day:02d}.nc".format(
-                            basename=basename, date=r
-                        ),
+                        f"{basename}_y{r.year}m{r.month:02d}d{r.day:02d}.nc",
                     )
                 elif period == "yearly":
-                    file_path = os.path.join(
-                        v["dir"], "{basename}.nc".format(basename=basename)
-                    )
+                    file_path = os.path.join(v["dir"], f"{basename}.nc")
                 if not (run_dir / file_path).exists():
                     logger.error(
-                        "{file_path} not found; "
-                        "please confirm that atmospheric forcing files "
-                        "for {startm1} through "
-                        "{end} are in the {dir} collection, "
-                        "and that atmospheric forcing paths in your "
-                        "run description and surface boundary conditions "
-                        "namelist are in agreement.".format(
-                            file_path=file_path,
-                            startm1=startm1.format("YYYY-MM-DD"),
-                            end=end_date.format("YYYY-MM-DD"),
-                            dir=link_path,
-                        )
+                        f"{file_path} not found; please confirm that atmospheric forcing "
+                        f"files for {startm1.format('YYYY-MM-DD')} through "
+                        f"{end_date.format('YYYY-MM-DD')} are in the {link_path} collection, "
+                        f"and that atmospheric forcing paths in your run description and "
+                        f"surface boundary conditions namelist are in agreement."
                     )
                     remove_run_dir(run_dir)
                     raise SystemExit(2)
@@ -921,7 +896,7 @@ def make_restart_links(run_desc, run_dir, nocheck_init, agrif_n=None):
     """
     keys = ("restart",)
     if agrif_n is not None:
-        keys = ("restart", "AGRIF_{agrif_n}".format(agrif_n=agrif_n))
+        keys = ("restart", f"AGRIF_{agrif_n}")
     try:
         link_names = get_run_desc_value(run_desc, keys, run_dir=run_dir, fatal=False)
     except KeyError:
@@ -936,16 +911,13 @@ def make_restart_links(run_desc, run_dir, nocheck_init, agrif_n=None):
             continue
         keys = ("restart", link_name)
         if agrif_n is not None:
-            keys = ("restart", "AGRIF_{agrif_n}".format(agrif_n=agrif_n), link_name)
-            link_name = "{agrif_n}_{link_name}".format(
-                agrif_n=agrif_n, link_name=link_name
-            )
+            keys = ("restart", f"AGRIF_{agrif_n}", link_name)
+            link_name = f"{agrif_n}_{link_name}"
         source = get_run_desc_value(run_desc, keys, expand_path=True)
         if not source.exists() and not nocheck_init:
             logger.error(
-                "{} not found; cannot create symlink - "
-                "please check the restart file paths and file names "
-                "in your run description file".format(source)
+                f"{source} not found; cannot create symlink - "
+                f"please check the restart file paths and file names in your run description file"
             )
             remove_run_dir(run_dir)
             raise SystemExit(2)
@@ -996,9 +968,9 @@ def write_repo_rev_file(repo, run_dir, vcs_func):
     repo_path = resolved_path(repo)
     repo_rev_file_lines = vcs_func(repo_path, run_dir)
     if repo_rev_file_lines:
-        rev_file = run_dir / "{repo.name}_rev.txt".format(repo=repo_path)
+        rev_file = run_dir / f"{repo_path.name}_rev.txt"
         with rev_file.open("wt") as f:
-            f.writelines("{}\n".format(line) for line in repo_rev_file_lines)
+            f.writelines(f"{line}\n" for line in repo_rev_file_lines)
 
 
 def get_git_revision(git_repo, run_dir):
@@ -1024,9 +996,7 @@ def get_git_revision(git_repo, run_dir):
     """
     if not git_repo.exists():
         logger.warning(
-            "revision and status requested for non-existent repo: {repo}".format(
-                repo=git_repo
-            )
+            f"revision and status requested for non-existent repo: {git_repo}"
         )
         return []
     repo_path = copy(git_repo)
@@ -1037,35 +1007,27 @@ def get_git_revision(git_repo, run_dir):
         except git.exc.InvalidGitRepositoryError:
             git_repo = git_repo.parent
     else:
-        logger.error(
-            "unable to find Git repo root in or above {repo_path}".format(
-                repo_path=repo_path
-            )
-        )
+        logger.error(f"unable to find Git repo root in or above {repo_path}")
         remove_run_dir(run_dir)
         raise SystemExit(2)
     branch = repo.active_branch
     commit = repo.commit(branch)
     author_datetime = arrow.get(commit.authored_datetime)
     repo_rev_file_lines = [
-        "branch: {branch}".format(branch=branch),
-        "commit: {hexsha}".format(hexsha=commit.hexsha),
+        f"branch: {branch}",
+        f"commit: {commit.hexsha}",
     ]
     if repo.tags:
         for tag in repo.tags:
             if commit.hexsha == tag.commit:
-                repo_rev_file_lines.append("tag:    {name}".format(name=tag.name))
+                repo_rev_file_lines.append(f"tag:    {tag.name}")
     repo_rev_file_lines.extend(
         [
-            "author: {author}".format(author=commit.author),
-            "date:   {date}".format(
-                date=author_datetime.format("ddd MMM DD HH:mm:ss YYYY ZZ")
-            ),
-            "files:  {files}".format(
-                files=" ".join(d.a_path for d in commit.diff("HEAD~1"))
-            ),
-            "message:",
-            "{message}".format(message=commit.message),
+            f"author: {commit.author}",
+            f"date:   {author_datetime.format('ddd MMM DD HH:mm:ss YYYY ZZ')}",
+            f"files:  {' '.join(d.a_path for d in commit.diff('HEAD~1'))}",
+            f"message:",
+            f"{commit.message}",
         ]
     )
     if commit.diff(None):
@@ -1075,16 +1037,9 @@ def get_git_revision(git_repo, run_dir):
             if d.a_path.endswith(ignore):
                 diffs.remove(d)
         if diffs:
-            logger.warning(
-                "There are uncommitted changes in {repo_path}".format(
-                    repo_path=repo_path
-                )
-            )
+            logger.warning(f"There are uncommitted changes in {repo_path}")
             repo_rev_file_lines.append("uncommitted changes:")
-            repo_rev_file_lines.extend(
-                "{change_type} {path}".format(change_type=d.change_type, path=d.a_path)
-                for d in diffs
-            )
+            repo_rev_file_lines.extend(f"{d.change_type} {d.a_path}" for d in diffs)
     return repo_rev_file_lines
 
 
@@ -1111,9 +1066,7 @@ def get_hg_revision(hg_repo, run_dir):
     """
     if not hg_repo.exists():
         logger.warning(
-            "revision and status requested for non-existent repo: {repo}".format(
-                repo=hg_repo
-            )
+            f"revision and status requested for non-existent repo: {hg_repo}"
         )
         return []
     repo_path = copy(hg_repo)
@@ -1129,53 +1082,38 @@ def get_hg_revision(hg_repo, run_dir):
         except hglib.error.ServerError:
             hg_repo = hg_repo.parent
     else:
-        logger.error(
-            "unable to find Mercurial repo root in or above {repo_path}".format(
-                repo_path=repo_path
-            )
-        )
+        logger.error(f"unable to find Mercurial repo root in or above {repo_path}")
         remove_run_dir(run_dir)
         raise SystemExit(2)
     revision = parents[0]
     repo_rev_file_lines = [
-        "changset:   {rev}:{node}".format(
-            rev=revision.rev.decode(), node=revision.node.decode()
-        )
+        f"changset:   {revision.rev.decode()}:{revision.node.decode()}"
     ]
     if revision.tags:
-        repo_rev_file_lines.append(
-            "tag:        {tags}".format(tags=revision.tags.decode())
-        )
+        repo_rev_file_lines.append(f"tag:        {revision.tags.decode()}")
     if len(parents) > 1:
         repo_rev_file_lines.extend(
-            "parent:     {rev}:{node}".format(
-                rev=parent.rev.decode(), node=parent.node.decode()
-            )
+            f"parent:     {parent.rev.decode()}:{parent.node.decode()}"
             for parent in parents
         )
     date = arrow.get(revision.date).replace(tzinfo=tz.tzlocal())
     repo_rev_file_lines.extend(
         [
-            "user:       {}".format(revision.author.decode()),
-            "date:       {}".format(date.format("ddd MMM DD HH:mm:ss YYYY ZZ")),
-            "files:      {}".format(" ".join(f.decode() for f in files)),
-            "description:",
+            f"user:       {revision.author.decode()}",
+            f"date:       {date.format('ddd MMM DD HH:mm:ss YYYY ZZ')}",
+            f"files:      {' '.join(f.decode() for f in files)}",
+            f"description:",
         ]
     )
     repo_rev_file_lines.extend(line.decode() for line in revision.desc.splitlines())
-    ignore = ("CONFIG/cfg.txt", u"TOOLS/COMPILE/full_key_list.txt")
+    ignore = ("CONFIG/cfg.txt", "TOOLS/COMPILE/full_key_list.txt")
     for s in copy(status):
         if s[1].decode().endswith(ignore):
             status.remove(s)
     if status:
-        logger.warning(
-            "There are uncommitted changes in {repo_path}".format(repo_path=repo_path)
-        )
+        logger.warning(f"There are uncommitted changes in {repo_path}")
         repo_rev_file_lines.append("uncommitted changes:")
-        repo_rev_file_lines.extend(
-            "{code} {path}".format(code=s[0].decode(), path=s[1].decode())
-            for s in status
-        )
+        repo_rev_file_lines.extend(f"{s[0].decode()} {s[1].decode()}" for s in status)
     return repo_rev_file_lines
 
 
@@ -1246,13 +1184,8 @@ def add_agrif_files(run_desc, desc_file, run_set_dir, run_dir, nocheck_init):
                 func(agrif_n=agrif_n)
         if sub_grids_count != n_sub_grids:
             logger.error(
-                "Expected {n_sub_grids} AGRIF sub-grids in {section} section, "
-                "but found {sub_grids_count} - "
-                "please check your run description file".format(
-                    n_sub_grids=n_sub_grids,
-                    section=run_desc_section,
-                    sub_grids_count=sub_grids_count,
-                )
+                f"Expected {n_sub_grids} AGRIF sub-grids in {run_desc_section} section, "
+                f"but found {sub_grids_count} - please check your run description file"
             )
             remove_run_dir(run_dir)
             raise SystemExit(2)
