@@ -604,39 +604,39 @@ class TestBuiltBatchScript:
             expected += (
                 "\n"
                 'echo "Results deflation started at $(date)"\n'
-                u"module load nco/4.6.6\n"
-                u"${DEFLATE} *_grid_[TUVW]*.nc *_ptrc_T*.nc "
-                u"--jobs 4 --debug\n"
+                "module load nco/4.6.6\n"
+                "${DEFLATE} *_grid_[TUVW]*.nc *_ptrc_T*.nc "
+                "--jobs 4 --debug\n"
                 'echo "Results deflation ended at $(date)"\n'
             )
         expected += (
-            u"\n"
+            "\n"
             'echo "Results gathering started at $(date)"\n'
-            u"${GATHER} ${RESULTS_DIR} --debug\n"
+            "${GATHER} ${RESULTS_DIR} --debug\n"
             'echo "Results gathering ended at $(date)"\n'
-            u"\n"
-            u"chmod go+rx ${RESULTS_DIR}\n"
-            u"chmod g+rw ${RESULTS_DIR}/*\n"
-            u"chmod o+r ${RESULTS_DIR}/*\n"
-            u"\n"
+            "\n"
+            "chmod go+rx ${RESULTS_DIR}\n"
+            "chmod g+rw ${RESULTS_DIR}/*\n"
+            "chmod o+r ${RESULTS_DIR}/*\n"
+            "\n"
             'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
-            u"rmdir $(pwd)\n"
+            "rmdir $(pwd)\n"
             'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
-            u"exit ${MPIRUN_EXIT_CODE}\n"
+            "exit ${MPIRUN_EXIT_CODE}\n"
         )
         assert script == expected
 
     @pytest.mark.parametrize("no_deflate", [True, False])
     def test_sbatch(self, no_deflate):
         desc_file = StringIO(
-            u"run_id: foo\n"
-            u"walltime: 01:02:03\n"
-            u"email: me@example.com\n"
-            u"account: rrg-allen\n"
-            u"modules to load:\n"
-            u"  - StdEnv/2020\n"
-            u"  - netcdf-fortran-mpi/4.5.2\n"
-            u"  - python/3.9.6\n"
+            "run_id: foo\n"
+            "walltime: 01:02:03\n"
+            "email: me@example.com\n"
+            "account: rrg-allen\n"
+            "modules to load:\n"
+            "  - StdEnv/2020\n"
+            "  - netcdf-fortran-mpi/4.5.2\n"
+            "  - python/3.9.6\n"
         )
         run_desc = yaml.safe_load(desc_file)
         script = nemo_cmd.run._build_batch_script(
@@ -651,20 +651,20 @@ class TestBuiltBatchScript:
             queue_job_cmd="sbatch",
         )
         expected = (
-            u"#!/bin/bash\n"
-            u"\n"
-            u"#SBATCH --job-name=foo\n"
-            u"#SBATCH --nodes=2\n"
-            u"#SBATCH --ntasks-per-node=32\n"
-            u"#SBATCH --mem=0\n"
-            u"#SBATCH --time=1:02:03\n"
-            u"#SBATCH --mail-user=me@example.com\n"
-            u"#SBATCH --mail-type=ALL\n"
-            u"#SBATCH --account=rrg-allen\n"
-            u"# stdout and stderr file paths/names\n"
-            u"#SBATCH --output=results_dir/stdout\n"
-            u"#SBATCH --error=results_dir/stderr\n"
-            u"\n"
+            "#!/bin/bash\n"
+            "\n"
+            "#SBATCH --job-name=foo\n"
+            "#SBATCH --nodes=2\n"
+            "#SBATCH --ntasks-per-node=32\n"
+            "#SBATCH --mem=0\n"
+            "#SBATCH --time=1:02:03\n"
+            "#SBATCH --mail-user=me@example.com\n"
+            "#SBATCH --mail-type=ALL\n"
+            "#SBATCH --account=rrg-allen\n"
+            "# stdout and stderr file paths/names\n"
+            "#SBATCH --output=results_dir/stdout\n"
+            "#SBATCH --error=results_dir/stderr\n"
+            "\n"
             'RUN_ID="foo"\n'
             'RUN_DESC="NEMO.yaml"\n'
             'WORK_DIR="."\n'
@@ -675,50 +675,50 @@ class TestBuiltBatchScript:
             expected += 'DEFLATE="${HOME}/.local/bin/nemo deflate"\n'
         expected += (
             'GATHER="${HOME}/.local/bin/nemo gather"\n'
-            u"\n"
-            u"\n"
-            u"module load StdEnv/2020\n"
-            u"module load netcdf-fortran-mpi/4.5.2\n"
-            u"module load python/3.9.6\n"
-            u"\n"
-            u"\n"
-            u"mkdir -p ${RESULTS_DIR}\n"
-            u"\n"
-            u"cd ${WORK_DIR}\n"
+            "\n"
+            "\n"
+            "module load StdEnv/2020\n"
+            "module load netcdf-fortran-mpi/4.5.2\n"
+            "module load python/3.9.6\n"
+            "\n"
+            "\n"
+            "mkdir -p ${RESULTS_DIR}\n"
+            "\n"
+            "cd ${WORK_DIR}\n"
             'echo "working dir: $(pwd)"\n'
-            u"\n"
+            "\n"
             'echo "Starting run at $(date)"\n'
-            u"mpirun -np 42 ./nemo.exe : -np 1 ./xios_server.exe\n"
-            u"MPIRUN_EXIT_CODE=$?\n"
+            "mpirun -np 42 ./nemo.exe : -np 1 ./xios_server.exe\n"
+            "MPIRUN_EXIT_CODE=$?\n"
             'echo "Ended run at $(date)"\n'
-            u"\n"
+            "\n"
             'echo "Results combining started at $(date)"\n'
-            u"${COMBINE} ${RUN_DESC} --debug\n"
+            "${COMBINE} ${RUN_DESC} --debug\n"
             'echo "Results combining ended at $(date)"\n'
         )
         if not no_deflate:
             expected += (
-                u"\n"
+                "\n"
                 'echo "Results deflation started at $(date)"\n'
-                u"module load nco/4.6.6\n"
-                u"${DEFLATE} *_grid_[TUVW]*.nc *_ptrc_T*.nc "
-                u"--jobs 4 --debug\n"
+                "module load nco/4.6.6\n"
+                "${DEFLATE} *_grid_[TUVW]*.nc *_ptrc_T*.nc "
+                "--jobs 4 --debug\n"
                 'echo "Results deflation ended at $(date)"\n'
             )
         expected += (
-            u"\n"
+            "\n"
             'echo "Results gathering started at $(date)"\n'
-            u"${GATHER} ${RESULTS_DIR} --debug\n"
+            "${GATHER} ${RESULTS_DIR} --debug\n"
             'echo "Results gathering ended at $(date)"\n'
-            u"\n"
-            u"chmod go+rx ${RESULTS_DIR}\n"
-            u"chmod g+rw ${RESULTS_DIR}/*\n"
-            u"chmod o+r ${RESULTS_DIR}/*\n"
-            u"\n"
+            "\n"
+            "chmod go+rx ${RESULTS_DIR}\n"
+            "chmod g+rw ${RESULTS_DIR}/*\n"
+            "chmod o+r ${RESULTS_DIR}/*\n"
+            "\n"
             'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
-            u"rmdir $(pwd)\n"
+            "rmdir $(pwd)\n"
             'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
-            u"exit ${MPIRUN_EXIT_CODE}\n"
+            "exit ${MPIRUN_EXIT_CODE}\n"
         )
         assert script == expected
 
@@ -740,19 +740,19 @@ class TestPbsDirectives:
             self.run_desc, n_processors, results_dir
         )
         expected = (
-            u"#PBS -N test\n"
-            u"#PBS -S /bin/bash\n"
-            u"#PBS -l procs={n_processors}\n"
-            u"# memory per processor\n"
-            u"#PBS -l pmem=2000mb\n"
-            u"#PBS -l walltime=1:24:42\n"
-            u"# email when the job [b]egins and [e]nds, or is [a]borted\n"
-            u"#PBS -m bea\n"
-            u"#PBS -M {email}\n"
-            u"# stdout and stderr file paths/names\n"
-            u"#PBS -o ./stdout\n"
-            u"#PBS -e ./stderr\n"
-            u"\n"
+            "#PBS -N test\n"
+            "#PBS -S /bin/bash\n"
+            "#PBS -l procs={n_processors}\n"
+            "# memory per processor\n"
+            "#PBS -l pmem=2000mb\n"
+            "#PBS -l walltime=1:24:42\n"
+            "# email when the job [b]egins and [e]nds, or is [a]borted\n"
+            "#PBS -m bea\n"
+            "#PBS -M {email}\n"
+            "# stdout and stderr file paths/names\n"
+            "#PBS -o ./stdout\n"
+            "#PBS -e ./stderr\n"
+            "\n"
         ).format(n_processors=n_processors, email=self.run_desc["email"])
         assert directives == expected
 
@@ -763,11 +763,11 @@ class TestPBS_Resources:
     @pytest.mark.parametrize(
         "resources, expected",
         [
-            ([], u""),
-            (["partition=QDR"], u"#PBS -l partition=QDR\n"),
+            ([], ""),
+            (["partition=QDR"], "#PBS -l partition=QDR\n"),
             (
                 ["partition=QDR", "feature=X5675"],
-                u"#PBS -l partition=QDR\n#PBS -l feature=X5675\n",
+                "#PBS -l partition=QDR\n#PBS -l feature=X5675\n",
             ),
         ],
     )
@@ -804,16 +804,16 @@ class TestSbatchDirectives:
             self.run_desc, n_processors, results_dir
         )
         expected = (
-            u"#SBATCH --job-name=test\n"
-            u"#SBATCH --nodes={n_nodes}\n"
-            u"#SBATCH --ntasks-per-node=32\n"
-            u"#SBATCH --mem=0\n"
-            u"#SBATCH --time=1:24:42\n"
-            u"#SBATCH --mail-user={email}\n"
-            u"#SBATCH --mail-type=ALL\n"
-            u"# stdout and stderr file paths/names\n"
-            u"#SBATCH --output=stdout\n"
-            u"#SBATCH --error=stderr\n"
+            "#SBATCH --job-name=test\n"
+            "#SBATCH --nodes={n_nodes}\n"
+            "#SBATCH --ntasks-per-node=32\n"
+            "#SBATCH --mem=0\n"
+            "#SBATCH --time=1:24:42\n"
+            "#SBATCH --mail-user={email}\n"
+            "#SBATCH --mail-type=ALL\n"
+            "# stdout and stderr file paths/names\n"
+            "#SBATCH --output=stdout\n"
+            "#SBATCH --error=stderr\n"
         ).format(n_nodes=n_nodes, email=self.run_desc["email"])
         assert directives == expected
         assert m_logger.warning.called
@@ -823,7 +823,7 @@ class TestSbatchDirectives:
         results_dir = Path()
         with patch.dict(self.run_desc, account="def-allen"):
             directives = nemo_cmd.run._sbatch_directives(self.run_desc, 43, results_dir)
-        assert u"#SBATCH --account=def-allen\n" in directives
+        assert "#SBATCH --account=def-allen\n" in directives
         assert not m_logger.warning.called
 
 
@@ -866,9 +866,9 @@ class TestModules:
     @pytest.mark.parametrize(
         "modules, expected",
         [
-            ([], u""),
-            (["intel"], u"module load intel\n"),
-            (["intel", "python"], u"module load intel\nmodule load python\n"),
+            ([], ""),
+            (["intel"], "module load intel\n"),
+            (["intel", "python"], "module load intel\nmodule load python\n"),
         ],
     )
     def test_module(self, modules, expected):

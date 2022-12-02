@@ -532,24 +532,24 @@ def _modules(modules_to_load):
 def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
     mpirun = "mpirun -np {procs} ./nemo.exe".format(procs=nemo_processors)
     if xios_processors:
-        mpirun = u" ".join(
+        mpirun = " ".join(
             (mpirun, ":", "-np", str(xios_processors), "./xios_server.exe")
         )
     script = (
-        u"mkdir -p ${RESULTS_DIR}\n"
-        u"\n"
-        u"cd ${WORK_DIR}\n"
+        "mkdir -p ${RESULTS_DIR}\n"
+        "\n"
+        "cd ${WORK_DIR}\n"
         'echo "working dir: $(pwd)"\n'
-        u"\n"
+        "\n"
         'echo "Starting run at $(date)"\n'
     )
     script += u"{mpirun}\n".format(mpirun=mpirun)
     script += (
-        u"MPIRUN_EXIT_CODE=$?\n"
+        "MPIRUN_EXIT_CODE=$?\n"
         'echo "Ended run at $(date)"\n'
-        u"\n"
+        "\n"
         'echo "Results combining started at $(date)"\n'
-        u"${COMBINE} ${RUN_DESC} --debug\n"
+        "${COMBINE} ${RUN_DESC} --debug\n"
         'echo "Results combining ended at $(date)"\n'
     )
     if not no_deflate:
@@ -562,9 +562,9 @@ def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
             'echo "Results deflation ended at $(date)"\n'
         ).format(max_deflate_jobs=max_deflate_jobs)
     script += (
-        u"\n"
+        "\n"
         'echo "Results gathering started at $(date)"\n'
-        u"${GATHER} ${RESULTS_DIR} --debug\n"
+        "${GATHER} ${RESULTS_DIR} --debug\n"
         'echo "Results gathering ended at $(date)"\n'
     )
     return script
@@ -572,9 +572,9 @@ def _execute(nemo_processors, xios_processors, no_deflate, max_deflate_jobs):
 
 def _fix_permissions():
     script = (
-        u"chmod go+rx ${RESULTS_DIR}\n"
-        u"chmod g+rw ${RESULTS_DIR}/*\n"
-        u"chmod o+r ${RESULTS_DIR}/*\n"
+        "chmod go+rx ${RESULTS_DIR}\n"
+        "chmod g+rw ${RESULTS_DIR}/*\n"
+        "chmod o+r ${RESULTS_DIR}/*\n"
     )
     return script
 
@@ -582,8 +582,8 @@ def _fix_permissions():
 def _cleanup():
     script = (
         'echo "Deleting run directory" >>${RESULTS_DIR}/stdout\n'
-        u"rmdir $(pwd)\n"
+        "rmdir $(pwd)\n"
         'echo "Finished at $(date)" >>${RESULTS_DIR}/stdout\n'
-        u"exit ${MPIRUN_EXIT_CODE}\n"
+        "exit ${MPIRUN_EXIT_CODE}\n"
     )
     return script
