@@ -16,10 +16,8 @@ jobs:
         # Need to specify Python version here because we use test env which gets its
         # Python version via matrix
         python-version: ['3.11']
-    uses: UBC-MOAD/gha-workflows/.github/workflows/sphinx-linkcheck.yaml@dfdb0540aebcb84aeafa31f1905c49eacca1e381
+    uses: UBC-MOAD/gha-workflows/.github/workflows/sphinx-linkcheck.yaml@73cd061e7d3c3cabc39cda291cb7bc9b95b7ab35
     with:
       python-version: ${{ matrix.python-version }}
       conda-env-file: envs/environment-test.yaml
       conda-env-name: nemo-cmd-test
-    secrets:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_SALISHSEACAST_WEBHOOK_URL }}

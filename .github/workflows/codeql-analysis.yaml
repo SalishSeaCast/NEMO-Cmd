@@ -17,8 +17,6 @@ jobs:
       fail-fast: false
       matrix:
         language: [ 'python' ]
-    uses: UBC-MOAD/gha-workflows/.github/workflows/codeql-analysis.yaml@7ffd33f5895ff9729ffdaa8be50553111c3028a8
+    uses: UBC-MOAD/gha-workflows/.github/workflows/codeql-analysis.yaml@73cd061e7d3c3cabc39cda291cb7bc9b95b7ab35
     with:
       language: ${{ matrix.language }}
-    secrets:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_SALISHSEACAST_WEBHOOK_URL }}

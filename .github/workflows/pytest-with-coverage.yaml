@@ -16,10 +16,8 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ['3.8', '3.9', '3.10', '3.11']
-    uses: UBC-MOAD/gha-workflows/.github/workflows/pytest-with-coverage.yaml@44fc8db2bf297db3f646e5ea0fe7da97df1fa966
+    uses: UBC-MOAD/gha-workflows/.github/workflows/pytest-with-coverage.yaml@73cd061e7d3c3cabc39cda291cb7bc9b95b7ab35
     with:
       python-version: ${{ matrix.python-version }}
       conda-env-file: envs/environment-test.yaml
       conda-env-name: nemo-cmd-test
-    secrets:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_SALISHSEACAST_WEBHOOK_URL }}
