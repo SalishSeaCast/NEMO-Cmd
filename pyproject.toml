@@ -86,4 +86,4 @@ show_missing = true
 
 
 [tool.hatch.version]
-path = "nemo_cmd/__init__.py"
+path = "nemo_cmd/__about__.py"
