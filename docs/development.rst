@@ -154,6 +154,7 @@ activate the conda development environment,
 and run :command:`pre-commit install`:
 
 .. code-block:: bash
+
     $ cd NEMO-Cmd
     $ conda activate nemo-cmd
     (nemo-cmd)$ pre-commit install
