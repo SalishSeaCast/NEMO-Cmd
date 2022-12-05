@@ -5,6 +5,13 @@ Change Log
 v22.2.dev0 (unreleased)
 =======================
 
+* Modernize packaging:
+
+  * Replace :file:`setup.py` and :file:`setup.cfg` with :file:`pyproject.toml`
+  * Change from ``setuptools`` to hatch_ for build backend
+
+  .. _hatch: https://hatch.pypa.io/
+
 * Add pre-commit to manage code style and repo QA.
 
 * Change to use reusable GitHub Actions workflows from
