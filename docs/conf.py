@@ -15,26 +15,20 @@
 
 import os
 import sys
+import importlib.metadata
 
 sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
 
-import configparser
-
-setup_cfg = configparser.ConfigParser()
-setup_cfg.read(os.path.abspath("../setup.cfg"))
-project = setup_cfg["metadata"]["name"]
-
+project = "NEMO-Cmd"
 author = "SalishSeaCast Project Contributors and The University of British Columbia"
 pkg_creation_year = 2013
 copyright = f"{pkg_creation_year} – present, {author}"
 
 # The short X.Y version
-import nemo_cmd
-
-version = nemo_cmd.__version__
+version = importlib.metadata.version(project)
 # The full version, including alpha/beta/rc tags
 release = version
 

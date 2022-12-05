@@ -23,6 +23,7 @@ NEMO Command Processor
 This module is connected to the `nemo` command via console scripts and plugin
 entry points metadata in pyproject.toml.
 """
+import importlib.metadata
 import sys
 
 import cliff.app
@@ -37,7 +38,7 @@ class NEMO_App(cliff.app.App):
     def __init__(self):
         super().__init__(
             description="NEMO Command Processor",
-            version=nemo_cmd.__version__,
+            version=importlib.metadata.version("NEMO-Cmd"),
             command_manager=cliff.commandmanager.CommandManager(
                 "nemo", convert_underscores=False
             ),
