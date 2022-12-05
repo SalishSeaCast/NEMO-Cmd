@@ -38,7 +38,7 @@ class Deflate(cliff.command.Command):
     """Deflate variables in netCDF files using Lempel-Ziv compression."""
 
     def get_parser(self, prog_name):
-        parser = super(Deflate, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.description = """
             Deflate variables in netCDF files using Lempel-Ziv compression.
             Converts files to netCDF-4 format.
