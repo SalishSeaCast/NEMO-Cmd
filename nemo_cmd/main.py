@@ -39,15 +39,15 @@ class NEMO_App(cliff.app.App):
             description="NEMO Command Processor",
             version=nemo_cmd.__version__,
             command_manager=cliff.commandmanager.CommandManager(
-                "nemo.app", convert_underscores=False
+                "nemo", convert_underscores=False
             ),
             stderr=sys.stdout,
         )
 
 
 def main(argv=sys.argv[1:]):
-    app = NEMO_App()
-    return app.run(argv)
+    nemo = NEMO_App()
+    return nemo.run(argv)
 
 
 if __name__ == "__main__":
