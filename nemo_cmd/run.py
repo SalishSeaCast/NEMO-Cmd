@@ -41,7 +41,7 @@ class Run(cliff.command.Command):
     """Prepare, execute, and gather results from a NEMO model run."""
 
     def get_parser(self, prog_name):
-        parser = super(Run, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.description = """
             Prepare, execute, and gather the results from a NEMO
             run described in DESC_FILE.

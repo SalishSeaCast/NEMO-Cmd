@@ -35,7 +35,7 @@ class Gather(cliff.command.Command):
     """Gather results from a NEMO run."""
 
     def get_parser(self, prog_name):
-        parser = super(Gather, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.description = """
             Gather the results files from the NEMO run in the present working
             directory into files in RESULTS_DIR.

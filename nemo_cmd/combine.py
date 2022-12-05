@@ -40,7 +40,7 @@ class Combine(cliff.command.Command):
     """Combine per-processor files from an MPI NEMO run into single files"""
 
     def get_parser(self, prog_name):
-        parser = super(Combine, self).get_parser(prog_name)
+        parser = super().get_parser(prog_name)
         parser.description = """
             Combine the per-processor results and/or restart files from an MPI
             NEMO run described in DESC_FILE using the the NEMO rebuild_nemo

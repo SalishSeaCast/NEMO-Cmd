@@ -35,7 +35,7 @@ class NEMO_App(cliff.app.App):
     CONSOLE_MESSAGE_FORMAT = "%(name)s %(levelname)s: %(message)s"
 
     def __init__(self):
-        super(NEMO_App, self).__init__(
+        super().__init__(
             description="NEMO Command Processor",
             version=nemo_cmd.__version__,
             command_manager=cliff.commandmanager.CommandManager(
