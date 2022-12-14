@@ -23,8 +23,8 @@ v22.2.dev0 (unreleased)
 
 * Change to Python 3.11 for package development.
 
-* Drop support for Python 3.5, 3.6, and 3.7.
-  Minimum supported Python version is now 3.8.
+* Drop support for Python 3.5, 3.6, 3.7, 3.8, and 3.9.
+  Minimum supported Python version is now 3.10.
   Python 3.5 version deployed on ``orcinus`` is tagged ``orcinus-python-3.5``.
 
 
