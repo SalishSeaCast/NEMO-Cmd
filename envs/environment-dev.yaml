@@ -1,16 +1,16 @@
 # conda environment description file for NEMO-Cmd package
 # development environment
 #
-# Create a conda environment in which the `nemo` command can be run
+# Create a conda environment in which the `nemo` command is installed in editable mode
 # with:
 #
-#   $ conda env create -f NEMO-Cmd/envs/environment.yaml
-#   $ source activate nemo-cmd
+#   $ conda env create -f NEMO-Cmd/envs/environment-dev.yaml
+#   $ conda activate nemo-cmd
 #
-# The environment will also include all the tools used to develop,
+# The environment includes all the tools used to develop,
 # test, and document the NEMO-Cmd package.
 #
-# See the requirements.txt file for an exhaustive list of all the
+# See the envs/requirements.txt file for an exhaustive list of all the
 # packages installed in the environment and their versions used in
 # recent development.
 
