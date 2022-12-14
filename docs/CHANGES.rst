@@ -5,6 +5,9 @@ Change Log
 v22.2.dev0 (unreleased)
 =======================
 
+* Add :file:`envs/environment-hpc.yaml` to build conda environments on HPC clusters
+  from which the package can be installed using the ``--user`` scheme for installation.
+
 * Modernize packaging:
 
   * Replace :file:`setup.py` and :file:`setup.cfg` with :file:`pyproject.toml`
