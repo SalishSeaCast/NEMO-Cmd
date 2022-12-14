@@ -26,7 +26,7 @@ name = "NEMO-Cmd"
 dynamic = [ "version" ]
 description = "NEMO Command Processor"
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = { file = "LICENSE" }
 authors = [
     { name = "Doug Latornell", email = "dlatornell@eoas.ubc.ca" },
@@ -37,8 +37,6 @@ classifiers = [
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Operating System :: POSIX :: Linux",

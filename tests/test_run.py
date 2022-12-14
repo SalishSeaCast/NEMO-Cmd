@@ -636,7 +636,7 @@ class TestBuiltBatchScript:
             "modules to load:\n"
             "  - StdEnv/2020\n"
             "  - netcdf-fortran-mpi/4.5.2\n"
-            "  - python/3.9.6\n"
+            "  - python/3.10.2\n"
         )
         run_desc = yaml.safe_load(desc_file)
         script = nemo_cmd.run._build_batch_script(
@@ -679,7 +679,7 @@ class TestBuiltBatchScript:
             "\n"
             "module load StdEnv/2020\n"
             "module load netcdf-fortran-mpi/4.5.2\n"
-            "module load python/3.9.6\n"
+            "module load python/3.10.2\n"
             "\n"
             "\n"
             "mkdir -p ${RESULTS_DIR}\n"
