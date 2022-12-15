@@ -42,7 +42,7 @@ These instructions assume that:
   .. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
 
 To install the :kbd:`NEMO-Cmd` package so that the :command:`nemo` command is available
-in your :file:`$HOME/.local/bin/ directory:
+in your :file:`$HOME/.local/bin/` directory:
 
 .. code-block:: bash
 
