@@ -535,3 +535,37 @@ by the `SalishSeaCast Project Contributors`_ and The University of British Colum
 They are licensed under the Apache License, Version 2.0.
 https://www.apache.org/licenses/LICENSE-2.0
 Please see the LICENSE file for details of the license.
+
+
+Release Process
+===============
+
+Releases are done at Doug's discretion when significant pieces of development work have been
+completed.
+
+The release process steps are:
+
+#. Use :command:`hatch version release` to bump the version from ``.devn`` to the next release
+   version identifier
+
+#. Edit :file:`docs/CHANGES.rst` to update the version identifier and replace ``unreleased``
+   with the release date
+
+#. Commit the version bump and change log update
+
+#. Create and annotated tag for the release with :guilabel:`Git -> New Tag...` in PyCharm
+   or :command:`git tag -e -a vyy.n`
+
+#. Push the version bump commit and tag to GitHub
+
+#. Use the GitHub web interface to create a release,
+   editing the auto-generated release notes as necessary
+
+#. Use :command:`hatch version minor,dev` to bump the version for the next development cycle,
+   or use :command:`hatch version major,minor,dev` for a year rollover version bump
+
+#. Edit :file:`docs/CHANGES.rst` to add a new section for the unreleased dev version
+
+#. Commit the version bump and change log update
+
+#. Push the version bump commit to GitHub
