@@ -38,6 +38,7 @@ dependencies:
   # For unit tests
   - pytest
   - pytest-cov
+  - pytest-randomly
 
   # For documentation
   - sphinx
@@ -47,8 +48,5 @@ dependencies:
   - pip:
     - python-hglib
 
-    # For unit tests
-    - pytest-randomly
-
-    # editable install of NEMO-Cmd package
+    # install NEMO-Cmd package in editable mode
     - --editable ../
