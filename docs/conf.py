@@ -16,13 +16,17 @@
 import os
 import sys
 import importlib.metadata
+import tomllib
+from pathlib import Path
 
 sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
 
-project = "NEMO-Cmd"
+with Path("../pyproject.toml").open("rb") as f:
+    pkg_info = tomllib.load(f)
+project = pkg_info["project"]["name"]
 author = "SalishSeaCast Project Contributors and The University of British Columbia"
 pkg_creation_year = 2013
 copyright = f"{pkg_creation_year} – present, {author}"
