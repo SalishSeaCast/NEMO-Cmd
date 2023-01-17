@@ -59,7 +59,7 @@ dependencies = [
 ]
 
 [project.urls]
-"Documenation" = "https://nemo-cmd.readthedocs.io/en/latest/"
+"Documentation" = "https://nemo-cmd.readthedocs.io/en/latest/"
 "Changelog" = "https://nemo-cmd.readthedocs.io/en/latest/CHANGES.html"
 "Issue Tracker" = "https://github.com/SalishSeaCast/NEMO-Cmd/issues"
 "Source Code" = "https://github.com/SalishSeaCast/NEMO-Cmd"
