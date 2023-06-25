@@ -82,7 +82,6 @@ class TestTakeAction:
     """Unit test for `nemo deflate` sub-command take_action() method."""
 
     def test_take_action(self, deflate_cmd, caplog, monkeypatch):
-
         parsed_args = SimpleNamespace(
             filepaths=[Path("foo.nc"), Path("bar.nc")], jobs=6
         )
