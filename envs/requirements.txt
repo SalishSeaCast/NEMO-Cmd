@@ -69,7 +69,7 @@ pre-commit==3.3.3
 prettytable==3.5.0
 ptyprocess==0.7.0
 pycparser==2.21
-Pygments==2.13.0
+Pygments==2.15.0
 pyOpenSSL==22.1.0
 pyparsing==3.0.9
 pyperclip==1.8.2
