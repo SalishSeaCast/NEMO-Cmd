@@ -8,7 +8,7 @@ channels:
 
 dependencies:
   - pip
-  - python=3.11
+  - python=3.12
 
   # RTD packages
   - mock

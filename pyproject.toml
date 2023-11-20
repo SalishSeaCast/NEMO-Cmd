@@ -26,26 +26,12 @@ name = "NEMO-Cmd"
 dynamic = [ "version" ]
 description = "NEMO Command Processor"
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = { file = "LICENSE" }
 authors = [
     { name = "Doug Latornell", email = "dlatornell@eoas.ubc.ca" },
 ]
 keywords = ["automation", "oceanography", "ocean modelling", "UBC-MOAD"]
-classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Operating System :: POSIX :: Linux",
-    "Operating System :: Unix",
-    "Environment :: Console",
-    "Intended Audience :: Science/Research",
-    "Intended Audience :: Education",
-    "Intended Audience :: Developers",
-]
 dependencies = [
     # see envs/environment-dev.yaml for conda environment dev installation
     # see envs/requirements.txt for versions most recently used in development
