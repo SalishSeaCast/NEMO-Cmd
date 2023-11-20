@@ -25,7 +25,7 @@
 .. image:: https://img.shields.io/badge/license-Apache%202-cb2533.svg
     :target: https://www.apache.org/licenses/LICENSE-2.0
     :alt: Licensed under the Apache License, Version 2.0
-.. image:: https://img.shields.io/badge/Python-3.10%20%7C%203.11-blue?logo=python&label=Python&logoColor=gold
+.. image:: https://img.shields.io/badge/Python-3.11%20%7C%203.12-blue?logo=python&label=Python&logoColor=gold
     :target: https://docs.python.org/3.11/
     :alt: Python Version
 .. image:: https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
@@ -65,15 +65,15 @@
 Python Versions
 ===============
 
-.. image:: https://img.shields.io/badge/Python-3.10%20%7C%203.11-blue?logo=python&label=Python&logoColor=gold
-    :target: https://docs.python.org/3.11/
+.. image:: https://img.shields.io/badge/Python-3.11%20%7C%203.12-blue?logo=python&label=Python&logoColor=gold
+    :target: https://docs.python.org/3.12/
     :alt: Python Version
 
-The :kbd:`NEMO-Cmd` package is developed using `Python`_ 3.11.
-The minimum supported Python version is 3.10.
+The :kbd:`NEMO-Cmd` package is developed using `Python`_ 3.12.
+The minimum supported Python version is 3.11.
 The :ref:`NEMO-CmdContinuousIntegration` workflow on GitHub ensures that the package
-is tested for all versions of Python>=3.10.
-An old version of the package running under Python 3.5 is depoloyed on the
+is tested for all versions of Python>=3.11.
+An old version of the package running under Python 3.5 is deployed on the
 Westgrid :kbd:`orcinus` HPC platform.
 That version is tagged in the repository as ``orcinus-python-3.5``.
 
@@ -341,7 +341,7 @@ The output looks something like::
   (line   96) ok        https://docs.python.org/3/library/exceptions.html#KeyError
   (line    6) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/18
   writing output... [ 33%] development
-  (line   21) ok        https://docs.python.org/3.11/
+  (line   21) ok        https://docs.python.org/3.12/
   (line   21) ok        https://nemo-cmd.readthedocs.io/en/latest/
   (line   61) ok        https://www.python.org/
   (line   95) ok        https://conda.io/en/latest/
