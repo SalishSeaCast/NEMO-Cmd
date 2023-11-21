@@ -2,12 +2,12 @@
 Change Log
 **********
 
-v23.1.dev0 (unreleased)
-=======================
+v23.1 (2023-11-20)
+==================
 
 * Change to Python 3.12 for package development.
 
-* Drop support for Python 3.10..
+* Drop support for Python 3.10.
   Minimum supported Python version is now 3.11.
 
 
