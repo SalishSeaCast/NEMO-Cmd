@@ -69,5 +69,8 @@ source = [ "nemo_cmd", "tests"]
 show_missing = true
 
 
+[tool.hatch.build.targets.wheel]
+packages = ["nemo_cmd"]
+
 [tool.hatch.version]
 path = "nemo_cmd/__about__.py"
