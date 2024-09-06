@@ -27,11 +27,11 @@
 |                            |      :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:pytest-with-coverage                                                                                              |
 |                            |      :alt: Pytest with Coverage Status                                                                                                                                                           |
 |                            | .. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/graph/badge.svg?token=ZDCF36TYDQ                                                                                                         |
-|                            |      :target: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd                                                                                                                                       |
+|                            |      :target: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd                                                                                                                                   |
 |                            |      :alt: Codecov Testing Coverage Report                                                                                                                                                       |
 |                            | .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/actions/workflows/codeql-analysis.yaml/badge.svg                                                                                            |
-|                            |     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:CodeQL                                                                                                             |
-|                            |     :alt: CodeQL analysis                                                                                                                                                                        |
+|                            |      :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:CodeQL                                                                                                            |
+|                            |      :alt: CodeQL analysis                                                                                                                                                                       |
 +----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | **Documentation**          | .. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest                                                                                                                       |
 |                            |     :target: https://nemo-cmd.readthedocs.io/en/latest/                                                                                                                                          |
@@ -477,7 +477,7 @@ Continuous Integration
 .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/actions/workflows/pytest-with-coverage.yaml/badge.svg
     :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:pytest-with-coverage
     :alt: Pytest with Coverage Status
-.. image:: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd/branch/main/graph/badge.svg
+.. image:: https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/graph/badge.svg?token=ZDCF36TYDQ
     :target: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
     :alt: Codecov Testing Coverage Report
 
