@@ -7,7 +7,6 @@
 name: nemo-cmd-test
 
 channels:
-  - conda-forge/label/python_rc
   - conda-forge
   - nodefaults
 
