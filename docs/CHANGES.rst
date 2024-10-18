@@ -2,10 +2,10 @@
 Change Log
 **********
 
-v23.2.dev0 (unreleased)
+v24.1.dev0 (unreleased)
 =======================
 
-*
+* Change to Python 3.13 for package development.
 
 
 v23.1 (2023-11-20)
