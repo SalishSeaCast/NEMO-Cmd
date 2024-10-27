@@ -2,8 +2,8 @@
 Change Log
 **********
 
-v24.1.dev0 (unreleased)
-=======================
+v24.1 (2024-10-27)
+==================
 
 * Change to Python 3.13 for package development.
 
