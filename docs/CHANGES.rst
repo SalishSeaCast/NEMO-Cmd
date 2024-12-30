@@ -2,10 +2,10 @@
 Change Log
 **********
 
-v24.2.dev0 (unreleased)
-=======================
+v24.2 (2024-12-30)
+==================
 
-*
+* Improve release process documentation
 
 
 v24.1 (2024-10-27)
