@@ -16,8 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-"""NEMO-Cmd gather sub-command plug-in unit tests
-"""
+"""NEMO-Cmd gather sub-command plug-in unit tests"""
 from pathlib import Path
 from types import SimpleNamespace
 

@@ -16,8 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-"""NEMO-Cmd combine sub-command plug-in unit tests
-"""
+"""NEMO-Cmd combine sub-command plug-in unit tests"""
 from io import StringIO
 from unittest.mock import Mock, patch
 

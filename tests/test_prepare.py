@@ -16,8 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-"""NEMO-Cmd prepare sub-command plug-in unit tests
-"""
+"""NEMO-Cmd prepare sub-command plug-in unit tests"""
 from datetime import datetime
 from pathlib import Path
 from unittest.mock import call, Mock, patch
