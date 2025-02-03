@@ -16,8 +16,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-"""NEMO-Cmd deflate sub-command plug-in unit tests
-"""
+"""NEMO-Cmd deflate sub-command plug-in unit tests"""
 import logging
 import math
 import multiprocessing
