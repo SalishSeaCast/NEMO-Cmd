@@ -199,7 +199,7 @@ v19.1 (2019-08-26)
 * Add support for the use of `AGRIF`_ (Adaptive Grid Refinement in Fortran)
   in NEMO-3.6 runs.
 
-.. _AGRIF: https://forge.ipsl.fr/nemo/wiki/Users/ModelInterfacing/AGRIF
+.. _AGRIF: https://agrif.imag.fr/index.html
 
 * Expand shell and user variables in namelist file paths.
 

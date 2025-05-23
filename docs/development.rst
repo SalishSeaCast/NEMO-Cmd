@@ -33,7 +33,7 @@
 |                            |      :target: https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:CodeQL                                                                                                            |
 |                            |      :alt: CodeQL analysis                                                                                                                                                                       |
 +----------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Documentation**          | .. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest                                                                                                                       |
+| **Documentation**          | .. image:: https://app.readthedocs.org/projects/nemo-cmd/badge/?version=latest                                                                                                                   |
 |                            |     :target: https://nemo-cmd.readthedocs.io/en/latest/                                                                                                                                          |
 |                            |     :alt: Documentation Status                                                                                                                                                                   |
 |                            | .. image:: https://github.com/SalishSeaCast/NEMO-Cmd/actions/workflows/sphinx-linkcheck.yaml/badge.svg                                                                                           |
@@ -182,7 +182,7 @@ and run :command:`pre-commit install`:
 Building the Documentation
 ==========================
 
-.. image:: https://readthedocs.org/projects/nemo-cmd/badge/?version=latest
+.. image:: https://app.readthedocs.org/projects/nemo-cmd/badge/?version=latest
     :target: https://nemo-cmd.readthedocs.io/en/latest/
     :alt: Documentation Status
 
@@ -208,7 +208,7 @@ follow the instructions in the :ref:`NEMO-CmdDevelopmentEnvironment` section abo
 In the development environment you can build the docs locally instead of having to push commits to GitHub to trigger a `build on readthedocs.org`_ and wait for it to complete.
 Below are instructions that explain how to:
 
-.. _build on readthedocs.org: https://readthedocs.org/projects/nemo-cmd/builds/
+.. _build on readthedocs.org: https://app.readthedocs.org/projects/nemo-cmd/builds/
 
 * build the docs with your changes,
   and preview them in Firefox
