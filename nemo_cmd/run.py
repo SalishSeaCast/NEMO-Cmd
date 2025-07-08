@@ -23,6 +23,7 @@ Prepare for, execute, and gather the results of a run of the NEMO model.
 import datetime
 import logging
 import math
+import shlex
 import time
 import os
 from pathlib import Path
@@ -245,7 +246,9 @@ def run(
         cmd = f"{queue_job_cmd} NEMO.sh"
     results_dir.mkdir(parents=True, exist_ok=True)
     try:
-        submit_job_msg = subprocess.check_output(cmd.split(), universal_newlines=True)
+        submit_job_msg = subprocess.check_output(
+            shlex.split(cmd), universal_newlines=True
+        )
     except OSError:
         logger.error(
             f"{queue_job_cmd} not found. Please confirm the correct job submission command "
