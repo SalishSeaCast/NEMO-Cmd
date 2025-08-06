@@ -637,12 +637,16 @@ will result in a :kbd:`#PBS -l nodes=2:ppn=12` directive being included in the :
 :kbd:`modules to load` Section
 ==============================
 
-The *optional* :kbd:`modules to load` section of the run description file contains a list of HPC `environment modules`_ for which :command:`module load` commands will be added to the :file:`NEMO.sh` script in the temporary run directory.
+The *optional* :kbd:`modules to load` section of the run description file contains a list of
+HPC environment modules for which :command:`module load` commands will be added to the
+:file:`NEMO.sh` script in the temporary run directory.
 You will need to use this section if you are running on an HPC system that uses environment modules;
 otherwise,
 you can omit the :kbd:`modules to load` section.
+Please see the Alliance Canada `environment modules`_ docs for an example of how to use
+modules on their clusters.
 
-.. _environment modules: https://modules.sourceforge.net/
+.. _environment modules: https://docs.alliancecan.ca/wiki/Utiliser_des_modules/en
 
 An example of a :kbd:`modules to load` section is:
 
