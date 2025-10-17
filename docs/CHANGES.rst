@@ -5,7 +5,7 @@ Change Log
 v25.1 (unreleased)
 ==================
 
-*
+* Change to use Python 3.14 for package development.
 
 
 v24.2 (2024-12-30)
