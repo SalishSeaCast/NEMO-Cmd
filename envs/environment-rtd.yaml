@@ -8,7 +8,7 @@ channels:
 
 dependencies:
   - pip
-  - python=3.13
+  - python=3.14
 
 # Sphinx and extensions
   - sphinx=8.1.3
