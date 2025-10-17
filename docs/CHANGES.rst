@@ -2,7 +2,7 @@
 Change Log
 **********
 
-v25.1 (2025-10-17)
+v25.2 (2025-10-17)
 ==================
 
 * Change to use Python 3.14 for package development.
@@ -10,7 +10,13 @@ v25.1 (2025-10-17)
 * Add support for Python 3.14.
 
 * Drop support for Python 3.11.
- The minimum supported Python version is now 3.12.
+  The minimum supported Python version is now 3.12.
+
+
+v25.1 (2025-10-17)
+==================
+
+* Not useful due to a release process error.
 
 
 v24.2 (2024-12-30)
