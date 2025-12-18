@@ -74,3 +74,14 @@ packages = ["nemo_cmd"]
 
 [tool.hatch.version]
 path = "nemo_cmd/__about__.py"
+
+
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tool.pixi.pypi-dependencies]
+NEMO-Cmd = { path = ".", editable = true }
+
+[tool.pixi.tasks]
