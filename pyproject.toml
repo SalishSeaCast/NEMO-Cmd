@@ -88,7 +88,7 @@ cliff = "*"
 f90nml = "*"
 gitpython = "*"
 pixi-pycharm = ">=0.0.10,<0.0.11"
-python = "3.14.*"
+python = "*"
 pyyaml = "*"
 
 [tool.pixi.pypi-dependencies]
@@ -100,6 +100,8 @@ NEMO-Cmd = { path = ".", editable = true }
 [tool.pixi.environments]
 default = {features = [], solve-group = "default"}
 test = { features = ["test"], solve-group = "default" }
+test-py312 = { features = ["py312", "test"] }
+test-py313 = { features = ["py313", "test"] }
 
 [tool.pixi.feature.test.dependencies]
 pytest = "*"
@@ -110,3 +112,9 @@ pytest-randomly = "*"
 pytest = "pytest"
 pytest-cov = "pytest --cov=./"
 pytest-cov-html = "pytest --cov=./ --cov-report html"
+
+[tool.pixi.feature.py312.dependencies]
+python = "3.12.*"
+
+[tool.pixi.feature.py313.dependencies]
+python = "3.13.*"
