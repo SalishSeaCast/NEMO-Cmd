@@ -415,19 +415,16 @@ Running the Unit Tests
 ======================
 
 The test suite for the :kbd:`NEMO-Cmd` package is in :file:`NEMO-Cmd/tests/`.
-The `pytest`_ tools is used for test fixtures and as the test runner for the suite.
+The `pytest`_ tool is used for test fixtures and as the test runner for the suite.
 
 .. _pytest: https://docs.pytest.org/en/latest/
 
-With your :kbd:`nemo-cmd` development environment activated,
-use:
-
-.. _Mercurial: https://www.mercurial-scm.org/
+Use:
 
 .. code-block:: bash
 
-    (salishsea-cmd)$ cd NEMO-Cmd/
-    (salishsea-cmd)$ pytest
+    cd NEMO-Cmd/
+    pixi run pytest
 
 to run the test suite.
 The output looks something like:
@@ -435,11 +432,11 @@ The output looks something like:
 .. code-block:: text
 
     ================================== test session starts ===============================
-    platform linux -- Python 3.14.0, pytest-8.4.2, pluggy-1.6.0
-    Using --randomly-seed=1824633036
+    platform linux -- Python 3.14.2, pytest-9.0.2, pluggy-1.6.0
+    Using --randomly-seed=894334699
     rootdir: /media/doug/warehouse/MEOPAR/NEMO-Cmd
     configfile: pyproject.toml
-    plugins: cov-7.0.0, randomly-3.15.0, anyio-4.11.0
+    plugins: cov-7.0.0, randomly-3.15.0
     collected 192 items
 
     tests/test_deflate.py ........                                                  [  4%]
@@ -448,7 +445,7 @@ The output looks something like:
     tests/test_combine.py ............                                              [ 40%]
     tests/test_api.py ........                                                      [ 44%]
     tests/test_prepare.py ................................................................
-    .... ......................................                                     [100%]
+    ..........................................                                      [100%]
 
       ===============================  192 passed in 3.16s ===============================
 
@@ -459,8 +456,8 @@ You can monitor what lines of code the test suite exercises using the `coverage.
 
 .. code-block:: bash
 
-    (salishsea-cmd)$ cd NEMO-Cmd/
-    (salishsea-cmd)$ pytest --cov=./
+    cd NEMO-Cmd/
+    pixi run pytest-cov
 
 The test coverage report will be displayed below the test suite run output.
 
@@ -469,7 +466,8 @@ you can use
 
 .. code-block:: bash
 
-    (salishsea-cmd)$ pytest --cov=./ --cov-report html
+    cd NEMO-Cmd/
+    pixi run pytest-cov-html
 
 to produce an HTML report that you can view in your browser by opening :file:`NEMO-Cmd/htmlcov/index.html`.
 

@@ -64,6 +64,7 @@ run = "nemo_cmd.run:Run"
 [tool.coverage.run]
 branch = true
 source = [ "nemo_cmd", "tests"]
+omit = [ ".pixi/*" ]
 
 [tool.coverage.report]
 show_missing = true
@@ -74,7 +75,6 @@ packages = ["nemo_cmd"]
 
 [tool.hatch.version]
 path = "nemo_cmd/__about__.py"
-
 
 
 [tool.pixi.workspace]
@@ -99,3 +99,14 @@ NEMO-Cmd = { path = ".", editable = true }
 
 [tool.pixi.environments]
 default = {features = [], solve-group = "default"}
+test = { features = ["test"], solve-group = "default" }
+
+[tool.pixi.feature.test.dependencies]
+pytest = "*"
+pytest-cov = "*"
+pytest-randomly = "*"
+
+[tool.pixi.feature.test.tasks]
+pytest = "pytest"
+pytest-cov = "pytest --cov=./"
+pytest-cov-html = "pytest --cov=./ --cov-report html"
