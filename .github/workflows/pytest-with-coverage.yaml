@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [ 'test', 'test-py313', 'test-py312' ]
+        environment: [ 'test-py312', 'test-py313', 'test-py314' ]
     runs-on: 'ubuntu-latest'
     steps:
       - name: Checkout repository
