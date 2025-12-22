@@ -222,23 +222,22 @@ Building and Previewing the Documentation
 -----------------------------------------
 
 Building the documentation is driven by the :file:`docs/Makefile`.
-With your :kbd:`nemo-cmd` development environment activated,
-use:
+To do a clean build of the documentation use:
 
 .. code-block:: bash
 
-    (nemo-cmd)$ (cd docs && make clean html)
+    cd NEMO-Cmd/
+    pixi run docs
 
-to do a clean build of the documentation.
 The output looks something like:
 
 .. code-block:: text
 
+    ✨ Pixi task (docs in docs): make clean html
     Removing everything under '_build'...
     Running Sphinx v8.1.3
     loading translations [en]... done
     making output directory... done
-    Converting `source_suffix = '.rst'` to `source_suffix = {'.rst': 'restructuredtext'}`.
     loading intersphinx inventory 'python' from https://docs.python.org/3/objects.inv ...
     loading intersphinx inventory 'salishseacmd' from https://salishseacmd.readthedocs.io/en/latest/objects.inv ...
     loading intersphinx inventory 'salishseadocs' from https://salishsea-meopar-docs.readthedocs.io/en/latest/objects.inv ...
@@ -254,8 +253,8 @@ The output looks something like:
     copying assets...
     copying static files...
     Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/language_data.js
-    Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/basic.css
     Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/documentation_options.js
+    Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/basic.css
     Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/js/versions.js
     copying static files: done
     copying extra files...
@@ -288,17 +287,19 @@ Link Checking the Documentation
 
 Sphinx also provides a link checker utility which can be run to find broken or redirected links in the docs.
 With your :kbd:`nemo-cmd` environment activated,
-use:
+Run the link checker with:
 
 .. code-block:: bash
 
-    (mohid-cmd)$ cd NEMO-Cmd/docs/
-    (mohid-cmd) docs$ make linkcheck
+    cd NEMO-Cmd/
+    pixi run linkcheck
 
 The output looks something like:
 
 .. code-block:: text
 
+    ✨ Pixi task (linkcheck in docs): make clean linkcheck
+    Removing everything under '_build'...
     Running Sphinx v8.1.3
     loading translations [en]... done
     making output directory... done
@@ -318,85 +319,86 @@ The output looks something like:
     copying assets: done
     writing output... [100%] subcommands
 
-    (         CHANGES: line   81) ok        https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
-    (         CHANGES: line  114) ok        https://black.readthedocs.io/en/stable/
+    (         CHANGES: line  100) ok        https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
+    (         CHANGES: line  133) ok        https://black.readthedocs.io/en/stable/
     (     development: line   36) ok        https://app.readthedocs.org/projects/nemo-cmd/badge/?version=latest
-    (     development: line  205) ok        https://app.readthedocs.org/projects/nemo-cmd/builds/
+    (         CHANGES: line  218) ok        https://agrif.imag.fr/index.html
     (run_description_file/3.6_agrif_yaml_file: line   25) ok        https://agrif.imag.fr/
-    (         CHANGES: line  199) ok        https://agrif.imag.fr/index.html
+    (     development: line  205) ok        https://app.readthedocs.org/projects/nemo-cmd/builds/
+    (         CHANGES: line  137) ok        https://calver.org/
+    (     development: line  451) ok        https://coverage.readthedocs.io/en/latest/
+    (     development: line  114) ok        https://docs.conda.io/en/latest/
     (     development: line   29) ok        https://codecov.io/gh/SalishSeaCast/NEMO-Cmd/graph/badge.svg?token=ZDCF36TYDQ
-    (         CHANGES: line  118) ok        https://calver.org/
-    (     development: line  449) ok        https://coverage.readthedocs.io/en/latest/
-    (     development: line  494) ok        https://docs.github.com/en/actions
+    (     development: line  497) ok        https://docs.github.com/en/actions
     (     development: line  114) ok        https://docs.conda.io/en/latest/miniconda.html
-    (         CHANGES: line  179) ok        https://bugs.launchpad.net/python-cliff/+bug/1719465
-    (run_description_file/3.6_yaml_file: line  640) ok        https://docs.alliancecan.ca/wiki/Utiliser_des_modules/en
     (     development: line   23) ok        https://docs.python.org/3/
     (run_description_file/3.6_yaml_file: line  197) ok        https://docs.python.org/3/library/constants.html#False
-    (     development: line  114) ok        https://docs.conda.io/en/latest/
-    (             api: line   98) ok        https://docs.python.org/3/library/constants.html#True
     (             api: line   23) ok        https://docs.python.org/3/library/constants.html#None
+    (run_description_file/3.6_yaml_file: line  640) ok        https://docs.alliancecan.ca/wiki/Utiliser_des_modules/en
+    (     development: line  417) ok        https://docs.pytest.org/en/latest/
+    (             api: line   98) ok        https://docs.python.org/3/library/constants.html#True
     (             api: line   98) ok        https://docs.python.org/3/library/exceptions.html#KeyError
-    (     development: line  416) ok        https://docs.pytest.org/en/latest/
     (             api: line   20) ok        https://docs.python.org/3/library/exceptions.html#SystemExit
     (             api: line   23) ok        https://docs.python.org/3/library/functions.html#int
     (             api: line   23) ok        https://docs.python.org/3/library/pathlib.html#pathlib.Path
     (             api: line   45) ok        https://docs.python.org/3/library/stdtypes.html#list
+    (         CHANGES: line  198) ok        https://bugs.launchpad.net/python-cliff/+bug/1719465
     (             api: line   23) ok        https://docs.python.org/3/library/stdtypes.html#str
-    (     subcommands: line  234) ok        https://en.wikipedia.org/wiki/Universally_unique_identifier
     (             api: line   23) ok        https://docs.python.org/3/library/stdtypes.html#dict
-    (     development: line  509) ok        https://git-scm.com/
-    (         CHANGES: line   95) ok        https://f90nml.readthedocs.io/en/latest/
-    (     development: line   26) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions/workflows/pytest-with-coverage.yaml/badge.svg
-    (         CHANGES: line   85) ok        https://github.com/SalishSeaCast/NEMO-Cmd
+    (     subcommands: line  234) ok        https://en.wikipedia.org/wiki/Universally_unique_identifier
+    (         CHANGES: line  114) ok        https://f90nml.readthedocs.io/en/latest/
+    (     development: line  512) ok        https://git-scm.com/
     (     development: line   39) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions/workflows/sphinx-linkcheck.yaml/badge.svg
     (     development: line   32) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions/workflows/codeql-analysis.yaml/badge.svg
-    (         CHANGES: line   81) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions
-    (     development: line  483) ok        https://github.com/SalishSeaCast/NEMO-Cmd/commits/main
+    (     development: line   26) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions/workflows/pytest-with-coverage.yaml/badge.svg
+    (         CHANGES: line  104) ok        https://github.com/SalishSeaCast/NEMO-Cmd
+    (         CHANGES: line  100) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions
     (     development: line   23) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:CodeQL
     (     development: line   23) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues
-    (     development: line   23) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:sphinx-linkcheck
-    (         CHANGES: line  253) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/10
     (     development: line   23) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:pytest-with-coverage
-    (         CHANGES: line  249) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/16
-    (         CHANGES: line  259) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/11
+    (     development: line  486) ok        https://github.com/SalishSeaCast/NEMO-Cmd/commits/main
+    (     development: line   23) ok        https://github.com/SalishSeaCast/NEMO-Cmd/actions?query=workflow:sphinx-linkcheck
+    (         CHANGES: line  278) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/11
+    (         CHANGES: line  268) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/16
+    (         CHANGES: line  272) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/10
     (             api: line    6) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/18
-    (         CHANGES: line  221) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/19
-    (     development: line  537) ok        https://github.com/SalishSeaCast/docs/blob/main/CONTRIBUTORS.rst
-    (         CHANGES: line  226) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/20
+    (         CHANGES: line  240) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/19
+    (         CHANGES: line  245) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/20
+    (     development: line  540) ok        https://github.com/SalishSeaCast/docs/blob/main/CONTRIBUTORS.rst
+    (         CHANGES: line  284) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/5
     (     development: line   23) ok        https://github.com/SalishSeaCast/NEMO-Cmd/releases
-    (         CHANGES: line  265) ok        https://github.com/SalishSeaCast/NEMO-Cmd/issues/5
-    (         CHANGES: line   41) ok        https://hatch.pypa.io/
-    (         CHANGES: line   47) ok        https://github.com/UBC-MOAD/gha-workflows
+    (         CHANGES: line   60) ok        https://hatch.pypa.io/
+    (         CHANGES: line   66) ok        https://github.com/UBC-MOAD/gha-workflows
     (     development: line   65) ok        https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg
-    (     development: line   62) ok        https://img.shields.io/badge/code%20style-black-000000.svg
     (     development: line   59) ok        https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white
-    (     development: line   53) ok        https://img.shields.io/badge/license-Apache%202-cb2533.svg
-    (    installation: line   36) ok        https://github.com/conda-forge/miniforge
-    (     development: line   23) ok        https://github.com/pypa/hatch
+    (     development: line   62) ok        https://img.shields.io/badge/code%20style-black-000000.svg
     (     development: line   56) ok        https://img.shields.io/badge/version%20control-git-blue.svg?logo=github
-    (     development: line   23) ok        https://nemo-cmd.readthedocs.io/en/latest/
-    (     development: line   43) ok        https://img.shields.io/github/v/release/SalishSeaCast/NEMO-Cmd?logo=github
-    (         CHANGES: line  265) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#grid-section
-    (     development: line   46) ok        https://img.shields.io/python/required-version-toml?tomlFilePath=https://raw.githubusercontent.com/SalishSeaCast/NEMO-Cmd/main/pyproject.toml&logo=Python&logoColor=gold&label=Python
+    (     development: line   53) ok        https://img.shields.io/badge/license-Apache%202-cb2533.svg
     (     development: line   49) ok        https://img.shields.io/github/issues/SalishSeaCast/NEMO-Cmd?logo=github
-    (         CHANGES: line  259) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#modules-to-load-section
-    (         CHANGES: line  270) ok        https://nemo-cmd.readthedocs.io/en/latest/api.html#functions-for-working-with-file-system-paths
-    (         CHANGES: line  229) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#restart-section
-    (         CHANGES: line   92) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#vcs-revisions-section
-    (         CHANGES: line  253) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#pbs-resources-section
+    (     development: line   43) ok        https://img.shields.io/github/v/release/SalishSeaCast/NEMO-Cmd?logo=github
+    (     development: line   46) ok        https://img.shields.io/python/required-version-toml?tomlFilePath=https://raw.githubusercontent.com/SalishSeaCast/NEMO-Cmd/main/pyproject.toml&logo=Python&logoColor=gold&label=Python
+    (         CHANGES: line  289) ok        https://nemo-cmd.readthedocs.io/en/latest/api.html#functions-for-working-with-file-system-paths
+    (     development: line   23) ok        https://nemo-cmd.readthedocs.io/en/latest/
+    (         CHANGES: line  284) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#grid-section
+    (         CHANGES: line  272) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#pbs-resources-section
+    (         CHANGES: line  248) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#restart-section
+    (         CHANGES: line  278) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#modules-to-load-section
+    (    installation: line   36) ok        https://github.com/conda-forge/miniforge
+    (         CHANGES: line    8) ok        https://pixi.prefix.dev/latest/
     (     development: line  130) ok        https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
-    (run_description_file/index: line   25) ok        https://pyyaml.org/wiki/PyYAMLDocumentation
-    (     development: line  449) ok        https://pytest-cov.readthedocs.io/en/latest/
+    (         CHANGES: line  111) ok        https://nemo-cmd.readthedocs.io/en/latest/run_description_file/3.6_yaml_file.html#vcs-revisions-section
+    (     development: line   23) ok        https://github.com/pypa/hatch
+    (     development: line  451) ok        https://pytest-cov.readthedocs.io/en/latest/
     (run_description_file/3.6_yaml_file: line  190) ok        https://salishsea-meopar-docs.readthedocs.io/en/latest/code-notes/salishsea-nemo/land-processor-elimination/index.html#landprocessorelimination
-    (         CHANGES: line  187) ok        https://slurm.schedmd.com/
-    (     development: line  156) ok        https://pre-commit.com/
-    (     development: line   23) ok        https://pre-commit.com
-    (         CHANGES: line  311) ok        https://tox.wiki/en/latest/
+    (run_description_file/index: line   25) ok        https://pyyaml.org/wiki/PyYAMLDocumentation
     (             api: line   47) ok        https://salishseacmd.readthedocs.io/en/latest/index.html#salishseacmdprocessor
+    (     development: line   23) ok        https://pre-commit.com
+    (         CHANGES: line  330) ok        https://tox.wiki/en/latest/
+    (         CHANGES: line  206) ok        https://slurm.schedmd.com/
+    (     development: line  156) ok        https://pre-commit.com/
+    (         CHANGES: line  118) ok        https://ubc-moad-docs.readthedocs.io/en/latest/python_packaging/pkg_structure.html
     (     development: line   23) ok        https://www.apache.org/licenses/LICENSE-2.0
     (     development: line   80) ok        https://www.python.org/
-    (         CHANGES: line   99) ok        https://ubc-moad-docs.readthedocs.io/en/latest/python_packaging/pkg_structure.html
     (     development: line  189) ok        https://www.sphinx-doc.org/en/master/
     (     development: line  189) ok        https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
     (           index: line   25) ok        https://www.nemo-ocean.eu/
