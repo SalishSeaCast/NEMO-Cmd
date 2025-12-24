@@ -77,12 +77,12 @@ Python Versions
     :target: https://docs.python.org/3/
     :alt: Python Version from PEP 621 TOML
 
-The :kbd:`NEMO-Cmd` package is developed using `Python`_ 3.14.
+The :py:obj:`NEMO-Cmd` package is developed using `Python`_ 3.14.
 The minimum supported Python version is 3.12.
 The :ref:`NEMO-CmdContinuousIntegration` workflow on GitHub ensures that the package
 is tested for all versions of Python>=3.12.
 An old version of the package running under Python 3.5 is deployed on the
-Westgrid :kbd:`orcinus` HPC platform.
+Westgrid ``orcinus`` HPC platform.
 That version is tagged in the repository as ``orcinus-python-3.5``.
 
 .. _Python: https://www.python.org/
@@ -103,7 +103,7 @@ Clone the code and documentation `repository`_ from GitHub with:
 
 .. code-block:: bash
 
-    $ git clone git@github.com:SalishSeaCast/NEMO-Cmd.git
+    git clone git@github.com:SalishSeaCast/NEMO-Cmd.git
 
 
 .. _NEMO-CmdDevelopmentEnvironment:
@@ -111,34 +111,45 @@ Clone the code and documentation `repository`_ from GitHub with:
 Development Environment
 =======================
 
-Setting up an isolated development environment using `Conda`_ is recommended.
-Assuming that you have `Miniconda3`_ installed,
-you can create and activate an environment called ``nemo-cmd`` that will have
-all of the Python packages necessary for development,
-testing,
-and building the documentation with the commands below.
+:py:obj:`NEMO-Cmd` uses Pixi_ for package and environment management.
+If you don't already have Pixi_ installed,
+please follow its `installation instrucntions`_ to do so.
 
-.. _Conda: https://docs.conda.io/en/latest/
-.. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
+.. _Pixi: https://pixi.prefix.dev/latest/
+.. _`installation instrucntions`: https://pixi.prefix.dev/latest/installation/
 
-.. code-block:: bash
+Most commands are executed using :command:`pixi run` in the :file:`MEMO-Cmd/` directory
+(or a sub-directory).
+Dependencies will be downloaded and linked in to environments when you use :command:`pixi run`
+for the first time.
 
-    $ cd NEMO-Cmd
-    $ conda env create -f envs/environment-dev.yaml
-    $ conda activate nemo-cmd
+* The ``default`` environment has the packages installed that are required to run the
+  :py:obj:`NEMO-Cmd` command-line interface;
+  e.g. :command:`pixi run nemo help`
 
-:kbd:`NEMO-Cmd` is installed in `editable install mode`_ as part of the conda environment
-creation process.
-That means that the package is installed from the cloned repo via symlinks so that
-it will be automatically updated as the repo evolves.
+* Other environments use by commands in the sections below have addition packages for running
+  the test suite,
+  building and link checking the documentation,
+  etc.
+
+* If you are using an integrated development environment like VSCode or PyCharm
+  where you need a Python interpreter to support coding assistance features,
+  run development tasks,
+  etc.,
+  use the interpreter in the ``dev`` environment.
+  You can get its full path with :command:`pixi run -e dev which python`
+
+To get detailed information about the environments,
+the packages installed in them,
+`pixi`_ tasks that are defined for them,
+etc.,
+:use command:`pixi info`.
+
+:py:obj:`NEMO-Cmd` is installed in `editable install mode`_ in all of the environments that
+`Pixi`_ creates.
+That means that changes you make to the code are immediately reflected in the environments.
 
 .. _editable install mode: https://pip.pypa.io/en/stable/topics/local-project-installs/#editable-installs
-
-To deactivate the environment use:
-
-.. code-block:: bash
-
-    (nemo-cmd)$ conda deactivate
 
 
 .. _NEMO-CmdCodingStyle:
@@ -162,17 +173,16 @@ and repo QA.
 
 To install the `pre-commit` hooks in a newly cloned repo,
 activate the conda development environment,
-and run :command:`pre-commit install`:
+run :command:`pre-commit install`:
 
 .. code-block:: bash
 
-    $ cd NEMO-Cmd
-    $ conda activate nemo-cmd
-    (nemo-cmd)$ pre-commit install
+    cd NEMO-Cmd
+    pixi run -e dev pre-commit install
 
 .. note::
     You only need to install the hooks once immediately after you make a new clone
-    of the `NEMO-Cmd repository`_ and build your :ref:`NEMO-CmdDevelopmentEnvironment`.
+    of the `NEMO-Cmd repository`_
 
 .. _NEMO-Cmd repository: https://github.com/SalishSeaCast/NEMO-Cmd
 
@@ -186,7 +196,7 @@ Building the Documentation
     :target: https://nemo-cmd.readthedocs.io/en/latest/
     :alt: Documentation Status
 
-The documentation for the :kbd:`NEMO-Cmd` package is written in `reStructuredText`_ and converted to HTML using `Sphinx`_.
+The documentation for the :py:obj:`NEMO-Cmd` package is written in `reStructuredText`_ and converted to HTML using `Sphinx`_.
 
 .. _reStructuredText: https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html
 .. _Sphinx: https://www.sphinx-doc.org/en/master/
@@ -273,7 +283,7 @@ The output looks something like:
 The HTML rendering of the docs ends up in :file:`NEMO-Cmd/docs/_build/html/`.
 You can open the :file:`index.html` file in that directory tree in your browser to preview the results of the build before committing and pushing your changes to GitHub.
 
-Whenever you push changes to the :kbd:`NEMO-Cmd` repository on GitHub the documentation is automatically re-built and rendered at https://nemo-cmd.readthedocs.io/en/latest/.
+Whenever you push changes to the :py:obj:`NEMO-Cmd` repository on GitHub the documentation is automatically re-built and rendered at https://nemo-cmd.readthedocs.io/en/latest/.
 
 
 .. _NEMO-CmdLinkCheckingTheDocumentation:
@@ -286,7 +296,6 @@ Link Checking the Documentation
     :alt: Sphinx linkcheck
 
 Sphinx also provides a link checker utility which can be run to find broken or redirected links in the docs.
-With your :kbd:`nemo-cmd` environment activated,
 Run the link checker with:
 
 .. code-block:: bash
@@ -416,7 +425,7 @@ The output looks something like:
 Running the Unit Tests
 ======================
 
-The test suite for the :kbd:`NEMO-Cmd` package is in :file:`NEMO-Cmd/tests/`.
+The test suite for the :py:obj:`NEMO-Cmd` package is in :file:`NEMO-Cmd/tests/`.
 The `pytest`_ tool is used for test fixtures and as the test runner for the suite.
 
 .. _pytest: https://docs.pytest.org/en/latest/
@@ -485,7 +494,7 @@ Continuous Integration
     :target: https://app.codecov.io/gh/SalishSeaCast/NEMO-Cmd
     :alt: Codecov Testing Coverage Report
 
-The :kbd:`NEMO-Cmd` package unit test suite is run and a coverage report is generated whenever changes are pushed to GitHub.
+The :py:obj:`NEMO-Cmd` package unit test suite is run and a coverage report is generated whenever changes are pushed to GitHub.
 The results are visible on the `repo actions page`_,
 from the green checkmarks beside commits on the `repo commits page`_,
 or from the green checkmark to the left of the "Latest commit" message on the `repo code overview page`_ .
@@ -511,7 +520,7 @@ Version Control Repository
     :target: https://github.com/SalishSeaCast/NEMO-Cmd
     :alt: Git on GitHub
 
-The :kbd:`NEMO-Cmd` package code and documentation source files are available from
+The :py:obj:`NEMO-Cmd` package code and documentation source files are available from
 the `Git`_ repository at https://github.com/SalishSeaCast/NEMO-Cmd.
 
 .. _Git: https://git-scm.com/
@@ -564,7 +573,7 @@ completed.
 
 The release process steps are:
 
-#. Use :command:`hatch version release` to bump the version from ``.devn`` to the next release
+#. Use :command:`pixi run -e dev hatch version release` to bump the version from ``.devn`` to the next release
    version identifier
 
 #. Edit :file:`docs/CHANGES.rst` to update the version identifier and replace ``unreleased``
@@ -609,8 +618,8 @@ The release process steps are:
 
 #. Close the milestone for the just released version.
 
-#. Use :command:`hatch version minor,dev` to bump the version for the next development cycle,
-   or use :command:`hatch version major,minor,dev` for a year rollover version bump
+#. Use :command:`pixi run -e dev hatch version minor,dev` to bump the version for the next development cycle,
+   or use :command:`pixi run -e dev hatch version major,minor,dev` for a year rollover version bump
 
 #. Edit :file:`docs/CHANGES.rst` to add a new section for the unreleased dev version
 
