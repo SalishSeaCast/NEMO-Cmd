@@ -44,7 +44,7 @@ Contents
    subcommands
    run_description_file/index
    api
-   development
+   pkg_development
    CHANGES
 
 * :ref:`genindex`
