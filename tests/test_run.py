@@ -462,6 +462,14 @@ class TestRun:
 class TestBuiltBatchScript:
     """Unit tests for _build_batch_script() function."""
 
+    @pytest.fixture
+    @staticmethod
+    def mock_path(monkeypatch):
+        def _mock_path(path):
+            return Path("$HOME/MEOPAR/NEMO-Cmd/nemo_cmd/run.py")
+
+        monkeypatch.setattr(nemo_cmd.run, "Path", _mock_path)
+
     @patch("nemo_cmd.run._cleanup", autospec=True)
     @patch("nemo_cmd.run._fix_permissions", autospec=True)
     @patch("nemo_cmd.run._execute", autospec=True)
@@ -481,6 +489,7 @@ class TestBuiltBatchScript:
         m_exec,
         m_fixperms,
         m_cleanup,
+        mock_path,
         queue_job_cmd,
         directives_func,
         no_deflate,
@@ -513,7 +522,7 @@ class TestBuiltBatchScript:
                 run_desc, nemo_processors + xios_processors, results_dir
             )
         m_defns.assert_called_once_with(
-            run_desc, desc_file, run_dir, results_dir, queue_job_cmd, no_deflate
+            run_desc, desc_file, run_dir, results_dir, no_deflate
         )
         m_mods.assert_called_once_with(run_desc["modules to load"])
         m_exec.assert_called_once_with(
@@ -523,7 +532,7 @@ class TestBuiltBatchScript:
         m_cleanup.assert_called_once_with()
 
     @pytest.mark.parametrize("no_deflate", [True, False])
-    def test_qsub(self, no_deflate):
+    def test_qsub(self, mock_path, no_deflate):
         desc_file = StringIO(
             "run_id: foo\n"
             "walltime: 01:02:03\n"
@@ -569,12 +578,12 @@ class TestBuiltBatchScript:
             'RUN_DESC="NEMO.yaml"\n'
             'WORK_DIR="."\n'
             'RESULTS_DIR="results_dir"\n'
-            'COMBINE="${PBS_O_HOME}/.local/bin/nemo combine"\n'
+            'COMBINE="pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo combine"\n'
         )
         if not no_deflate:
-            expected += 'DEFLATE="${PBS_O_HOME}/.local/bin/nemo deflate"\n'
+            expected += 'DEFLATE="pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo deflate"\n'
         expected += (
-            'GATHER="${PBS_O_HOME}/.local/bin/nemo gather"\n'
+            'GATHER="pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo gather"\n'
             "\n"
             "\n"
             "module load intel\n"
@@ -626,7 +635,7 @@ class TestBuiltBatchScript:
         assert script == expected
 
     @pytest.mark.parametrize("no_deflate", [True, False])
-    def test_sbatch(self, no_deflate):
+    def test_sbatch(self, mock_path, no_deflate):
         desc_file = StringIO(
             "run_id: foo\n"
             "walltime: 01:02:03\n"
@@ -668,12 +677,12 @@ class TestBuiltBatchScript:
             'RUN_DESC="NEMO.yaml"\n'
             'WORK_DIR="."\n'
             'RESULTS_DIR="results_dir"\n'
-            'COMBINE="${HOME}/.local/bin/nemo combine"\n'
+            'COMBINE="pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo combine"\n'
         )
         if not no_deflate:
-            expected += 'DEFLATE="${HOME}/.local/bin/nemo deflate"\n'
+            expected += 'DEFLATE="pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo deflate"\n'
         expected += (
-            'GATHER="${HOME}/.local/bin/nemo gather"\n'
+            'GATHER="pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo gather"\n'
             "\n"
             "\n"
             "module load StdEnv/2020\n"
@@ -830,32 +839,32 @@ class TestDefinitions:
     """Unit tests for _definitions() function."""
 
     @pytest.mark.parametrize(
-        "queue_job_cmd, nemo_bin, no_deflate",
+        "no_deflate",
         [
-            ("qsub", "${PBS_O_HOME}/.local/bin/nemo", False),
-            ("sbatch", "${HOME}/.local/bin/nemo", True),
+            False,
+            True,
         ],
     )
-    def test_nemo_cmd(self, queue_job_cmd, nemo_bin, no_deflate):
+    def test_nemo_cmd(self, no_deflate, monkeypatch):
+        def mock_path(p):
+            return Path("$HOME/MEOPAR/NEMO-Cmd/nemo_cmd/run.py")
+
+        monkeypatch.setattr(nemo_cmd.run, "Path", mock_path)
+
         run_desc = {"run_id": "test"}
         defns = nemo_cmd.run._definitions(
-            run_desc,
-            "NEMO.yaml",
-            Path("run_dir"),
-            Path("results_dir"),
-            queue_job_cmd,
-            no_deflate,
+            run_desc, "NEMO.yaml", Path("run_dir"), Path("results_dir"), no_deflate
         )
         expected = (
-            f'RUN_ID="test"\n'
-            f'RUN_DESC="NEMO.yaml"\n'
-            f'WORK_DIR="run_dir"\n'
-            f'RESULTS_DIR="results_dir"\n'
-            f'COMBINE="{nemo_bin} combine"\n'
+            'RUN_ID="test"\n'
+            'RUN_DESC="NEMO.yaml"\n'
+            'WORK_DIR="run_dir"\n'
+            'RESULTS_DIR="results_dir"\n'
+            'COMBINE="pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo combine"\n'
         )
         if not no_deflate:
-            expected += f'DEFLATE="{nemo_bin} deflate"\n'
-        expected += f'GATHER="{nemo_bin} gather"\n'
+            expected += 'DEFLATE="pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo deflate"\n'
+        expected += 'GATHER="pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo gather"\n'
         assert defns == expected
 
 

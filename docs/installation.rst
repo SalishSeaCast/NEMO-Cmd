@@ -18,11 +18,11 @@
 
 .. _NEMO-CmdPackageInstallation:
 
-************************************
-:kbd:`NEMO-Cmd` Package Installation
-************************************
+***************************************
+:py:obj:`NEMO-Cmd` Package Installation
+***************************************
 
-:kbd:`NEMO-Cmd` is a Python package that provides the :program:`nemo` command-line tool
+:py:obj:`NEMO-Cmd` is a Python package that provides the :program:`nemo` command-line tool
 for doing various operations associated running with the `NEMO`_ ocean model.
 
 .. _NEMO: https://www.nemo-ocean.eu/
@@ -31,32 +31,25 @@ These instructions assume that:
 
 * You have an up to date clone of the `NEMO-Cmd package`_ repository.
 
-.. _NEMO-Cmd package: https://github.com/SalishSeaCast/NEMO-Cmd
+  .. _NEMO-Cmd package: https://github.com/SalishSeaCast/NEMO-Cmd
 
-* You have a `Conda`_ Python environment and package manager
-  (`Miniforge`_ or `Miniconda3`_)
-  installed
+* You have installed the Pixi_ package and environments manager
+  (`installation instructions`_).
 
-  .. _Conda: https://docs.conda.io/en/latest/
-  .. _Miniforge: https://github.com/conda-forge/miniforge
-  .. _Miniconda3: https://docs.conda.io/en/latest/miniconda.html
+  .. _Pixi: https://pixi.prefix.dev/latest/
+  .. _`installation instructions`: https://pixi.prefix.dev/latest/installation/
 
-To install the :kbd:`NEMO-Cmd` package so that the :command:`nemo` command is available
-in your :file:`$HOME/.local/bin/` directory:
+The packages that are required by :py:obj:`NEMO-Cmd` will be downloaded and linked into
+a working environment the first time that you use a `Pixi`_ command in the :file:`MEMO-Cmd/` directory
+(or a sub-directory).
+Example:
 
 .. code-block:: bash
 
-    $ cd NEMO-Cmd
-    $ conda env create -f envs/environment-hpc.yaml
-    $ conda activate nemo-cmd
-    (nemo-cmd)$ python3 -m pip install --user --editable .
+    cd NEMO-Cmd
+    pixi run nemo help
 
-The :kbd:`--editable` option in the :command:`pip install` commands installs the package
-in a way that it can be updated when new features are pushed to GitHub by simply doing a
-:command:`git pull` in the :file:`NEMO-Cmd/` directory.
-
-The :kbd:`Nemo-Cmd` package can also be installed in an isolated :program:`conda` environment.
-The common use case for doing so it development,
+For doing so it development,
 testing,
-and documentation of the package;
-please see the :ref:`NEMO-CmdPackageDevelopment` section for details.
+and documentation of the :py:obj:`NEMO-Cmd` package,
+please see the :ref:`NEMO-CmdPackageDevelopment` section.

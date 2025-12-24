@@ -323,7 +323,7 @@ def _build_batch_script(
     )
     script = (
         f"{script}\n"
-        f"{_definitions(run_desc, desc_file, run_dir, results_dir, queue_job_cmd, no_deflate)}\n"
+        f"{_definitions(run_desc, desc_file, run_dir, results_dir, no_deflate)}\n"
     )
     if "modules to load" in run_desc:
         script = f"{script}\n" f"{_modules(run_desc['modules to load'])}\n"
@@ -462,11 +462,9 @@ def _td2hms(timedelta):
     return f"{hms[0]}:{hms[1]:02d}:{hms[2]:02d}"
 
 
-def _definitions(
-    run_desc, run_desc_file, run_dir, results_dir, queue_job_cmd, no_deflate
-):
-    home = "${PBS_O_HOME}" if queue_job_cmd == "qsub" else "${HOME}"
-    nemo_cmd = Path(home) / ".local/bin/nemo"
+def _definitions(run_desc, run_desc_file, run_dir, results_dir, no_deflate):
+    nemo_cmd_dir = Path(__file__).parent.parent
+    nemo_cmd = f"pixi run -m {os.fspath(nemo_cmd_dir)} nemo"
     defns = (
         f'RUN_ID="{get_run_desc_value(run_desc, ("run_id",))}"\n'
         f'RUN_DESC="{run_desc_file}"\n'
