@@ -30,8 +30,8 @@ It is provided by the `NEMO-Cmd package`_.
 .. _NEMO: https://www.nemo-ocean.eu/
 .. _NEMO-Cmd package: https://github.com/SalishSeaCast/NEMO-Cmd
 
-The :kbd:`NEMO-Cmd` package is a Python 3 package.
-It is developed and tested under Python 3.8 and should work with Python 3.5 and later.
+The :py:obj:`NEMO-Cmd` package is a Python package.
+It is developed and tested under Python 3.14 and should work with Python 3.12 and later.
 
 
 Contents
