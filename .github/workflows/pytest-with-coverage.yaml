@@ -12,28 +12,14 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+
     strategy:
       fail-fast: false
       matrix:
         environment: [ 'test-py312', 'test-py313', 'test-py314' ]
-    runs-on: 'ubuntu-latest'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
 
-      - name: Set up Pixi
-        uses: prefix-dev/setup-pixi@82d477f15f3a381dbcc8adc1206ce643fe110fb7
-        with:
-          pixi-version: v0.62.2
-          cache: true
-          environments: ${{ matrix.environment }}
-
-      - name: Run pytest-with-coverage
-        run: pixi run -e ${{ matrix.environment }} pytest --cov=$GITHUB_WORKSPACE --cov-report=xml
-
-      - name: Upload coverage report to Codecov
-        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de
-        with:
-          files: ./coverage.xml
-          flags: unittests
-          token: ${{ secrets.CODECOV_TOKEN }}
+    uses: UBC-MOAD/gha-workflows/.github/workflows/pixi-pytest-with-coverage.yaml@main
+    with:
+      environment: ${{ matrix.environment }}
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
