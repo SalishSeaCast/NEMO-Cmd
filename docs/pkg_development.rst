@@ -118,12 +118,12 @@ Development Environment
     :target: https://pixi.prefix.dev/latest/
     :alt: Pixi
 
-:py:obj:`NEMO-Cmd` uses Pixi_ for package and environment management.
+:py:obj:`NEMO-Cmd` uses Pixi_ to manage dependencies and operating environments.
 If you don't already have Pixi_ installed,
-please follow its `installation instrucntions`_ to do so.
+please follow its `installation instructions`_ to do so.
 
 .. _Pixi: https://pixi.prefix.dev/latest/
-.. _`installation instrucntions`: https://pixi.prefix.dev/latest/installation/
+.. _`installation instructions`: https://pixi.prefix.dev/latest/installation/
 
 Most commands are executed using :command:`pixi run` in the :file:`MEMO-Cmd/` directory
 (or a sub-directory).
