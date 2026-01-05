@@ -55,8 +55,18 @@ associated with running the `NEMO`_ ocean model.
 
 .. _NEMO: http://www.nemo-ocean.eu/
 
-Use ``nemo --help`` to get a list of the sub-commands available.
-Use ``nemo help <sub-command>`` to get a synopsis of what a sub-command does,
+The package uses Pixi_ to manage dependencies and operating environments.
+If you don't already have Pixi_ installed,
+please follow its `installation instructions`_ to do so.
+Please see the :ref:`NEMO-CmdPackageInstallation` or :ref:`NEMO-CmdPackageDevelopment`
+documentation sections for more details.
+
+.. _Pixi: https://pixi.prefix.dev/latest/
+.. _`installation instructions`: https://pixi.prefix.dev/latest/installation/
+
+In the ``NEMO-Cmd/`` directory,
+use ``pixi run nemo --help`` to get a list of the sub-commands available.
+Use ``pixi run nemo help <sub-command>`` to get a synopsis of what a sub-command does,
 what its required arguments are,
 and what options are available to control it.
 
