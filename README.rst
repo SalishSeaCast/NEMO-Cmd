@@ -81,11 +81,25 @@ This an extensible tool built on the OpenStack ``cliff``
 (`Command Line Interface Formulation Framework`_)
 package.
 As such,
-it can be used as the basis for a NEMO domain-specific command processor tool.
+it can be used as the basis for domain-specific NEMO command processor tools,
+and command processor tools for other ocean models.
+Examples:
+
+* `SalishSeaCmd`_: for the SalishSeaCast NEMO configuration
+* `AtlantisCmd`_: for the Salish Sea configuration of the `Atlantis`_ marine ecosystem model
+* `WWatch3-Cmd`_: for the Salish Sea configuration of the `WAVEWATCH III®`_ wave model
+* `MOHID-Cmd`_: for the Salish Sea configuration of the `MOHID` oil spill model
 
 .. _Command Line Interface Formulation Framework: http://docs.openstack.org/developer/cliff/
+.. _SalishSeaCmd: https://github.com/SalishSeaCast/SalishSeaCmd
+.. _AtlantisCmd: https://github.com/SS-Atlantis/AtlantisCmd
+.. _Atlantis: https://research.csiro.au/atlantis/
+.. _WWatch3-Cmd: https://github.com/SalishSeaCast/WWatch3-Cmd
+.. _WAVEWATCH III®: https://polar.ncep.noaa.gov/waves/wavewatch/
+.. _MOHID-Cmd: https://github.com/MIDOSS/MOHID-Cmd
+-- _MOHID: https://www.mohid.com
 
-The ``NEMO-Cmd`` is based on v2.2 of the SalishSeaCast NEMO model project's
+The ``NEMO-Cmd`` package is based on v2.2 of the SalishSeaCast NEMO model project's
 ``tools/SalishSeaCmd`` package.
 
 
