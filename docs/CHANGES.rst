@@ -5,7 +5,9 @@ Change Log
 v25.3 (unreleased)
 ==================
 
-*
+* Change to use Pixi_ to manage dependencies and operating environments.
+
+  .. _Pixi: https://pixi.prefix.dev/latest/
 
 
 v25.2 (2025-10-17)
