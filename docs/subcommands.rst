@@ -22,38 +22,41 @@
 :command:`nemo` Sub-Commands
 ****************************
 
-The command :kbd:`nemo help` produces a list of the available :program:`nemo` options and sub-commands::
+The command :command:`pixi run nemo help` produces a list of the available :program:`nemo` options and sub-commands:
 
-  usage: nemo [--version] [-v | -q] [--log-file LOG_FILE] [-h] [--debug]
+.. code-block:: text
 
-  NEMO Command Processor
+    usage: nemo [--version] [-v | -q] [--log-file LOG_FILE] [-h] [--debug]
 
-  optional arguments:
-    --version            show program's version number and exit
-    -v, --verbose        Increase verbosity of output. Can be repeated.
-    -q, --quiet          Suppress output except warnings and errors.
-    --log-file LOG_FILE  Specify a file to log output. Disabled by default.
-    -h, --help           Show help message and exit.
-    --debug              Show tracebacks on errors.
+    NEMO Command Processor
 
-  Commands:
-    combine        Combine per-processor files from an MPI NEMO run into single files
-    complete       print bash completion command
-    deflate        Deflate variables in netCDF files using Lempel-Ziv compression.
-    gather         Gather results from a NEMO run.
-    help           print detailed help for another command
-    prepare        Prepare a NEMO run
-    run            Prepare, execute, and gather results from a NEMO model run.
+    options:
+      --version             show program's version number and exit
+      -v, --verbose         Increase verbosity of output. Can be repeated.
+      -q, --quiet           Suppress output except warnings and errors.
+      --log-file LOG_FILE
+                            Specify a file to log output. Disabled by default.
+      -h, --help            Show help message and exit.
+      --debug               Show tracebacks on errors.
+
+    Commands:
+      combine  Combine per-processor files from an MPI NEMO run into single files
+      complete  print bash completion command (cliff)
+      deflate  Deflate variables in netCDF files using Lempel-Ziv compression
+      gather  Gather results from a NEMO run
+      help  print detailed help for another command (cliff)
+      prepare  Prepare a NEMO run
+      run  Prepare, execute, and gather results from a NEMO model run
 
 For details of the arguments and options for a sub-command use
-:command:`nemo help <sub-command>`.
+:command:`pixi run nemo help <sub-command>`.
 For example:
 
 .. code-block:: bash
 
-    $ nemo help run
+    pixi run nemo help run
 
-::
+.. code-block:: text
 
     usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS]
                     [--nocheck-initial-conditions] [--no-deflate] [--no-submit]
@@ -100,7 +103,7 @@ You can check what version of :program:`nemo` you have installed with:
 
 .. code-block:: bash
 
-    nemo --version
+    pixi run nemo --version
 
 
 .. _nemo-run:
@@ -113,7 +116,7 @@ executes,
 and gathers the results from the NEMO run described in the specified run description file.
 The results are gathered in the specified results directory.
 
-::
+.. code-block:: text
 
     usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS]
                     [--nocheck-initial-conditions] [--no-deflate] [--no-submit]
@@ -182,7 +185,9 @@ Example:
 
 .. code-block:: bash
 
-    $ nemo run nemo.yaml $HOME/CANYONS/Mackenzie/myrun
+    pixi run nemo run nemo.yaml $HOME/CANYONS/Mackenzie/myrun
+
+.. code-block:: text
 
     nemo_cmd.run INFO: nemo_cmd.prepare Created run directory ../../runs/38e87e0c-472d-11e3-9c8e-0025909a8461
     nemo_cmd.run INFO: 3330782.orca2.ibb
@@ -201,7 +206,9 @@ you should use the :kbd:`--no-deflate` option to exclude :ref:`nemo-deflate` fro
 ==========================
 
 The :command:`prepare` sub-command sets up a run directory from which to execute the NEMO run described in the specified run description,
-and output file definitions files::
+and output file definitions files:
+
+.. code-block:: text
 
   usage: nemo prepare [-h] [--nocheck-initial-conditions] [-q] DESC_FILE
 
@@ -222,12 +229,14 @@ and output file definitions files::
 
 See the :ref:`RunDescriptionFileStructure` section for details of the run description file.
 
-The :command:`nemo prepare` command concludes by printing the path to the run directory it created.
+The :command:`pixi run nemo prepare` command concludes by printing the path to the run directory it created.
 Example:
 
 .. code-block:: bash
 
-    $ nemo prepare nemo.yaml
+    pixi run nemo prepare nemo.yaml
+
+.. code-block:: text
 
     nemo_cmd.prepare INFO: Created run directory ../../runs//38e87e0c-472d-11e3-9c8e-0025909a8461
 
@@ -237,7 +246,7 @@ string because the directory is intended to be ephemerally used for a single run
 
 .. _Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier
 
-If the :command:`nemo prepare` command prints an error message,
+If the :command:`pixi run nemo prepare` command prints an error message,
 you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
 
 
@@ -280,11 +289,11 @@ The run directory contains:
   It is also sometimes referred to as the NEMO IOM defs file.
 
 * The :file:`nemo.exe` executable found in the :file:`BLD/bin/` directory of the NEMO configuration given by the :kbd:`config name` and :kbd:`NEMO code config` keys in the run description file.
-  :command:`nemo prepare` aborts with an error message and exit code 2 if the :file:`nemo.exe` file is not found.
+  :command:`pixi run nemo prepare` aborts with an error message and exit code 2 if the :file:`nemo.exe` file is not found.
   In that case the run directory is not created.
 
 * The :file:`xios_server.exe` executable found in the :file:`bin/` sub-directory of the directory given by the :kbd:`XIOS` key in the :kbd:`paths` section of the run description file.
-  :command:`nemo prepare` aborts with an error message and exit code 2 if the :file:`xios_server.exe` file is not found.
+  :command:`pixi run nemo prepare` aborts with an error message and exit code 2 if the :file:`xios_server.exe` file is not found.
   In that case the run directory is not created.
 
 The run directory also contains symbolic links to forcing directories
@@ -316,7 +325,9 @@ Please see the :ref:`NEMO-3.6-VCS-Revisions` for more details.
 :kbd:`combine` Sub-command
 ==========================
 
-The :command:`combine` sub-command combines the per-processor results and/or restart files from an MPI NEMO run described in DESC_FILE using the the NEMO :command:`rebuild_nemo` tool::
+The :command:`combine` sub-command combines the per-processor results and/or restart files from an MPI NEMO run described in DESC_FILE using the the NEMO :command:`rebuild_nemo` tool:
+
+.. code-block:: text
 
   usage: nemo combine [-h] RUN_DESC_FILE
 
@@ -332,7 +343,7 @@ The :command:`combine` sub-command combines the per-processor results and/or res
 
 The per-processor files are deleted.
 
-If the :command:`nemo combine` command prints an error message,
+If the :command:`pixi run nemo combine` command prints an error message,
 you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
 
 
@@ -341,7 +352,9 @@ you can get a Python traceback containing more information about the error by re
 :kbd:`deflate` Sub-command
 ==========================
 
-The :command:`deflate` sub-command deflates the variables in netCDF files using the Lempel-Ziv compression algorithm to reduce the size of the file on disk::
+The :command:`deflate` sub-command deflates the variables in netCDF files using the Lempel-Ziv compression algorithm to reduce the size of the file on disk:
+
+.. code-block:: text
 
   usage: nemo deflate [-h] FILEPATH [FILEPATH ...]
 
@@ -364,7 +377,7 @@ Files processed by :command:`deflate` are converted to netCDF-4 format.
 The deflated file replaces the original file,
 but the deflation process uses temporary storage to prevent data loss.
 
-:command:`nemo deflate` is equivalent to running:
+:command:`pixi run nemo deflate` is equivalent to running:
 
 .. code-block:: bash
 
@@ -372,7 +385,7 @@ but the deflation process uses temporary storage to prevent data loss.
 
 on each :kbd:`FILEPATH`.
 
-If the :command:`nemo deflate` command prints an error message,
+If the :command:`pixi run nemo deflate` command prints an error message,
 you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
 
 
@@ -381,7 +394,9 @@ you can get a Python traceback containing more information about the error by re
 :kbd:`gather` Sub-command
 =========================
 
-The :command:`gather` sub-command moves results from a NEMO run into a results directory::
+The :command:`gather` sub-command moves results from a NEMO run into a results directory:
+
+.. code-block:: text
 
   usage: nemo gather [-h] RESULTS_DIR
 
@@ -396,5 +411,5 @@ The :command:`gather` sub-command moves results from a NEMO run into a results d
   optional arguments:
     -h, --help   show this help message and exit
 
-If the :command:`nemo gather` command prints an error message,
+If the :command:`pixi run nemo gather` command prints an error message,
 you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.

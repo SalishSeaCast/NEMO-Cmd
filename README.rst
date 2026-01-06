@@ -36,6 +36,9 @@ NEMO Command Processor
 |                            | .. image:: https://img.shields.io/badge/version%20control-git-blue.svg?logo=github                                                                                                               |
 |                            |     :target: https://github.com/SalishSeaCast/NEMO-Cmd                                                                                                                                           |
 |                            |     :alt: Git on GitHub                                                                                                                                                                          |
+|                            | .. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/prefix-dev/pixi/main/assets/badge/v0.json                                                                       |
+|                            |     :target: https://pixi.prefix.dev/latest/                                                                                                                                                     |
+|                            |     :alt: Pixi                                                                                                                                                                                   |
 |                            | .. image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white                                                                                          |
 |                            |     :target: https://pre-commit.com                                                                                                                                                              |
 |                            |     :alt: pre-commit                                                                                                                                                                             |
@@ -52,8 +55,18 @@ associated with running the `NEMO`_ ocean model.
 
 .. _NEMO: http://www.nemo-ocean.eu/
 
-Use ``nemo --help`` to get a list of the sub-commands available.
-Use ``nemo help <sub-command>`` to get a synopsis of what a sub-command does,
+The package uses Pixi_ to manage dependencies and operating environments.
+If you don't already have Pixi_ installed,
+please follow its `installation instructions`_ to do so.
+Please see the :ref:`NEMO-CmdPackageInstallation` or :ref:`NEMO-CmdPackageDevelopment`
+documentation sections for more details.
+
+.. _Pixi: https://pixi.prefix.dev/latest/
+.. _`installation instructions`: https://pixi.prefix.dev/latest/installation/
+
+In the ``NEMO-Cmd/`` directory,
+use ``pixi run nemo --help`` to get a list of the sub-commands available.
+Use ``pixi run nemo help <sub-command>`` to get a synopsis of what a sub-command does,
 what its required arguments are,
 and what options are available to control it.
 
@@ -68,11 +81,25 @@ This an extensible tool built on the OpenStack ``cliff``
 (`Command Line Interface Formulation Framework`_)
 package.
 As such,
-it can be used as the basis for a NEMO domain-specific command processor tool.
+it can be used as the basis for domain-specific NEMO command processor tools,
+and command processor tools for other ocean models.
+Examples:
+
+* `SalishSeaCmd`_: for the SalishSeaCast NEMO configuration
+* `AtlantisCmd`_: for the Salish Sea configuration of the `Atlantis`_ marine ecosystem model
+* `WWatch3-Cmd`_: for the Salish Sea configuration of the `WAVEWATCH III®`_ wave model
+* `MOHID-Cmd`_: for the Salish Sea configuration of the `MOHID` oil spill model
 
 .. _Command Line Interface Formulation Framework: http://docs.openstack.org/developer/cliff/
+.. _SalishSeaCmd: https://github.com/SalishSeaCast/SalishSeaCmd
+.. _AtlantisCmd: https://github.com/SS-Atlantis/AtlantisCmd
+.. _Atlantis: https://research.csiro.au/atlantis/
+.. _WWatch3-Cmd: https://github.com/SalishSeaCast/WWatch3-Cmd
+.. _WAVEWATCH III®: https://polar.ncep.noaa.gov/waves/wavewatch/
+.. _MOHID-Cmd: https://github.com/MIDOSS/MOHID-Cmd
+-- _MOHID: https://www.mohid.com
 
-The ``NEMO-Cmd`` is based on v2.2 of the SalishSeaCast NEMO model project's
+The ``NEMO-Cmd`` package is based on v2.2 of the SalishSeaCast NEMO model project's
 ``tools/SalishSeaCmd`` package.
 
 

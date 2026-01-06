@@ -4,7 +4,7 @@ on:
   push:
    branches: [ '*' ]
   # Enable workflow to be triggered from GitHub CLI, browser, or via API
-  # primarily for testing conda env solution for new Python versions
+  # primarily for testing wenvironment solution for new Python versions
   workflow_dispatch:
 
 jobs:
@@ -12,14 +12,14 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ '3.12', '3.13', '3.14' ]
-    uses: UBC-MOAD/gha-workflows/.github/workflows/pytest-with-coverage.yaml@main
+        environment: [ 'test-py312', 'test-py313', 'test-py314' ]
+
+    uses: UBC-MOAD/gha-workflows/.github/workflows/pixi-pytest-with-coverage.yaml@main
     with:
-      python-version: ${{ matrix.python-version }}
-      conda-env-file: envs/environment-test.yaml
-      conda-env-name: nemo-cmd-test
+      environment: ${{ matrix.environment }}
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
