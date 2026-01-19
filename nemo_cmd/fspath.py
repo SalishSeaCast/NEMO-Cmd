@@ -27,6 +27,7 @@ PEP 519 file system protocol appeared.
 The :func:`resolved_path` function returns an absolute :class:`pathlib.Path`
 object with shell and user variables expanded and symlinks resolved.
 """
+
 import os
 from pathlib import Path
 

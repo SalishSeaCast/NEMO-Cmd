@@ -23,6 +23,7 @@ NEMO Command Processor
 This module is connected to the :command:`nemo` command via a scripts and
 entry-points configuration in :file:`pyproject.toml`.
 """
+
 import importlib.metadata
 import sys
 

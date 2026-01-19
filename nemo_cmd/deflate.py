@@ -20,6 +20,7 @@
 
 Deflate variables in netCDF files using Lempel-Ziv compression.
 """
+
 import logging
 import math
 import multiprocessing

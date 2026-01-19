@@ -17,6 +17,7 @@
 
 
 """NEMO-Cmd combine sub-command plug-in unit tests"""
+
 from io import StringIO
 from unittest.mock import Mock, patch
 

@@ -17,6 +17,7 @@
 
 
 """NEMO-Cmd run sub-command plug-in unit tests"""
+
 from io import StringIO
 from pathlib import Path
 from types import SimpleNamespace

@@ -20,6 +20,7 @@
 
 Gather results files from a NEMO run into a specified directory.
 """
+
 import logging
 import shutil
 from pathlib import Path
