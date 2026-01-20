@@ -17,6 +17,7 @@
 
 
 """NEMO-Cmd gather sub-command plug-in unit tests"""
+
 from pathlib import Path
 from types import SimpleNamespace
 

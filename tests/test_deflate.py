@@ -17,6 +17,7 @@
 
 
 """NEMO-Cmd deflate sub-command plug-in unit tests"""
+
 import logging
 import math
 import multiprocessing

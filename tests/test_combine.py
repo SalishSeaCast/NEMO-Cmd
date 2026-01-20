@@ -17,6 +17,7 @@
 
 
 """NEMO-Cmd combine sub-command plug-in unit tests"""
+
 from pathlib import Path
 import shlex
 import subprocess

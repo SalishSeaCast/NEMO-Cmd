@@ -21,6 +21,7 @@
 Sets up the necessary symbolic links for a NEMO run
 in a specified directory and changes the pwd to that directory.
 """
+
 from copy import copy, deepcopy
 import functools
 import logging

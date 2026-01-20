@@ -21,6 +21,7 @@
 Combine per-processor files from an MPI Salish Sea NEMO run into single
 files with the same name-root.
 """
+
 import logging
 import os
 import shlex
