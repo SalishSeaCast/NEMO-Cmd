@@ -309,13 +309,12 @@ Finally,
 if the run description YAML file contains a :kbd:`vcs revisions` section,
 the run directory will contain 1 or more files whose names end with :file:`_rev.txt`.
 The file names begin with the root directory names of the version control repositories given in the :kbd:`vcs revisions` section.
-The files contain the output of the :command:`hg parents -v` command executed in the listed version control repositories.
+The files contain version control system metadata from the listed version control repositories.
 Those files provide a record of the last committed revision of the repositories that will be in effect for the run,
 which is important reproducibility information for the run.
 If any of the listed repositories contain uncommitted changes,
 the paths of the files and their status codes,
-the output of the :command:`hg status -mardC` command,
-will be appended to the repository's :file:`_rev.txt` file.
+the information from the version control system status command for those files will be appended to the repository's :file:`_rev.txt` file.
 Please see the :ref:`NEMO-3.6-VCS-Revisions` for more details.
 
 
