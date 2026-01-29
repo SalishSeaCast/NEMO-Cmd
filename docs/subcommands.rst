@@ -238,13 +238,12 @@ Example:
 
 .. code-block:: text
 
-    nemo_cmd.prepare INFO: Created run directory ../../runs//38e87e0c-472d-11e3-9c8e-0025909a8461
+    nemo_cmd.prepare INFO: Created run directory /scratch/dlatorne/MEOPAR/runs/01mar23-11x32_2025-12-24T145433.665751-0800
 
-The name of the run directory created is a `Universally Unique Identifier`_
-(UUID)
-string because the directory is intended to be ephemerally used for a single run.
-
-.. _Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier
+The name of the run directory is intended to be ephemerally used for a single run.
+It's name is composed of the ``run id`` from the run description YAML file
+(see :ref:`NEMO-3.6-BasicRunConfiguration`)
+and the directory's creation date/time stamp.
 
 If the :command:`pixi run nemo prepare` command prints an error message,
 you can get a Python traceback containing more information about the error by re-running the command with the ``--debug`` flag.

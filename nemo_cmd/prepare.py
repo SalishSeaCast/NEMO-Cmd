@@ -83,7 +83,7 @@ class Prepare(cliff.command.Command):
     def take_action(self, parsed_args):
         """Execute the `nemo prepare` sub-command.
 
-        A UUID named directory is created and symbolic links are created
+        A temporary run directory is created, and symbolic links are created
         in the directory to the files and directories specified to run NEMO.
         The path to the run directory is logged to the console on completion
         of the set-up.
@@ -97,7 +97,8 @@ class Prepare(cliff.command.Command):
 def prepare(desc_file, nocheck_init):
     """Create and prepare the temporary run directory.
 
-    The temporary run directory is created with a UUID as its name.
+    The name of the temporary run directory is created is composed of the run id from the run
+    description YAML and the creation date/time stamp of the run directory.
     Symbolic links are created in the directory to the files and
     directories specified to run NEMO.
     The path to the run directory is returned.
@@ -105,7 +106,7 @@ def prepare(desc_file, nocheck_init):
     :param desc_file: File path/name of the YAML run description file.
     :type desc_file: :py:class:`pathlib.Path`
 
-    :param boolean nocheck_init: Suppress initial condition link check;
+    :param boolean nocheck_init: Suppress the initial condition link check;
                                  the default is to check
 
     :returns: Path of the temporary run directory

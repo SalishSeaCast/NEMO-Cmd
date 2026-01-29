@@ -114,8 +114,8 @@ def gather(results_dir):
 def prepare(run_desc_file, nocheck_init=False):
     """Prepare a NEMO run.
 
-    A UUID named temporary run directory is created and symbolic links
-    are created in the directory to the files and directories specifed
+    A temporary run directory is created, and symbolic links
+    are created in the directory to the files and directories specified
     to run NEMO.
     The output of :command:`hg parents` is recorded in the directory
     for the NEMO-code and NEMO-forcing repos that the symlinks point to.
