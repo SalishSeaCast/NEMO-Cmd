@@ -175,7 +175,7 @@ The :command:`run` sub-command does the following:
    * executes the :ref:`nemo-deflate` to deflate the variables in the large netCDF results files using the Lempel-Ziv compression algorithm to reduce the size of the file on disk
    * executes the :ref:`nemo-gather` to collect the run description and results files into the results directory
 
-#. Submit the job script to the queue manager via the command given by the :kbd:`--queue-job-cmd` option
+#. Submit the job script to the queue manager via the command given by the ``--queue-job-cmd`` option
    (which defaults to :command:`qsub`).
 
 See the :ref:`RunDescriptionFileStructure` section for details of the run description YAML file.
@@ -193,11 +193,11 @@ Example:
     nemo_cmd.run INFO: 3330782.orca2.ibb
 
 If the :command:`run` sub-command prints an error message,
-you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
+you can get a Python traceback containing more information about the error by re-running the command with the ``--debug`` flag.
 
 If you are using on-the-fly deflation in :program:`XIOS-2`;
 i.e. you are using 1 :program:`XIOS-2` process and have the :kbd:`compression_level="4"` attribute set in all of the :kbd:`file_group` definitions in your :file:`file_def.xml` file;
-you should use the :kbd:`--no-deflate` option to exclude :ref:`nemo-deflate` from the :file:`NEMO.sh` job script.
+you should use the ``--no-deflate`` option to exclude :ref:`nemo-deflate` from the :file:`NEMO.sh` job script.
 
 
 .. _nemo-prepare:
@@ -238,16 +238,15 @@ Example:
 
 .. code-block:: text
 
-    nemo_cmd.prepare INFO: Created run directory ../../runs//38e87e0c-472d-11e3-9c8e-0025909a8461
+    nemo_cmd.prepare INFO: Created run directory /scratch/dlatorne/MEOPAR/runs/01mar23-11x32_2025-12-24T145433.665751-0800
 
-The name of the run directory created is a `Universally Unique Identifier`_
-(UUID)
-string because the directory is intended to be ephemerally used for a single run.
-
-.. _Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier
+The name of the run directory is intended to be ephemerally used for a single run.
+It's name is composed of the ``run id`` from the run description YAML file
+(see :ref:`NEMO-3.6-BasicRunConfiguration`)
+and the directory's creation date/time stamp.
 
 If the :command:`pixi run nemo prepare` command prints an error message,
-you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
+you can get a Python traceback containing more information about the error by re-running the command with the ``--debug`` flag.
 
 
 Run Directory Contents
@@ -310,13 +309,12 @@ Finally,
 if the run description YAML file contains a :kbd:`vcs revisions` section,
 the run directory will contain 1 or more files whose names end with :file:`_rev.txt`.
 The file names begin with the root directory names of the version control repositories given in the :kbd:`vcs revisions` section.
-The files contain the output of the :command:`hg parents -v` command executed in the listed version control repositories.
+The files contain version control system metadata from the listed version control repositories.
 Those files provide a record of the last committed revision of the repositories that will be in effect for the run,
 which is important reproducibility information for the run.
 If any of the listed repositories contain uncommitted changes,
 the paths of the files and their status codes,
-the output of the :command:`hg status -mardC` command,
-will be appended to the repository's :file:`_rev.txt` file.
+the information from the version control system status command for those files will be appended to the repository's :file:`_rev.txt` file.
 Please see the :ref:`NEMO-3.6-VCS-Revisions` for more details.
 
 
@@ -344,7 +342,7 @@ The :command:`combine` sub-command combines the per-processor results and/or res
 The per-processor files are deleted.
 
 If the :command:`pixi run nemo combine` command prints an error message,
-you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
+you can get a Python traceback containing more information about the error by re-running the command with the ``--debug`` flag.
 
 
 .. _nemo-deflate:
@@ -386,7 +384,7 @@ but the deflation process uses temporary storage to prevent data loss.
 on each :kbd:`FILEPATH`.
 
 If the :command:`pixi run nemo deflate` command prints an error message,
-you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
+you can get a Python traceback containing more information about the error by re-running the command with the ``--debug`` flag.
 
 
 .. _nemo-gather:
@@ -412,4 +410,4 @@ The :command:`gather` sub-command moves results from a NEMO run into a results d
     -h, --help   show this help message and exit
 
 If the :command:`pixi run nemo gather` command prints an error message,
-you can get a Python traceback containing more information about the error by re-running the command with the :kbd:`--debug` flag.
+you can get a Python traceback containing more information about the error by re-running the command with the ``--debug`` flag.

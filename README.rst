@@ -58,11 +58,13 @@ associated with running the `NEMO`_ ocean model.
 The package uses Pixi_ to manage dependencies and operating environments.
 If you don't already have Pixi_ installed,
 please follow its `installation instructions`_ to do so.
-Please see the :ref:`NEMO-CmdPackageInstallation` or :ref:`NEMO-CmdPackageDevelopment`
+Please see the `package installation`_ or `package development`_
 documentation sections for more details.
 
 .. _Pixi: https://pixi.prefix.dev/latest/
 .. _`installation instructions`: https://pixi.prefix.dev/latest/installation/
+.. _package installation: https://nemo-cmd.readthedocs.io/en/latest/installation.html
+.. _package development: https://nemo-cmd.readthedocs.io/en/latest/pkg_development.html
 
 In the ``NEMO-Cmd/`` directory,
 use ``pixi run nemo --help`` to get a list of the sub-commands available.
@@ -88,7 +90,7 @@ Examples:
 * `SalishSeaCmd`_: for the SalishSeaCast NEMO configuration
 * `AtlantisCmd`_: for the Salish Sea configuration of the `Atlantis`_ marine ecosystem model
 * `WWatch3-Cmd`_: for the Salish Sea configuration of the `WAVEWATCH III®`_ wave model
-* `MOHID-Cmd`_: for the Salish Sea configuration of the `MOHID` oil spill model
+* `MOHID-Cmd`_: for the Salish Sea configuration of the `MOHID`_ oil spill model
 
 .. _Command Line Interface Formulation Framework: http://docs.openstack.org/developer/cliff/
 .. _SalishSeaCmd: https://github.com/SalishSeaCast/SalishSeaCmd
@@ -97,7 +99,7 @@ Examples:
 .. _WWatch3-Cmd: https://github.com/SalishSeaCast/WWatch3-Cmd
 .. _WAVEWATCH III®: https://polar.ncep.noaa.gov/waves/wavewatch/
 .. _MOHID-Cmd: https://github.com/MIDOSS/MOHID-Cmd
--- _MOHID: https://www.mohid.com
+.. _MOHID: https://www.mohid.com
 
 The ``NEMO-Cmd`` package is based on v2.2 of the SalishSeaCast NEMO model project's
 ``tools/SalishSeaCmd`` package.
