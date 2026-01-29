@@ -40,10 +40,10 @@ for details about each section of the file,
 and about optional sections that you may need.
 
 
-Example for Runs on :kbd:`computecanada.ca` Systems
----------------------------------------------------
+Example for Runs on Digital Research Alliance of Canada Systems
+---------------------------------------------------------------
 
-This is an example run description file for use on :kbd:`cedar` and :kbd:`graham`.
+This is an example run description file for use on :kbd:`nibi`.
 
 .. literalinclude:: nemo.yaml.sbatch-example-NEMO-3.6
    :language: yaml
@@ -89,7 +89,7 @@ The following key-value pairs provide the basic configuration for the run:
 :kbd:`account`
   *Optional.*
   The account name to include in the :kbd:`#SBATCH` directives section of the :file:`SalishSeaNEMO.sh` job script.
-  This key-value pair is required on systems like :kbd:`cedar.computecanada.ca` and :kbd:`graham.computecanada.ca` that use the `Slurm Workload Manager`_ and that you submit runs to with the :command:`sbatch` command.
+  This key-value pair is required on systems like :kbd:`nibi.alliancecan.ca` that use the `Slurm Workload Manager`_ and that you submit runs to with the :command:`sbatch` command.
 
   .. _Slurm Workload Manager: https://slurm.schedmd.com/
 
