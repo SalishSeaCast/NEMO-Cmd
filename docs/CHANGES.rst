@@ -2,7 +2,7 @@
 Change Log
 **********
 
-v25.3 (unreleased)
+v26.1 (2026-01-29)
 ==================
 
 * Change to use Pixi_ to manage dependencies and operating environments.
