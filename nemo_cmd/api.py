@@ -117,8 +117,8 @@ def prepare(run_desc_file, nocheck_init=False):
     A temporary run directory is created, and symbolic links
     are created in the directory to the files and directories specified
     to run NEMO.
-    The output of :command:`hg parents` is recorded in the directory
-    for the NEMO-code and NEMO-forcing repos that the symlinks point to.
+    Version control system (Git or Mercurial) details are recorded in the directory
+    for the NEMO and XIOS repositories that the symlinks point to.
     The path to the run directory is returned.
 
     :param run_desc_file: File path/name of the YAML run description file.
