@@ -4122,7 +4122,7 @@ packages:
 - pypi: ./
   name: nemo-cmd
   version: 26.2.dev0
-  sha256: 541b41b3aea614e06264db7b2e2e08f4b97843bd9a58c96235202a4693b17246
+  sha256: 583ea49c5189f2239daf03808da03c3fc75620e53aa6476f6eebcb473611a6b1
   requires_dist:
   - arrow
   - attrs
