@@ -129,6 +129,7 @@ sphinx-notfound-page = "1.0.4.*"
 sphinx-rtd-theme = "3.0.0.*"
 mock = "*"
 pillow = "*"
+sphinx-copybutton = ">=0.5.2,<0.6"
 
 [tool.pixi.feature.docs.tasks]
 docs = { cmd = "make clean html", cwd = "docs/" }
@@ -151,6 +152,7 @@ pytest-randomly = "*"
 sphinx = "8.1.3.*"
 sphinx-notfound-page = "1.0.4.*"
 sphinx-rtd-theme = "3.0.0.*"
+sphinx-copybutton = ">=0.5.2,<0.6"
 
 [tool.pixi.feature.dev.tasks]
 update-reqs = "python -m pip list --format=freeze >> requirements.txt"
