@@ -44,10 +44,10 @@ a working environment the first time that you use a `Pixi`_ command in the :file
 (or a sub-directory).
 Example:
 
-.. code-block:: bash
+.. code-block:: console
 
-    cd NEMO-Cmd
-    pixi run nemo help
+    $ cd NEMO-Cmd
+    $ pixi run nemo help
 
 For doing so it development,
 testing,

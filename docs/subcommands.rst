@@ -52,9 +52,9 @@ For details of the arguments and options for a sub-command use
 :command:`pixi run nemo help <sub-command>`.
 For example:
 
-.. code-block:: bash
+.. code-block:: console
 
-    pixi run nemo help run
+    $ pixi run nemo help run
 
 .. code-block:: text
 
@@ -101,9 +101,9 @@ For example:
 
 You can check what version of :program:`nemo` you have installed with:
 
-.. code-block:: bash
+.. code-block:: console
 
-    pixi run nemo --version
+    $ pixi run nemo --version
 
 
 .. _nemo-run:
@@ -183,9 +183,9 @@ See the :ref:`RunDescriptionFileStructure` section for details of the run descri
 The :command:`run` sub-command concludes by printing the path to the run directory and the response from the job queue manager.
 Example:
 
-.. code-block:: bash
+.. code-block:: console
 
-    pixi run nemo run nemo.yaml $HOME/CANYONS/Mackenzie/myrun
+    $ pixi run nemo run nemo.yaml $HOME/CANYONS/Mackenzie/myrun
 
 .. code-block:: text
 
@@ -232,9 +232,9 @@ See the :ref:`RunDescriptionFileStructure` section for details of the run descri
 The :command:`pixi run nemo prepare` command concludes by printing the path to the run directory it created.
 Example:
 
-.. code-block:: bash
+.. code-block:: console
 
-    pixi run nemo prepare nemo.yaml
+    $ pixi run nemo prepare nemo.yaml
 
 .. code-block:: text
 
@@ -377,7 +377,7 @@ but the deflation process uses temporary storage to prevent data loss.
 
 :command:`pixi run nemo deflate` is equivalent to running:
 
-.. code-block:: bash
+.. code-block:: console
 
     $ ncks -4 -L4 -O FILEPATH FILEPATH
 
