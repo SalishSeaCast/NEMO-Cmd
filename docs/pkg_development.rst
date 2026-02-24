@@ -104,9 +104,9 @@ Clone the code and documentation `repository`_ from GitHub with:
 
 .. _repository: https://github.com/SalishSeaCast/NEMO-Cmd
 
-.. code-block:: bash
+.. code-block:: console
 
-    git clone git@github.com:SalishSeaCast/NEMO-Cmd.git
+    $ git clone git@github.com:SalishSeaCast/NEMO-Cmd.git
 
 
 .. _NEMO-CmdDevelopmentEnvironment:
@@ -181,10 +181,10 @@ and repo QA.
 To install the `pre-commit` hooks in a newly cloned repo,
 run :command:`pre-commit install`:
 
-.. code-block:: bash
+.. code-block:: console
 
-    cd NEMO-Cmd
-    pixi run -e dev pre-commit install
+    $ cd NEMO-Cmd
+    $ pixi run -e dev pre-commit install
 
 .. note::
     You only need to install the hooks once immediately after you make a new clone
@@ -240,51 +240,52 @@ Building and Previewing the Documentation
 Building the documentation is driven by the :file:`docs/Makefile`.
 To do a clean build of the documentation use:
 
-.. code-block:: bash
+.. code-block:: console
 
-    cd NEMO-Cmd/
-    pixi run docs
+    $ cd NEMO-Cmd/
+    $ pixi run docs
 
 The output looks something like:
 
 .. code-block:: text
+   :class: no-copybutton
 
-✨ Pixi task (docs in docs): make clean html
-Removing everything under '_build'...
-Running Sphinx v8.1.3
-loading translations [en]... done
-making output directory... done
-loading intersphinx inventory 'python' from https://docs.python.org/3/objects.inv ...
-loading intersphinx inventory 'salishseacmd' from https://salishseacmd.readthedocs.io/en/latest/objects.inv ...
-loading intersphinx inventory 'salishseadocs' from https://salishsea-meopar-docs.readthedocs.io/en/latest/objects.inv ...
-building [mo]: targets for 0 po files that are out of date
-writing output...
-building [html]: targets for 9 source files that are out of date
-updating environment: [new config] 9 added, 0 changed, 0 removed
-reading sources... [100%] subcommands
-looking for now-outdated files... none found
-pickling environment... done
-checking consistency... done
-preparing documents... done
-copying assets...
-copying static files...
-Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/language_data.js
-Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/documentation_options.js
-Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/basic.css
-Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/js/versions.js
-copying static files: done
-copying extra files...
-copying extra files: done
-copying assets: done
-writing output... [100%] subcommands
-generating indices... genindex done
-highlighting module code... [100%] nemo_cmd.prepare
-writing additional pages... search done
-dumping search index in English (code: en)... done
-dumping object inventory... done
-build succeeded.
+    ✨ Pixi task (docs in docs): make clean html
+    Removing everything under '_build'...
+    Running Sphinx v8.1.3
+    loading translations [en]... done
+    making output directory... done
+    loading intersphinx inventory 'python' from https://docs.python.org/3/objects.inv ...
+    loading intersphinx inventory 'salishseacmd' from https://salishseacmd.readthedocs.io/en/latest/objects.inv ...
+    loading intersphinx inventory 'salishseadocs' from https://salishsea-meopar-docs.readthedocs.io/en/latest/objects.inv ...
+    building [mo]: targets for 0 po files that are out of date
+    writing output...
+    building [html]: targets for 9 source files that are out of date
+    updating environment: [new config] 9 added, 0 changed, 0 removed
+    reading sources... [100%] subcommands
+    looking for now-outdated files... none found
+    pickling environment... done
+    checking consistency... done
+    preparing documents... done
+    copying assets...
+    copying static files...
+    Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/language_data.js
+    Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/documentation_options.js
+    Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/basic.css
+    Writing evaluated template result to /media/doug/warehouse/MEOPAR/NEMO-Cmd/docs/_build/html/_static/js/versions.js
+    copying static files: done
+    copying extra files...
+    copying extra files: done
+    copying assets: done
+    writing output... [100%] subcommands
+    generating indices... genindex done
+    highlighting module code... [100%] nemo_cmd.prepare
+    writing additional pages... search done
+    dumping search index in English (code: en)... done
+    dumping object inventory... done
+    build succeeded.
 
-The HTML pages are in _build/html.
+    The HTML pages are in _build/html.
 
 The HTML rendering of the docs ends up in :file:`NEMO-Cmd/docs/_build/html/`.
 You can open the :file:`index.html` file in that directory tree in your browser to preview the results of the build before committing and pushing your changes to GitHub.
@@ -304,14 +305,15 @@ Link Checking the Documentation
 Sphinx also provides a link checker utility which can be run to find broken or redirected links in the docs.
 Run the link checker with:
 
-.. code-block:: bash
+.. code-block:: console
 
-    cd NEMO-Cmd/
-    pixi run linkcheck
+    $ cd NEMO-Cmd/
+    $ pixi run linkcheck
 
 The output looks something like:
 
 .. code-block:: text
+   :class: no-copybutton
 
     ✨ Pixi task (linkcheck in docs): make clean linkcheck
     Removing everything under '_build'...
@@ -440,14 +442,15 @@ The `pytest`_ tool is used for test fixtures and as the test runner for the suit
 
 To run the test suite in the most recent supported version of Python use:
 
-.. code-block:: bash
+.. code-block:: console
 
-    cd NEMO-Cmd/
-    pixi run -e test pytest
+    $ cd NEMO-Cmd/
+    $ pixi run -e test pytest
 
 The output looks something like:
 
 .. code-block:: text
+   :class: no-copybutton
 
     ================================== test session starts ===============================
     platform linux -- Python 3.14.2, pytest-9.0.2, pluggy-1.6.0
@@ -472,20 +475,20 @@ You can monitor what lines of code the test suite exercises using the `coverage.
 .. _coverage.py: https://coverage.readthedocs.io/en/latest/
 .. _pytest-cov: https://pytest-cov.readthedocs.io/en/latest/
 
-.. code-block:: bash
+.. code-block:: console
 
-    cd NEMO-Cmd/
-    pixi run -e test pytest-cov
+    $ cd NEMO-Cmd/
+    $ pixi run -e test pytest-cov
 
 The test coverage report will be displayed below the test suite run output.
 
 Alternatively,
 you can use
 
-.. code-block:: bash
+.. code-block:: console
 
-    cd NEMO-Cmd/
-    pixi run -e test pytest-cov-html
+    $ cd NEMO-Cmd/
+    $ pixi run -e test pytest-cov-html
 
 to produce an HTML report that you can view in your browser by opening :file:`NEMO-Cmd/htmlcov/index.html`.
 

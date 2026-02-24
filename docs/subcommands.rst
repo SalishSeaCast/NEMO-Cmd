@@ -25,6 +25,7 @@
 The command :command:`pixi run nemo help` produces a list of the available :program:`nemo` options and sub-commands:
 
 .. code-block:: text
+   :class: no-copybutton
 
     usage: nemo [--version] [-v | -q] [--log-file LOG_FILE] [-h] [--debug]
 
@@ -52,11 +53,12 @@ For details of the arguments and options for a sub-command use
 :command:`pixi run nemo help <sub-command>`.
 For example:
 
-.. code-block:: bash
+.. code-block:: console
 
-    pixi run nemo help run
+    $ pixi run nemo help run
 
 .. code-block:: text
+   :class: no-copybutton
 
     usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS]
                     [--nocheck-initial-conditions] [--no-deflate] [--no-submit]
@@ -101,9 +103,9 @@ For example:
 
 You can check what version of :program:`nemo` you have installed with:
 
-.. code-block:: bash
+.. code-block:: console
 
-    pixi run nemo --version
+    $ pixi run nemo --version
 
 
 .. _nemo-run:
@@ -117,6 +119,7 @@ and gathers the results from the NEMO run described in the specified run descrip
 The results are gathered in the specified results directory.
 
 .. code-block:: text
+   :class: no-copybutton
 
     usage: nemo run [-h] [--max-deflate-jobs MAX_DEFLATE_JOBS]
                     [--nocheck-initial-conditions] [--no-deflate] [--no-submit]
@@ -183,11 +186,12 @@ See the :ref:`RunDescriptionFileStructure` section for details of the run descri
 The :command:`run` sub-command concludes by printing the path to the run directory and the response from the job queue manager.
 Example:
 
-.. code-block:: bash
+.. code-block:: console
 
-    pixi run nemo run nemo.yaml $HOME/CANYONS/Mackenzie/myrun
+    $ pixi run nemo run nemo.yaml $HOME/CANYONS/Mackenzie/myrun
 
 .. code-block:: text
+   :class: no-copybutton
 
     nemo_cmd.run INFO: nemo_cmd.prepare Created run directory ../../runs/38e87e0c-472d-11e3-9c8e-0025909a8461
     nemo_cmd.run INFO: 3330782.orca2.ibb
@@ -209,34 +213,36 @@ The :command:`prepare` sub-command sets up a run directory from which to execute
 and output file definitions files:
 
 .. code-block:: text
+   :class: no-copybutton
 
-  usage: nemo prepare [-h] [--nocheck-initial-conditions] [-q] DESC_FILE
+    usage: nemo prepare [-h] [--nocheck-initial-conditions] [-q] DESC_FILE
 
-  Set up the NEMO run described in DESC_FILE and print the path to the run
-  directory.
+    Set up the NEMO run described in DESC_FILE and print the path to the run
+    directory.
 
-  positional arguments:
-    DESC_FILE             run description YAML file
+    positional arguments:
+      DESC_FILE             run description YAML file
 
-  optional arguments:
-    -h, --help            show this help message and exit
-    --nocheck-initial-conditions
-                          Suppress checking of the initial conditions link.
-                          Useful if you are submitting a job to an HPC qsub
-                          queue and want the submitted job to wait for
-                          completion of a previous job.
-    -q, --quiet           don't show the run directory path on completion
+    optional arguments:
+      -h, --help            show this help message and exit
+      --nocheck-initial-conditions
+                            Suppress checking of the initial conditions link.
+                            Useful if you are submitting a job to an HPC qsub
+                            queue and want the submitted job to wait for
+                            completion of a previous job.
+      -q, --quiet           don't show the run directory path on completion
 
 See the :ref:`RunDescriptionFileStructure` section for details of the run description file.
 
 The :command:`pixi run nemo prepare` command concludes by printing the path to the run directory it created.
 Example:
 
-.. code-block:: bash
+.. code-block:: console
 
-    pixi run nemo prepare nemo.yaml
+    $ pixi run nemo prepare nemo.yaml
 
 .. code-block:: text
+   :class: no-copybutton
 
     nemo_cmd.prepare INFO: Created run directory /scratch/dlatorne/MEOPAR/runs/01mar23-11x32_2025-12-24T145433.665751-0800
 
@@ -326,18 +332,19 @@ Please see the :ref:`NEMO-3.6-VCS-Revisions` for more details.
 The :command:`combine` sub-command combines the per-processor results and/or restart files from an MPI NEMO run described in DESC_FILE using the the NEMO :command:`rebuild_nemo` tool:
 
 .. code-block:: text
+   :class: no-copybutton
 
-  usage: nemo combine [-h] RUN_DESC_FILE
+    usage: nemo combine [-h] RUN_DESC_FILE
 
-  Combine the per-processor results and/or restart files from an MPI NEMO run
-  described in DESC_FILE using the the NEMO rebuild_nemo tool. Delete the per-
-  processor files.
+    Combine the per-processor results and/or restart files from an MPI NEMO run
+    described in DESC_FILE using the the NEMO rebuild_nemo tool. Delete the per-
+    processor files.
 
-  positional arguments:
-    RUN_DESC_FILE  file path/name of run description YAML file
+    positional arguments:
+      RUN_DESC_FILE  file path/name of run description YAML file
 
-  optional arguments:
-    -h, --help     show this help message and exit
+    optional arguments:
+      -h, --help     show this help message and exit
 
 The per-processor files are deleted.
 
@@ -353,18 +360,19 @@ you can get a Python traceback containing more information about the error by re
 The :command:`deflate` sub-command deflates the variables in netCDF files using the Lempel-Ziv compression algorithm to reduce the size of the file on disk:
 
 .. code-block:: text
+   :class: no-copybutton
 
-  usage: nemo deflate [-h] FILEPATH [FILEPATH ...]
+    usage: nemo deflate [-h] FILEPATH [FILEPATH ...]
 
-  Deflate variables in netCDF files using Lempel-Ziv compression. Converts files
-  to netCDF-4 format. The deflated file replaces the original file. This command
-  is effectively the same as running ncks -4 -L -O FILEPATH FILEPATH for each FILEPATH.
+    Deflate variables in netCDF files using Lempel-Ziv compression. Converts files
+    to netCDF-4 format. The deflated file replaces the original file. This command
+    is effectively the same as running ncks -4 -L -O FILEPATH FILEPATH for each FILEPATH.
 
-  positional arguments:
-    FILEPATH    Path/name of file to be deflated.
+    positional arguments:
+      FILEPATH    Path/name of file to be deflated.
 
-  optional arguments:
-    -h, --help  show this help message and exit
+    optional arguments:
+      -h, --help  show this help message and exit
 
 You can give the command as many file names as you wish,
 with or without paths.
@@ -377,7 +385,7 @@ but the deflation process uses temporary storage to prevent data loss.
 
 :command:`pixi run nemo deflate` is equivalent to running:
 
-.. code-block:: bash
+.. code-block:: console
 
     $ ncks -4 -L4 -O FILEPATH FILEPATH
 
@@ -395,19 +403,20 @@ you can get a Python traceback containing more information about the error by re
 The :command:`gather` sub-command moves results from a NEMO run into a results directory:
 
 .. code-block:: text
+   :class: no-copybutton
 
-  usage: nemo gather [-h] RESULTS_DIR
+    usage: nemo gather [-h] RESULTS_DIR
 
-  Gather the results files from the NEMO run in the present working directory
-  into files in RESULTS_DIR. The run description file, namelist(s), and other
-  files that define the run are also gathered into RESULTS_DIR. If RESULTS_DIR
-  does not exist it will be created.
+    Gather the results files from the NEMO run in the present working directory
+    into files in RESULTS_DIR. The run description file, namelist(s), and other
+    files that define the run are also gathered into RESULTS_DIR. If RESULTS_DIR
+    does not exist it will be created.
 
-  positional arguments:
-    RESULTS_DIR  directory to store results into
+    positional arguments:
+      RESULTS_DIR  directory to store results into
 
-  optional arguments:
-    -h, --help   show this help message and exit
+    optional arguments:
+      -h, --help   show this help message and exit
 
 If the :command:`pixi run nemo gather` command prints an error message,
 you can get a Python traceback containing more information about the error by re-running the command with the ``--debug`` flag.
