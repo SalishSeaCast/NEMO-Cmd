@@ -5,7 +5,7 @@ Change Log
 v26.2 (unreleased)
 ==================
 
-*
+* Add copy button to code blocks in documentation.
 
 
 v26.1 (2026-01-29)
