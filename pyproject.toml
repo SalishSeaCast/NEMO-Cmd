@@ -142,7 +142,7 @@ docs = ["commonmark>=0.9.1,<0.10", "recommonmark>=0.7.1,<0.8", "readthedocs-sphi
 # For coding style, repo QA, and pkg management
 black = "*"
 hatch = "*"
-pip = ">=25.3,<26"
+pip = ">=26.0.1,<27"
 pre-commit = "*"
 # For unit tests
 pytest = "*"
