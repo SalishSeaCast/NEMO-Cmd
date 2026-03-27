@@ -26,6 +26,7 @@ jobs:
       - name: Update lockfile
         run: |
           set -o pipefail
+          pixi global install pixi-diff-to-markdown
           pixi update --json | pixi exec pixi diff-to-markdown >> diff.md
 
       - name: Create pull request
