@@ -39,17 +39,40 @@ These instructions assume that:
   .. _Pixi: https://pixi.prefix.dev/latest/
   .. _`installation instructions`: https://pixi.prefix.dev/latest/installation/
 
-The packages that are required by :py:obj:`NEMO-Cmd` will be downloaded and linked into
-a working environment the first time that you use a `Pixi`_ command in the :file:`MEMO-Cmd/` directory
-(or a sub-directory).
-Example:
+Use Pixi to create an isolated environment for :py:obj:`NEMO-Cmd` to avoid conflicts with
+other Python packages installed on your system.
+That environment will have all of the Python packages necessary to use the :program:`nemo`
+command that is provided by the :py:obj:`NEMO-Cmd` package.
 
 .. code-block:: console
 
     $ cd NEMO-Cmd
+    $ pixi install
+
+When you are in the :file:`NEMO-Cmd/` directory
+(or a sub-directory)
+you can run the :program:`nemo` command with with the :command:`pixi run` command.
+Example:
+
+.. code-block:: console
+
     $ pixi run nemo help
 
-For doing so it development,
+A common use-case is to execute the :command:`nemo run` command in the directory containing
+your run description YAML file.
+To accomplish that,
+we have to tell Pixi where to find the :file:`NEMO-Cmd/` directory so that it can use the
+correct environment.
+We do that by using the ``-m`` or ``--manifest`` option of :command:`pixi run`.
+Example:
+
+.. code-block:: console
+
+    $ cd run_descriptions/
+    $ pixi run -m $HOME/MEOPAR/NEMO-Cmd nemo run run_description.yaml \
+        /scratch/allen/Carbon/MoreSens/Now/01jan11/
+
+For doing development,
 testing,
 and documentation of the :py:obj:`NEMO-Cmd` package,
 please see the :ref:`NEMO-CmdPackageDevelopment` section.
