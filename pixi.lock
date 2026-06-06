@@ -4287,7 +4287,7 @@ packages:
   license: MIT
   license_family: MIT
   purls:
-  - pkg:pypi/virtualenv?source=hash-mapping
+  - pkg:pypi/virtualenv?source=compressed-mapping
   size: 5151645
   timestamp: 1780253977667
 - conda: https://conda.anaconda.org/conda-forge/noarch/wcwidth-0.7.0-pyhd8ed1ab_0.conda
