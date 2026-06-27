@@ -18,4 +18,4 @@ jobs:
       contents: write
       pull-requests: write
 
-    uses: UBC-MOAD/gha-workflows/.github/workflows/pixi-lockfile-updater.yaml@main
+    uses: UBC-MOAD/gha-workflows/.github/workflows/pixi-lockfile-updater.yaml@main  # zizmor: ignore[unpinned-uses]
