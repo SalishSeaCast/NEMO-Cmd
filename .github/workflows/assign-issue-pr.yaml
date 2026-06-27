@@ -1,6 +1,8 @@
 # Automatically assign new or reopened issues and pull requests in this
 # repo to Doug
 
+permissions: {}
+
 name: Assign Issue/PR
 on:
   issues:
@@ -13,7 +15,8 @@ on:
       - opened
 jobs:
   auto_assign:
+    name: Automatically assign Issues and PRs to Doug
     permissions:
-      issues: write
-      pull-requests: write
-    uses: UBC-MOAD/gha-workflows/.github/workflows/auto-assign.yaml@main
+      issues: write  # Required to add assignee to an issue
+      pull-requests: write  # Required to add assignee to a PR
+    uses: UBC-MOAD/gha-workflows/.github/workflows/auto-assign.yaml@main  # zizmor: ignore[unpinned-uses]
