@@ -15,7 +15,7 @@ jobs:
   update-pixi-lockfile:
     name: Update pixi lockfile and create pull request
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write  # Required to update the pixi lockfile
+      pull-requests: write  # Required to create a pull request containing the changes
 
     uses: UBC-MOAD/gha-workflows/.github/workflows/pixi-lockfile-updater.yaml@main  # zizmor: ignore[unpinned-uses]

@@ -16,6 +16,6 @@ on:
 jobs:
   auto_assign:
     permissions:
-      issues: write
-      pull-requests: write
+      issues: write  # Required to add assignee to an issue
+      pull-requests: write  # Required to add assignee to a PR
     uses: UBC-MOAD/gha-workflows/.github/workflows/auto-assign.yaml@main  # zizmor: ignore[unpinned-uses]
