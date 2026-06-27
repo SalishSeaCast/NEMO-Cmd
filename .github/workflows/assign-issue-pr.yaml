@@ -1,6 +1,8 @@
 # Automatically assign new or reopened issues and pull requests in this
 # repo to Doug
 
+permissions: {}
+
 name: Assign Issue/PR
 on:
   issues:
