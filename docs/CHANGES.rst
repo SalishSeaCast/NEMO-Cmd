@@ -2,8 +2,13 @@
 Change Log
 **********
 
-v26.2 (unreleased)
+v26.2 (2026-10-27)
 ==================
+
+* Change to update dependencies monthly via scheduled automatic Pixi lockfile updater workflow.
+  Critical security updates
+  (such as those arising from the eMudhra intermediate CA certifications issue in Oct-2026)
+  are addressed ASAP rather than waiting for the next monthly update.
 
 * Add copy button to code blocks in documentation.
 
